@@ -1,0 +1,15 @@
+:root {
+  --background-color: white;
+}
+
+body.theme-dark {
+  --background-color: hsl(230, 8%, 15%);
+  --title-bar-color: hsl(230, 8%, 10%);
+
+  --menu-pane-hover: hsl(212, 97%, 43%);
+
+  --text-color: hsl(213, 11%, 84%);
+  --text-secondary-color: hsl(210, 8%, 62%);
+
+  --hover-effect: rgba(255, 255, 255, 0.2);
+}

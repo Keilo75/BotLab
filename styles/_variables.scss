@@ -1,0 +1,19 @@
+// All variables which are not theme specific are in this file.
+
+:root {
+  --font-size: 14px;
+  --title-bar-height: 28px;
+
+  --overlay-z-index: 10;
+  --menu-pane-z-index: 15;
+
+  --overlay-color: rgba(0, 0, 0, 0.7);
+
+  --spacing: 10px;
+  --spacing-double: calc(var(--spacing) * 2);
+  --spacing-triple: calc(var(--spacing) * 3);
+  --spacing-quad: calc(var(--spacing) * 4);
+  --spacing-quint: calc(var(--spacing) * 5);
+  --spacing-half: calc(var(--spacing) / 2);
+  --spacing-third: calc(var(--spacing) / 3);
+}
