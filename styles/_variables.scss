@@ -3,11 +3,12 @@
 :root {
   --font-size: 14px;
   --title-bar-height: 28px;
+  --border-radius: 4px;
 
   --overlay-z-index: 10;
   --menu-pane-z-index: 15;
 
-  --overlay-color: rgba(0, 0, 0, 0.7);
+  --overlay-color: rgba(0, 0, 0, 0.5);
 
   --spacing: 10px;
   --spacing-double: calc(var(--spacing) * 2);

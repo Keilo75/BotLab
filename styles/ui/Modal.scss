@@ -1,0 +1,20 @@
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: var(--overlay-z-index);
+  background-color: var(--overlay-color);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.modal-overlay-visible {
+  pointer-events: visible;
+}
+
+.modal {
+  width: 550px;
+  height: 500px;
+  border-radius: var(--border-radius);
+  background-color: var(--background-color);
+}

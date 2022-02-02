@@ -32,7 +32,7 @@ const MenuPane: React.FC<Props> = ({ pane, selectedPane, setSelectedPane }) => {
       {isSelected && (
         <ul className="menu-list">
           {pane.children.map((item) => (
-            <MenuItem item={item} />
+            <MenuItem key={item.name} item={item} />
           ))}
         </ul>
       )}

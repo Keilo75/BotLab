@@ -4,7 +4,9 @@ import React from "react";
 export interface MenuItemProps {
   name: string;
   accelerator?: string;
-  disabledAtHome?: true;
+  disabled?: boolean;
+  editorOnly?: boolean;
+  divider?: boolean;
 }
 
 interface Props {
@@ -13,10 +15,13 @@ interface Props {
 
 const MenuItem: React.FC<Props> = ({ item }) => {
   return (
-    <li className={clsx("menu-item", item.disabledAtHome && "menu-item-disabled")}>
-      <span>{item.name}</span>
-      <span className="accelerator">{item.accelerator}</span>
-    </li>
+    <>
+      <li className={clsx("menu-item", item.editorOnly && "menu-item-disabled")}>
+        <span>{item.name}</span>
+        <span className="accelerator">{item.accelerator}</span>
+      </li>
+      {item.divider && <hr className="divider" />}
+    </>
   );
 };
 

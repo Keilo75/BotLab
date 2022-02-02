@@ -1,7 +1,10 @@
 import { app, BrowserWindow } from "electron";
 import { handleSquirrelEvents } from "./handleSquirrelEvents";
 import path from "path";
-import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
+import installExtension, {
+  REACT_DEVELOPER_TOOLS,
+  REDUX_DEVTOOLS,
+} from "electron-devtools-installer";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -51,8 +54,13 @@ const createWindow = (): void => {
 // Some APIs can only be used after this event occurs.
 app.on("ready", () => {
   createWindow();
+});
 
-  installExtension(REACT_DEVELOPER_TOOLS).then((name) => console.log(`Added Extension:  ${name}`));
+// Install extensions
+app.whenReady().then(() => {
+  installExtension([REACT_DEVELOPER_TOOLS])
+    .then((name) => console.log(`Added extension(s): ${name}`))
+    .catch((error) => "An error occured: " + error);
 });
 
 // Quit when all windows are closed.
