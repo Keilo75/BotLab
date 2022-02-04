@@ -11,6 +11,14 @@ interface Props {
 const Tabs: React.FC<Props> = ({ children, name }) => {
   const [selected, setSelected] = useState(0);
 
+  const selectTab = (e: React.MouseEvent<HTMLElement>) => {
+    const index = e.currentTarget.getAttribute("data-button-index");
+
+    if (index) {
+      setSelected(parseInt(index));
+    }
+  };
+
   return (
     <div className="tabs">
       <div className="tab-list-container">
@@ -23,8 +31,10 @@ const Tabs: React.FC<Props> = ({ children, name }) => {
               children.map((tab, index) => (
                 <button
                   key={tab.props.name}
+                  data-button-index={index}
                   className="button button-transparent button-text-left"
                   ref={(ref) => (refs[index].current = ref)}
+                  onClick={selectTab}
                 >
                   {tab.props.name}
                 </button>
@@ -33,7 +43,7 @@ const Tabs: React.FC<Props> = ({ children, name }) => {
           ></KeyboardList>
         </div>
       </div>
-      <div className="tab-content"></div>
+      <div className="tab-content">{children[selected]}</div>
     </div>
   );
 };

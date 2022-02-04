@@ -44,7 +44,8 @@ const KeyboardList: React.FC<Props> = ({ length, render, selected }) => {
           break;
         }
 
-        case "Enter": {
+        case "Enter":
+        case "Space": {
           refs[focused].current?.click();
         }
       }
@@ -59,7 +60,7 @@ const KeyboardList: React.FC<Props> = ({ length, render, selected }) => {
 
   const blurHandler = useCallback(() => {
     setFocused(selected);
-  }, []);
+  }, [selected, setFocused]);
 
   useEffect(() => {
     for (let i = 0; i < length; i++) {
@@ -86,7 +87,7 @@ const KeyboardList: React.FC<Props> = ({ length, render, selected }) => {
         element.tabIndex = -1;
       }
     };
-  }, [focused, keydownHandler]);
+  }, [focused, keydownHandler, blurHandler]);
 
   return <>{render(refs)}</>;
 };

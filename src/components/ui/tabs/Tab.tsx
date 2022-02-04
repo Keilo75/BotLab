@@ -5,7 +5,11 @@ interface Props {
 }
 
 const Tab: React.FC<Props> = ({ name }) => {
-  return null;
+  return (
+    <>
+      <h1>{name}</h1>
+    </>
+  );
 };
 
 export default Tab;
