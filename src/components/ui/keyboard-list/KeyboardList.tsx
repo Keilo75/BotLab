@@ -5,11 +5,11 @@ type Ref = HTMLElement | null;
 interface Props {
   length: number;
   render(refs: React.MutableRefObject<Ref>[]): JSX.Element[];
-  selected: number;
+  selectedIndex: number;
 }
 
-const KeyboardList: React.FC<Props> = ({ length, render, selected }) => {
-  const [focused, setFocused] = useState(selected);
+const KeyboardList: React.FC<Props> = ({ length, render, selectedIndex }) => {
+  const [focused, setFocused] = useState(selectedIndex);
 
   const refs = useMemo(
     () =>
@@ -59,8 +59,8 @@ const KeyboardList: React.FC<Props> = ({ length, render, selected }) => {
   );
 
   const blurHandler = useCallback(() => {
-    setFocused(selected);
-  }, [selected, setFocused]);
+    setFocused(selectedIndex);
+  }, [selectedIndex, setFocused]);
 
   useEffect(() => {
     for (let i = 0; i < length; i++) {
