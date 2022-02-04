@@ -1,14 +1,15 @@
 // All variables which are not theme specific are in this file.
 
 :root {
-  --font-size: 14px;
+  --font-size: 15px;
   --title-bar-height: 28px;
   --border-radius: 4px;
 
-  --overlay-z-index: 10;
-  --menu-pane-z-index: 15;
+  --button-height: 30px;
 
-  --overlay-color: rgba(0, 0, 0, 0.5);
+  --overlay-z-index: 10;
+  --menu-pane-z-index: 20;
+  --modal-z-index: 15;
 
   --spacing: 10px;
   --spacing-double: calc(var(--spacing) * 2);

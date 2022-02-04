@@ -3,6 +3,7 @@ import React, { MouseEventHandler, useEffect, useRef } from "react";
 import { appState, AppStore } from "src/store";
 import ReactDOM from "react-dom";
 import clsx from "clsx";
+import ReactFocusLock from "react-focus-lock";
 
 const appStoreSelector = (state: AppStore) => ({
   currentModal: state.currentModal,
@@ -29,15 +30,17 @@ const Modal: React.FC = () => {
       animate={{ opacity: animationValue }}
       transition={{ duration: 0.2 }}
     >
-      <motion.div
-        key="modal"
-        className="modal"
-        id="modal"
-        onClick={handleModalClick}
-        initial={{ scale: 0 }}
-        animate={{ scale: animationValue }}
-        transition={{ duration: 0.2, ease: [0.17, 0.67, 0.16, 1.26] }}
-      ></motion.div>
+      <ReactFocusLock disabled={!currentModal}>
+        <motion.div
+          key="modal"
+          className={clsx("modal", currentModal?.large && "modal-large")}
+          id="modal"
+          onClick={handleModalClick}
+          initial={{ scale: 0 }}
+          animate={{ scale: animationValue }}
+          transition={{ duration: 0.2, ease: [0, 0.9, 0.3, 1] }}
+        ></motion.div>
+      </ReactFocusLock>
     </motion.div>
   );
 

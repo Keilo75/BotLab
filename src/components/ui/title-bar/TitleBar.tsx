@@ -4,20 +4,31 @@ import Minimize from "assets/images/minimize.svg";
 import Maximize from "assets/images/maximize.svg";
 import Close from "assets/images/close.svg";
 import MenuPane, { MenuPaneProps } from "./MenuPane";
+import { MenuAction } from "src/@types/index.d";
 
-const TitleBar: React.FC = ({}) => {
+interface Props {
+  handleMenuItemClick(action: MenuAction): void;
+}
+
+const TitleBar: React.FC<Props> = ({ handleMenuItemClick }) => {
   const [selectedPane, setSelectedPane] = useState<string>();
 
   const menu: MenuPaneProps[] = [
     {
       name: "File",
       children: [
-        { name: "Save", accelerator: "Ctrl+S", editorOnly: true, divider: true },
-        { name: "Options", accelerator: "Ctrl+,", divider: true },
-        { name: "Exit", accelerator: "Alt+F4" },
+        {
+          name: "Save",
+          action: MenuAction.SAVE,
+          accelerator: "Ctrl+S",
+          editorOnly: true,
+          divider: true,
+        },
+        { name: "Options", action: MenuAction.OPTIONS, accelerator: "Ctrl+,", divider: true },
+        { name: "Exit", action: MenuAction.EXIT, accelerator: "Alt+F4" },
       ],
     },
-    { name: "View", children: [{ name: "Toggle Dev Tools" }] },
+    { name: "View", children: [{ name: "Toggle Dev Tools", action: MenuAction.TOGGLE_DEV_TOOLS }] },
   ];
 
   const handleOverlayClick = () => {
@@ -37,17 +48,18 @@ const TitleBar: React.FC = ({}) => {
               pane={pane}
               selectedPane={selectedPane}
               setSelectedPane={setSelectedPane}
+              handleItemClick={handleMenuItemClick}
             />
           ))}
         </div>
         <div className="window-control">
-          <button className="window-control-btn">
+          <button className="window-control-btn" tabIndex={-1}>
             <img src={Minimize} />
           </button>
-          <button className="window-control-btn">
+          <button className="window-control-btn" tabIndex={-1}>
             <img src={Maximize} />
           </button>
-          <button className="window-control-btn">
+          <button className="window-control-btn" tabIndex={-1}>
             <img src={Close} />
           </button>
         </div>

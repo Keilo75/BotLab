@@ -2,8 +2,9 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { appState, AppStore } from "src/store";
 import ReactDOM from "react-dom";
 
-export const ModalLayout = {
-  Content: <div></div>,
+export const ModalLayout: { Content: React.FC; Footer: React.FC } = {
+  Content: ({ children }) => <div className="modal-content">{children}</div>,
+  Footer: ({ children }) => <div className="modal-footer">{children}</div>,
 };
 
 export interface currentModal extends useModalOptions {
@@ -18,7 +19,7 @@ export interface useModalReturnValue {
 
 export interface useModalOptions {
   name: string;
-  depth?: number;
+  large?: boolean;
 }
 
 const appStoreSelector = (state: AppStore) => ({
@@ -40,6 +41,10 @@ const useModal = (options: useModalOptions): useModalReturnValue => {
     setVisible(false);
     setCurrentModal(undefined);
   };
+
+  useEffect(() => {
+    show();
+  }, []);
 
   const component: React.FC = ({ children }) => {
     if (!modal || !visible) return null;

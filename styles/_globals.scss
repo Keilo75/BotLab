@@ -1,3 +1,27 @@
+@font-face {
+  font-family: "Open Sans";
+  src: url("../assets/fonts/OpenSans-400.woff") format("woff");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("../assets/fonts/OpenSans-500.woff") format("woff");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("../assets/fonts/OpenSans-600.woff") format("woff");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("../assets/fonts/OpenSans-700.woff") format("woff");
+  font-weight: 700;
+}
+
 html {
   box-sizing: border-box;
 }
@@ -16,7 +40,7 @@ body {
   padding: 0;
   overflow: hidden;
   color: var(--text-color);
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 body {
@@ -43,7 +67,11 @@ body {
   }
 }
 
-button {
+input,
+textarea,
+button,
+dialog {
+  font-family: inherit;
   font-size: inherit;
   color: inherit;
 }

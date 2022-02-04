@@ -13,8 +13,31 @@
 }
 
 .modal {
+  position: relative;
   width: 550px;
   height: 500px;
   border-radius: var(--border-radius);
   background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  z-index: var(--modal-z-index);
+
+  .modal-content {
+    flex-grow: 1;
+  }
+
+  .modal-footer {
+    height: calc(var(--button-height) + 2 * var(--spacing-double));
+    background-color: var(--title-bar-color);
+    border-bottom-left-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+    padding: var(--spacing-double);
+    display: flex;
+    flex-direction: row-reverse;
+  }
+}
+
+.modal-large {
+  width: calc(100vw - (var(--spacing-double) * 10));
+  height: calc(100vh - (var(--spacing-double) * 10));
 }

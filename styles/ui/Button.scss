@@ -1,0 +1,35 @@
+.button {
+  height: var(--button-height);
+  border-radius: var(--border-radius);
+  outline: none;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 0 var(--spacing-double);
+  transition: background-color 0.2s ease-in-out;
+  font-weight: 600;
+}
+
+.button:focus-visible {
+  box-shadow: 0 0 0 4px var(--focus-color);
+}
+
+.button-primary {
+  background-color: var(--primary-color);
+}
+
+.button-primary:hover {
+  background-color: var(--primary-color-hover);
+}
+
+.button-transparent {
+  background-color: transparent;
+}
+
+.button-transparent:hover {
+  background-color: var(--hover-overlay-1);
+}
+
+.button-text-left {
+  text-align: left;
+}
