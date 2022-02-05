@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React, { useState } from "react";
 import Button from "../button/Button";
 import KeyboardList from "../keyboard-list/KeyboardList";
@@ -6,9 +7,10 @@ import Label from "../Label";
 interface Props {
   children: React.ReactElement[];
   name: string;
+  axis?: "vertical" | "horizontal";
 }
 
-const Tabs: React.FC<Props> = ({ children, name }) => {
+const Tabs: React.FC<Props> = ({ children, name, axis = "vertical" }) => {
   const [selected, setSelected] = useState(0);
 
   const selectTab = (e: React.MouseEvent<HTMLElement>) => {
@@ -20,17 +22,20 @@ const Tabs: React.FC<Props> = ({ children, name }) => {
   };
 
   return (
-    <div className="tabs">
+    <div className={clsx("tabs", axis === "horizontal" && "tabs-horizontal")}>
       <div className="tab-list-container">
         <div className="tab-list">
-          <Label text={name} />
+          {axis === "vertical" && <Label text={name} />}
           <KeyboardList selectedIndex={selected} length={children.length}>
             {(refs) =>
               children.map((tab, index) => (
                 <button
                   key={tab.props.name}
                   data-button-index={index}
-                  className="button button-transparent button-text-left"
+                  className={clsx(
+                    "button button-transparent button-text-left",
+                    selected == index && "button-selected"
+                  )}
                   ref={(ref) => (refs[index].current = ref)}
                   onClick={selectTab}
                 >

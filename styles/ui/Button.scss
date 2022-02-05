@@ -28,7 +28,8 @@
   transition: background-color 0s;
 }
 
-.button-transparent:hover {
+.button-transparent:hover,
+.button-transparent.button-selected {
   background-color: var(--hover-overlay-1);
 }
 

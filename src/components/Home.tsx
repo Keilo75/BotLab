@@ -1,11 +1,16 @@
 import React from "react";
 import Button from "./ui/button/Button";
+import Tab from "./ui/tabs/Tab";
+import Tabs from "./ui/tabs/Tabs";
 
 const Home: React.FC = () => {
   return (
     <>
-      <h1>Home</h1>
-      <Button text="hi" type="primary" />
+      <Tabs name="Home" axis="horizontal">
+        <Tab name="Projects"></Tab>
+        <Tab name="Learn"></Tab>
+        <Tab name="About"></Tab>
+      </Tabs>
     </>
   );
 };

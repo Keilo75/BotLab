@@ -40,7 +40,11 @@ const Modal: React.FC = () => {
           animate={{ scale: animationValue }}
           transition={{ duration: 0.2, ease: [0, 0.9, 0.3, 1] }}
         >
-          <button className="modal-close-button" onClick={currentModal?.hide}>
+          <button
+            className="modal-close-button"
+            onClick={currentModal?.hide}
+            tabIndex={currentModal ? 0 : -1}
+          >
             <span>×</span>
           </button>
         </motion.div>
