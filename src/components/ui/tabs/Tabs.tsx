@@ -26,7 +26,7 @@ const Tabs: React.FC<Props> = ({ children, name, axis = "vertical" }) => {
       <div className="tab-list-container">
         <div className="tab-list">
           {axis === "vertical" && <Label text={name} />}
-          <KeyboardList selectedIndex={selected} length={children.length}>
+          <KeyboardList selectedIndex={selected} length={children.length} axis={axis}>
             {(refs) =>
               children.map((tab, index) => (
                 <button

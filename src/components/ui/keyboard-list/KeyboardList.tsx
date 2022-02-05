@@ -6,9 +6,10 @@ interface Props {
   length: number;
   children: (refs: React.MutableRefObject<Ref>[]) => JSX.Element[];
   selectedIndex: number;
+  axis?: "vertical" | "horizontal";
 }
 
-const KeyboardList: React.FC<Props> = ({ length, children, selectedIndex }) => {
+const KeyboardList: React.FC<Props> = ({ length, children, selectedIndex, axis = "vertical" }) => {
   const [focused, setFocused] = useState(selectedIndex);
 
   const refs = useMemo(
@@ -23,14 +24,32 @@ const KeyboardList: React.FC<Props> = ({ length, children, selectedIndex }) => {
     (e: KeyboardEvent) => {
       let newIndex;
 
+      const setNextIndex = () => {
+        newIndex = Math.min(focused + 1, length - 1);
+      };
+
+      const setPreviousIndex = () => {
+        newIndex = Math.max(focused - 1, 0);
+      };
+
       switch (e.key) {
         case "ArrowDown": {
-          newIndex = Math.min(focused + 1, length - 1);
+          if (axis == "vertical") setNextIndex();
           break;
         }
 
         case "ArrowUp": {
-          newIndex = Math.max(focused - 1, 0);
+          if (axis == "vertical") setPreviousIndex();
+          break;
+        }
+
+        case "ArrowRight": {
+          if (axis == "horizontal") setNextIndex();
+          break;
+        }
+
+        case "ArrowLeft": {
+          if (axis == "horizontal") setPreviousIndex();
           break;
         }
 

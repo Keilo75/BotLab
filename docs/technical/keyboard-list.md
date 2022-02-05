@@ -34,14 +34,16 @@ To create a keyboard list, use the `KeyboardList` component.
 </KeyboardList>
 ```
 
-The component uses the following props:
+## Props
 
-- selectedIndex: the current selected index, which will be the only keyboard-navigatable element
-- length: the length of the list to render
+| Option        | Type                       | Optional | Description                                                                        |
+| ------------- | -------------------------- | -------- | ---------------------------------------------------------------------------------- |
+| selectedIndex | number                     | no       | The currently selected index, which will be the only keyboard-navigatable element  |
+| length        | number                     | no       | The length of the list to render                                                   |
+| axis          | "vertical" \| "horizontal" | yes      | Wheter the Up/Down or Left/Right arrow keys should be used. Defaults to `vertical` |
+| children      | (refs) => JSX.Element[]    | no       | The function to render all elements                                                |
 
-It expects a function as a child, which gives you an array of refs. Assign each child one ref.
-
-### Important Considerations:
+## Important Considerations:
 
 Please note that you cannot assign the ref directly.
 
