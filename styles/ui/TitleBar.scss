@@ -40,7 +40,7 @@
     }
 
     .menu-list {
-      width: 220px;
+      width: 250px;
       background-color: var(--background-color);
       position: absolute;
       top: var(--title-bar-height);
@@ -64,7 +64,7 @@
       }
 
       .menu-item:hover:not(.menu-item-disabled) {
-        background-color: var(--focus-color);
+        background-color: var(--primary-color);
 
         span {
           color: white;

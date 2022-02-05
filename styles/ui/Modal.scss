@@ -21,6 +21,32 @@
   display: flex;
   flex-direction: column;
   z-index: var(--modal-z-index);
+  position: relative;
+
+  .modal-close-button {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: 0;
+    top: var(--spacing);
+    right: var(--spacing);
+    border-radius: 50%;
+    border: 2px solid var(--text-secondary-color);
+    outline: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 20px;
+    display: grid;
+    place-content: center;
+
+    span {
+      cursor: pointer;
+    }
+  }
+
+  .modal-close-button:hover {
+    background-color: var(--hover-overlay-1);
+  }
 
   .modal-content {
     flex-grow: 1;

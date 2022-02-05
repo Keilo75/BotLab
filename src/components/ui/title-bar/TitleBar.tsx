@@ -28,7 +28,16 @@ const TitleBar: React.FC<Props> = ({ handleMenuItemClick }) => {
         { name: "Exit", action: MenuAction.EXIT, accelerator: "Alt+F4" },
       ],
     },
-    { name: "View", children: [{ name: "Toggle Dev Tools", action: MenuAction.TOGGLE_DEV_TOOLS }] },
+    {
+      name: "View",
+      children: [
+        {
+          name: "Toggle Dev Tools",
+          action: MenuAction.TOGGLE_DEV_TOOLS,
+          accelerator: "Ctrl+Shift+I",
+        },
+      ],
+    },
   ];
 
   const handleWindowControlClick = (e: React.MouseEvent) => {

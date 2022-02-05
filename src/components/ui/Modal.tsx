@@ -39,7 +39,11 @@ const Modal: React.FC = () => {
           initial={{ scale: 0 }}
           animate={{ scale: animationValue }}
           transition={{ duration: 0.2, ease: [0, 0.9, 0.3, 1] }}
-        ></motion.div>
+        >
+          <button className="modal-close-button" onClick={currentModal?.hide}>
+            <span>×</span>
+          </button>
+        </motion.div>
       </ReactFocusLock>
     </motion.div>
   );
