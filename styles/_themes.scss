@@ -1,7 +1,16 @@
+// Non-specific variables
 :root {
-  --background-color: white;
+  --primary-color: hsl(231, 48%, 48%);
+  --primary-color-hover: hsl(231, 48%, 40%);
+
+  --focus-color: hsl(212, 97%, 43%);
 }
 
+// Light Theme
+:root {
+}
+
+// Dark theme
 body.theme-dark {
   --background-color: hsl(230, 8%, 15%);
   --title-bar-color: hsl(230, 8%, 10%);
@@ -9,12 +18,8 @@ body.theme-dark {
   --container-border-color: hsl(230, 12%, 10%);
 
   --radio-button-color: hsl(225, 12%, 13%);
-  --radio-button-hover-color: hsl(228, 10%, 10%);
-
-  --focus-color: hsl(212, 97%, 43%);
-
-  --primary-color: hsl(231, 48%, 48%);
-  --primary-color-hover: hsl(231, 48%, 40%);
+  --radio-button-hover-color: hsl(225, 11%, 21%);
+  --radio-button-selected-color: hsl(228, 10%, 10%);
 
   --text-color: hsl(213, 11%, 84%);
   --text-secondary-color: hsl(210, 8%, 62%);

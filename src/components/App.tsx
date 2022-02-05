@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import "styles/_themes.scss";
 import "styles/_globals.scss";
 import "styles/_variables.scss";
@@ -10,9 +10,17 @@ import Modal from "./ui/Modal";
 import { MenuAction } from "src/models/menu-action";
 import useModal from "src/hooks/useModal";
 import OptionsModalComponent from "./modals/OptionsModal";
+import { optionsStore } from "src/stores/optionsStore";
 
 const App: React.FC = () => {
   const OptionsModal = useModal({ name: "options-modal", large: true });
+
+  // Handle options change
+  const options = optionsStore((state) => state.options);
+  useEffect(() => {
+    // Change theme
+    document.body.classList.toggle("theme-dark", options.general.theme == 0);
+  }, [options]);
 
   const handleMenuItemClick = (action: MenuAction) => {
     const mainProcessActions = [MenuAction.EXIT, MenuAction.TOGGLE_DEV_TOOLS];

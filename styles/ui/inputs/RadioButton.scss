@@ -22,19 +22,21 @@
       width: 18px;
       border-radius: 50%;
       border: 4px solid transparent;
-      box-shadow: 0 0 0 2px white;
+      box-shadow: 0 0 0 2px var(--text-color);
       margin: 0 var(--spacing);
     }
   }
 
   .radio-button-selected {
+    background-color: var(--radio-button-selected-color);
+
     .circle {
       background-color: var(--primary-color);
       border-color: var(--radio-button-color);
     }
   }
 
-  .radio-button:hover {
+  .radio-button:not(.radio-button-selected):hover {
     background-color: var(--radio-button-hover-color);
   }
 

@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { ModalLayout, useModalReturnValue } from "src/hooks/useModal";
+import { optionsStore } from "src/stores/optionsStore";
 import Button from "../ui/button/Button";
+import InputGroup, { InputGroupState } from "../ui/inputs/InputGroup";
 import RadioButton from "../ui/inputs/RadioButton";
 import Tab from "../ui/tabs/Tab";
 import Tabs from "../ui/tabs/Tabs";
@@ -10,12 +12,25 @@ interface Props {
 }
 
 const OptionsModalComponent: React.FC<Props> = ({ modal }) => {
+  const options = optionsStore();
+
   return (
     <modal.Component>
       <ModalLayout.Content>
         <Tabs name="Options">
           <Tab name="General">
-            <RadioButton selectedIndex={0} onChange={() => null} options={["Dark", "Light"]} />
+            <InputGroup state={options.options.general} onChange={options.setGeneral}>
+              {(state, setState) => (
+                <>
+                  <RadioButton
+                    name="theme"
+                    selectedIndex={state.theme}
+                    onChange={setState}
+                    options={["Dark", "Light"]}
+                  />
+                </>
+              )}
+            </InputGroup>
           </Tab>
           <Tab name="Editor"></Tab>
           <Tab name="About"></Tab>

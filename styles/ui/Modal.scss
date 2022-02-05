@@ -44,6 +44,10 @@
     }
   }
 
+  .modal-close-button:focus-visible {
+    box-shadow: 0 0 0 4px var(--focus-color);
+  }
+
   .modal-close-button:hover {
     background-color: var(--hover-overlay-1);
   }

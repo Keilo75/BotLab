@@ -1,22 +1,31 @@
 import clsx from "clsx";
 import React from "react";
 import KeyboardList from "../keyboard-list/KeyboardList";
+import Label from "../Label";
 
 interface Props {
+  name: string;
   selectedIndex: number;
-  onChange(index: number): void;
+  onChange(index: number, name?: string): void;
   options: string[];
   axis?: "horizontal" | "vertical";
 }
 
-const RadioButton: React.FC<Props> = ({ selectedIndex, onChange, options, axis = "vertical" }) => {
+const RadioButton: React.FC<Props> = ({
+  selectedIndex,
+  onChange,
+  options,
+  axis = "vertical",
+  name,
+}) => {
   const handleRadioButtonClick = (e: React.MouseEvent) => {
     const index = e.currentTarget.getAttribute("data-radio-option-index");
-    if (index) onChange(parseInt(index));
+    if (index) onChange(parseInt(index), name);
   };
 
   return (
     <div className={clsx("radio-button-container", `radio-button-${axis}`)}>
+      <Label text={name} />
       <KeyboardList selectedIndex={selectedIndex} length={options.length}>
         {(refs) =>
           options.map((option, index) => (

@@ -1,11 +1,11 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { MouseEventHandler, useEffect, useRef } from "react";
-import { appState, AppStore } from "src/store";
+import { modalStore, ModalStore } from "src/stores/modalStore";
 import ReactDOM from "react-dom";
 import clsx from "clsx";
 import ReactFocusLock from "react-focus-lock";
 
-const appStoreSelector = (state: AppStore) => ({
+const appStoreSelector = (state: ModalStore) => ({
   currentModal: state.currentModal,
 });
 
@@ -13,7 +13,7 @@ const Modal: React.FC = () => {
   const modalRoot = document.getElementById("modal-root");
   if (!modalRoot) return null;
 
-  const { currentModal } = appState(appStoreSelector);
+  const { currentModal } = modalStore(appStoreSelector);
 
   const handleModalClick: MouseEventHandler = (e) => {
     e.stopPropagation();

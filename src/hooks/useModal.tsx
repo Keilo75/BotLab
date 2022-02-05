@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { appState, AppStore } from "src/store";
+import { modalStore, ModalStore } from "src/stores/modalStore";
 import ReactDOM from "react-dom";
 
 export const ModalLayout: { Content: React.FC; Footer: React.FC } = {
@@ -22,7 +22,7 @@ export interface useModalOptions {
   large?: boolean;
 }
 
-const appStoreSelector = (state: AppStore) => ({
+const appStoreSelector = (state: ModalStore) => ({
   setCurrentModal: state.setCurrentModal,
 });
 
@@ -30,7 +30,7 @@ const useModal = (options: useModalOptions): useModalReturnValue => {
   const modal = document.getElementById("modal");
 
   const [visible, setVisible] = useState(false);
-  const { setCurrentModal } = appState(appStoreSelector);
+  const { setCurrentModal } = modalStore(appStoreSelector);
 
   const show = () => {
     setVisible(true);
