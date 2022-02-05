@@ -1,10 +1,9 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain, Menu } from "electron";
 import { handleSquirrelEvents } from "./handleSquirrelEvents";
 import path from "path";
-import installExtension, {
-  REACT_DEVELOPER_TOOLS,
-  REDUX_DEVTOOLS,
-} from "electron-devtools-installer";
+import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
+import { IPCChannels } from "../models/ipc-channels";
+import { MenuAction } from "../models/menu-action";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -77,5 +76,34 @@ app.on("activate", () => {
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
+  }
+});
+
+ipcMain.on(IPCChannels.MENU_ACTION, (e, data: MenuAction) => {
+  if (!mainWindow) return;
+
+  switch (data) {
+    case MenuAction.EXIT:
+      app.quit();
+      break;
+
+    case MenuAction.MINIMIZE:
+      mainWindow.minimize();
+      break;
+
+    case MenuAction.MAXIMIZE:
+      if (mainWindow.isMaximized()) {
+        mainWindow.unmaximize();
+      } else {
+        mainWindow.maximize();
+      }
+      break;
+
+    case MenuAction.TOGGLE_DEV_TOOLS:
+      mainWindow.webContents.toggleDevTools();
+      break;
+
+    default:
+      console.log(data);
   }
 });

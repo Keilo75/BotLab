@@ -4,11 +4,11 @@ type Ref = HTMLElement | null;
 
 interface Props {
   length: number;
-  render(refs: React.MutableRefObject<Ref>[]): JSX.Element[];
+  children: (refs: React.MutableRefObject<Ref>[]) => JSX.Element[];
   selectedIndex: number;
 }
 
-const KeyboardList: React.FC<Props> = ({ length, render, selectedIndex }) => {
+const KeyboardList: React.FC<Props> = ({ length, children, selectedIndex }) => {
   const [focused, setFocused] = useState(selectedIndex);
 
   const refs = useMemo(
@@ -89,7 +89,7 @@ const KeyboardList: React.FC<Props> = ({ length, render, selectedIndex }) => {
     };
   }, [focused, keydownHandler, blurHandler]);
 
-  return <>{render(refs)}</>;
+  return <>{children(refs)}</>;
 };
 
 export default KeyboardList;

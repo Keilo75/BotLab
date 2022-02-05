@@ -1,5 +1,5 @@
 import React from "react";
-import { MenuAction } from "src/@types/index.d";
+import { MenuAction } from "src/models/menu-action";
 import MenuItem, { MenuItemProps } from "./MenuItem";
 
 export interface MenuPaneProps {

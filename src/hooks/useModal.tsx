@@ -42,10 +42,6 @@ const useModal = (options: useModalOptions): useModalReturnValue => {
     setCurrentModal(undefined);
   };
 
-  useEffect(() => {
-    show();
-  }, []);
-
   const component: React.FC = ({ children }) => {
     if (!modal || !visible) return null;
 

@@ -1,0 +1,14 @@
+.text-input {
+  height: var(--button-height);
+  outline: none;
+  border-radius: var(--border-radius);
+  background-color: var(--container-color);
+  border: 1px solid var(--container-border-color);
+  padding: 0 var(--spacing-half);
+  transition: border-color 0.1s ease-in-out;
+  width: 100%;
+}
+
+.text-input:focus {
+  border-color: var(--primary-color);
+}

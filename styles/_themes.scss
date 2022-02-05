@@ -5,7 +5,11 @@
 body.theme-dark {
   --background-color: hsl(230, 8%, 15%);
   --title-bar-color: hsl(230, 8%, 10%);
-  --nav-color: hsl(230, 8%, 12%);
+  --container-color: hsl(230, 8%, 12%);
+  --container-border-color: hsl(230, 12%, 10%);
+
+  --radio-button-color: hsl(225, 12%, 13%);
+  --radio-button-hover-color: hsl(228, 10%, 10%);
 
   --focus-color: hsl(212, 97%, 43%);
 

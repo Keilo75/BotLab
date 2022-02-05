@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import React from "react";
-import { MenuAction } from "src/@types/index.d";
+import { MenuAction } from "src/models/menu-action";
 
 export interface MenuItemProps {
   name: string;

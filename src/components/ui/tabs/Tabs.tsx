@@ -24,10 +24,8 @@ const Tabs: React.FC<Props> = ({ children, name }) => {
       <div className="tab-list-container">
         <div className="tab-list">
           <Label text={name} />
-          <KeyboardList
-            selectedIndex={selected}
-            length={children.length}
-            render={(refs) =>
+          <KeyboardList selectedIndex={selected} length={children.length}>
+            {(refs) =>
               children.map((tab, index) => (
                 <button
                   key={tab.props.name}
@@ -40,7 +38,7 @@ const Tabs: React.FC<Props> = ({ children, name }) => {
                 </button>
               ))
             }
-          ></KeyboardList>
+          </KeyboardList>
         </div>
       </div>
       <div className="tab-content">{children[selected]}</div>

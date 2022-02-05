@@ -4,7 +4,7 @@ import Minimize from "assets/images/minimize.svg";
 import Maximize from "assets/images/maximize.svg";
 import Close from "assets/images/close.svg";
 import MenuPane, { MenuPaneProps } from "./MenuPane";
-import { MenuAction } from "src/@types/index.d";
+import { MenuAction } from "src/models/menu-action";
 
 interface Props {
   handleMenuItemClick(action: MenuAction): void;
@@ -31,6 +31,17 @@ const TitleBar: React.FC<Props> = ({ handleMenuItemClick }) => {
     { name: "View", children: [{ name: "Toggle Dev Tools", action: MenuAction.TOGGLE_DEV_TOOLS }] },
   ];
 
+  const handleWindowControlClick = (e: React.MouseEvent) => {
+    const actions = {
+      minimize: MenuAction.MINIMIZE,
+      maximize: MenuAction.MAXIMIZE,
+      close: MenuAction.EXIT,
+    };
+
+    const actionType = e.currentTarget.getAttribute("data-btn-action") as keyof typeof actions;
+    if (actionType) window.ipc.handleTitleBarAction(actions[actionType]);
+  };
+
   const handleOverlayClick = () => {
     setSelectedPane(undefined);
   };
@@ -53,13 +64,28 @@ const TitleBar: React.FC<Props> = ({ handleMenuItemClick }) => {
           ))}
         </div>
         <div className="window-control">
-          <button className="window-control-btn" tabIndex={-1}>
+          <button
+            className="window-control-btn"
+            tabIndex={-1}
+            onClick={handleWindowControlClick}
+            data-btn-action="minimize"
+          >
             <img src={Minimize} />
           </button>
-          <button className="window-control-btn" tabIndex={-1}>
+          <button
+            className="window-control-btn"
+            tabIndex={-1}
+            onClick={handleWindowControlClick}
+            data-btn-action="maximize"
+          >
             <img src={Maximize} />
           </button>
-          <button className="window-control-btn" tabIndex={-1}>
+          <button
+            className="window-control-btn"
+            tabIndex={-1}
+            onClick={handleWindowControlClick}
+            data-btn-action="close"
+          >
             <img src={Close} />
           </button>
         </div>

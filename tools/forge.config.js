@@ -35,7 +35,7 @@ module.exports = {
               js: path.join(rootDir, "src", "index.tsx"),
               name: "main_window",
               preload: {
-                js: path.join(rootDir, "main", "preload.ts")
+                js: path.join(rootDir, "src", "main", "preload.ts")
               }
             }
           ]

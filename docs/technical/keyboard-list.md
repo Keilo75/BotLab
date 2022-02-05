@@ -17,14 +17,13 @@ If the list is blurred without selecting a new element, the currently selected e
 To create a keyboard list, use the `KeyboardList` component.
 
 ```jsx
-<KeyboardList
-  selectedIndex={selectedIndex}
-  length={children.length}
-  render={(refs) =>
+<KeyboardList selectedIndex={selected} length={children.length}>
+  {(refs) =>
     children.map((tab, index) => (
       <button
         key={tab.props.name}
         data-button-index={index}
+        className="button button-transparent button-text-left"
         ref={(ref) => (refs[index].current = ref)}
         onClick={selectTab}
       >
@@ -32,14 +31,15 @@ To create a keyboard list, use the `KeyboardList` component.
       </button>
     ))
   }
-></KeyboardList>
+</KeyboardList>
 ```
 
 The component uses the following props:
 
 - selectedIndex: the current selected index, which will be the only keyboard-navigatable element
 - length: the length of the list to render
-- render: This uses render props and returns a function with an array of refs. The return value should be an array of elements, each of which should be assigned a unique ref from the array.
+
+It expects a function as a child, which gives you an array of refs. Assign each child one ref.
 
 ### Important Considerations:
 

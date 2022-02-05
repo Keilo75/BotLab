@@ -6,7 +6,7 @@
   .tab-list-container {
     height: 100%;
     width: 25%;
-    background-color: var(--nav-color);
+    background-color: var(--container-color);
     padding: var(--spacing-double);
     display: flex;
     flex-direction: column;
@@ -24,5 +24,6 @@
   .tab-content {
     height: 100%;
     flex-grow: 1;
+    padding: var(--spacing-double);
   }
 }
