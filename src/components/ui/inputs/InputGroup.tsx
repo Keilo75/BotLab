@@ -1,9 +1,5 @@
 import React, { useState } from "react";
 
-export interface InputGroupState {
-  [key: string]: string | number;
-}
-
 interface Props<T> {
   state: T;
   onChange(value: T): void;

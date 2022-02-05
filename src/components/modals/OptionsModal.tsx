@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ModalLayout, useModalReturnValue } from "src/hooks/useModal";
 import { optionsStore } from "src/stores/optionsStore";
 import Button from "../ui/button/Button";
-import InputGroup, { InputGroupState } from "../ui/inputs/InputGroup";
+import InputGroup from "../ui/inputs/InputGroup";
 import RadioButton from "../ui/inputs/RadioButton";
 import Tab from "../ui/tabs/Tab";
 import Tabs from "../ui/tabs/Tabs";

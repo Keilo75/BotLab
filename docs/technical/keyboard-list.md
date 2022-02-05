@@ -14,7 +14,7 @@ If the list is blurred without selecting a new element, the currently selected e
 
 ## Usage
 
-To create a keyboard list, use the `KeyboardList` component.
+To create a keyboard list, use the `KeyboardList` component:
 
 ```jsx
 <KeyboardList selectedIndex={selected} length={children.length}>
@@ -36,14 +36,14 @@ To create a keyboard list, use the `KeyboardList` component.
 
 ## Props
 
-| Option        | Type                       | Optional | Description                                                                        |
-| ------------- | -------------------------- | -------- | ---------------------------------------------------------------------------------- |
-| selectedIndex | number                     | no       | The currently selected index, which will be the only keyboard-navigatable element  |
-| length        | number                     | no       | The length of the list to render                                                   |
-| axis          | "vertical" \| "horizontal" | yes      | Wheter the Up/Down or Left/Right arrow keys should be used. Defaults to `vertical` |
-| children      | (refs) => JSX.Element[]    | no       | The function to render all elements                                                |
+| Prop          | Type                                                                          | Optional | Description                                                                        |
+| ------------- | ----------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------- |
+| selectedIndex | number                                                                        | no       | The currently selected index, which will be the only keyboard-navigatable element  |
+| length        | number                                                                        | no       | The length of the list to render                                                   |
+| axis          | "vertical" \| "horizontal"                                                    | yes      | Wheter the Up/Down or Left/Right arrow keys should be used. Defaults to `vertical` |
+| children      | (refs: React.MutableRefObject<HTMLElement \| null>[]) => React.ReactElement[] | no       | A function to render all elements                                                  |
 
-## Important Considerations:
+## Important Considerations
 
 Please note that you cannot assign the ref directly.
 

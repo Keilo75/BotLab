@@ -4,7 +4,7 @@ type Ref = HTMLElement | null;
 
 interface Props {
   length: number;
-  children: (refs: React.MutableRefObject<Ref>[]) => JSX.Element[];
+  children: (refs: React.MutableRefObject<Ref>[]) => React.ReactElement[];
   selectedIndex: number;
   axis?: "vertical" | "horizontal";
 }
