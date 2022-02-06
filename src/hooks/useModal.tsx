@@ -1,9 +1,16 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { modalStore, ModalStore } from "src/stores/modalStore";
 import ReactDOM from "react-dom";
+import clsx from "clsx";
 
-export const ModalLayout: { Content: React.FC; Footer: React.FC } = {
-  Content: ({ children }) => <div className="modal-content">{children}</div>,
+interface ContentProps {
+  padding?: boolean;
+}
+
+export const ModalLayout: { Content: React.FC<ContentProps>; Footer: React.FC } = {
+  Content: ({ children, padding }) => (
+    <div className={clsx("modal-content", padding && "modal-content-padding")}>{children}</div>
+  ),
   Footer: ({ children }) => <div className="modal-footer">{children}</div>,
 };
 

@@ -4,6 +4,7 @@ import { optionsStore } from "src/stores/optionsStore";
 import Button from "../ui/button/Button";
 import InputGroup from "../ui/inputs/InputGroup";
 import RadioButton from "../ui/inputs/RadioButton";
+import Label from "../ui/Label";
 import Tab from "../ui/tabs/Tab";
 import Tabs from "../ui/tabs/Tabs";
 
@@ -22,6 +23,7 @@ const OptionsModalComponent: React.FC<Props> = ({ modal }) => {
             <InputGroup state={options.options.general} onChange={options.setGeneral}>
               {(state, setState) => (
                 <>
+                  <Label text="theme" />
                   <RadioButton
                     name="theme"
                     selectedIndex={state.theme}

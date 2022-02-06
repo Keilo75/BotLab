@@ -2,7 +2,7 @@
   position: absolute;
   inset: 0;
   z-index: var(--overlay-z-index);
-  background-color: var(--overlay-color);
+  background-color: var(--overlay-dark-5);
   display: grid;
   place-items: center;
   pointer-events: none;
@@ -15,7 +15,6 @@
 .modal {
   position: relative;
   width: 550px;
-  height: 500px;
   border-radius: var(--border-radius);
   background-color: var(--background-color);
   display: flex;
@@ -49,11 +48,15 @@
   }
 
   .modal-close-button:hover {
-    background-color: var(--hover-overlay-1);
+    background-color: var(--overlay-white-1);
   }
 
   .modal-content {
     flex-grow: 1;
+  }
+
+  .modal-content-padding {
+    padding: var(--spacing-double);
   }
 
   .modal-footer {
@@ -64,6 +67,7 @@
     padding: var(--spacing-double);
     display: flex;
     flex-direction: row-reverse;
+    gap: var(--spacing);
   }
 }
 

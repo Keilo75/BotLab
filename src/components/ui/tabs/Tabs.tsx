@@ -33,8 +33,9 @@ const Tabs: React.FC<Props> = ({ children, name, axis = "vertical" }) => {
                   key={tab.props.name}
                   data-button-index={index}
                   className={clsx(
-                    "button button-transparent button-text-left",
-                    selected == index && "button-selected"
+                    "button button-transparent",
+                    selected == index && "button-selected",
+                    axis === "vertical" && "button-text-left"
                   )}
                   ref={(ref) => (refs[index].current = ref)}
                   onClick={selectTab}

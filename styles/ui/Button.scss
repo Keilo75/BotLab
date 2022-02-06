@@ -9,6 +9,24 @@
   padding: 0 var(--spacing-double);
   transition: background-color 0.2s ease-in-out;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  svg {
+    margin-right: var(--spacing-third);
+    cursor: pointer;
+  }
+}
+
+.button:disabled::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  cursor: not-allowed;
+  border-radius: var(--border-radius);
+  background-color: var(--overlay-dark-5);
 }
 
 .button:focus-visible {
@@ -23,6 +41,14 @@
   background-color: var(--primary-color-hover);
 }
 
+.button-success {
+  background-color: var(--success-color);
+}
+
+.button-success:hover {
+  background-color: var(--success-color-hover);
+}
+
 .button-transparent {
   background-color: transparent;
   transition: background-color 0s;
@@ -30,9 +56,9 @@
 
 .button-transparent:hover,
 .button-transparent.button-selected {
-  background-color: var(--hover-overlay-1);
+  background-color: var(--overlay-white-1);
 }
 
 .button-text-left {
-  text-align: left;
+  justify-content: flex-start;
 }

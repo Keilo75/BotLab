@@ -3,6 +3,12 @@
   --primary-color: hsl(231, 48%, 48%);
   --primary-color-hover: hsl(231, 48%, 40%);
 
+  --success-color: hsl(153, 56%, 34%);
+  --success-color-hover: hsl(153, 56%, 26%);
+
+  --red-color: hsl(0, 85%, 61%);
+  --red-color-hover: hsl(0, 59%, 51%);
+
   --focus-color: hsl(212, 97%, 43%);
 }
 
@@ -25,7 +31,7 @@ body.theme-dark {
   --text-secondary-color: hsl(210, 8%, 62%);
   --text-label-color: hsl(210, 5%, 57%);
 
-  --hover-overlay-1: rgba(255, 255, 255, 0.1);
-  --hover-overlay-2: rgba(255, 255, 255, 0.2);
-  --overlay-color: rgba(0, 0, 0, 0.5);
+  --overlay-white-1: rgba(255, 255, 255, 0.1);
+  --overlay-white-2: rgba(255, 255, 255, 0.2);
+  --overlay-dark-5: rgba(0, 0, 0, 0.5);
 }

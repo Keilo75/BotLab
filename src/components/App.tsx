@@ -5,7 +5,7 @@ import "styles/_variables.scss";
 import "styles/_ui.scss";
 import TitleBar from "./ui/title-bar/TitleBar";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
-import Home from "./Home";
+import Home from "./views/Home";
 import Modal from "./ui/Modal";
 import { MenuAction } from "src/models/menu-action";
 import useModal from "src/hooks/useModal";

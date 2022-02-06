@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Menu } from "electron";
+import { app, BrowserWindow, dialog, ipcMain, Menu } from "electron";
 import { handleSquirrelEvents } from "./handleSquirrelEvents";
 import path from "path";
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
@@ -106,4 +106,9 @@ ipcMain.on(IPCChannels.MENU_ACTION, (e, data: MenuAction) => {
     default:
       console.log(data);
   }
+});
+
+ipcMain.handle(IPCChannels.OPEN_DIALOG, async (e, options: Electron.OpenDialogOptions) => {
+  const response = await dialog.showOpenDialog(options);
+  return response;
 });

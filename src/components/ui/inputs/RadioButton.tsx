@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import React from "react";
 import KeyboardList from "../keyboard-list/KeyboardList";
-import Label from "../Label";
 
 interface Props {
   name: string;
@@ -25,7 +24,6 @@ const RadioButton: React.FC<Props> = ({
 
   return (
     <div className={clsx("radio-button-container", `radio-button-${axis}`)}>
-      <Label text={name} />
       <KeyboardList selectedIndex={selectedIndex} length={options.length}>
         {(refs) =>
           options.map((option, index) => (

@@ -36,7 +36,7 @@
     }
 
     .menu-button:hover {
-      background-color: var(--hover-overlay-2);
+      background-color: var(--overlay-white-2);
     }
 
     .menu-list {
@@ -77,7 +77,7 @@
 
       .divider {
         margin: var(--spacing-third) 0;
-        border-color: var(--hover-overlay-2);
+        border-color: var(--overlay-white-2);
         border-width: 1px;
       }
     }
@@ -101,7 +101,7 @@
     }
 
     .window-control-btn:hover {
-      background-color: var(--hover-overlay-2);
+      background-color: var(--overlay-white-2);
     }
 
     .window-control-btn:last-child:hover {
@@ -115,5 +115,5 @@
   inset: 0;
   top: var(--title-bar-height);
   z-index: var(--overlay-z-index);
-  background-color: var(--overlay-color);
+  background-color: var(--overlay-dark-5);
 }

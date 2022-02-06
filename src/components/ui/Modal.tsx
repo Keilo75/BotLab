@@ -25,7 +25,7 @@ const Modal: React.FC = () => {
     <motion.div
       key="modal-overlay"
       className={clsx("modal-overlay", currentModal && "modal-overlay-visible")}
-      onClick={currentModal?.hide}
+      onMouseDown={currentModal?.hide}
       initial={{ opacity: 0 }}
       animate={{ opacity: animationValue }}
       transition={{ duration: 0.2 }}
@@ -35,7 +35,7 @@ const Modal: React.FC = () => {
           key="modal"
           className={clsx("modal", currentModal?.large && "modal-large")}
           id="modal"
-          onClick={handleModalClick}
+          onMouseDown={handleModalClick}
           initial={{ scale: 0 }}
           animate={{ scale: animationValue }}
           transition={{ duration: 0.2, ease: [0, 0.9, 0.3, 1] }}
