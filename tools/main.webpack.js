@@ -1,4 +1,7 @@
 module.exports = {
+  plugins: [
+
+  ],
   resolve: {
     extensions: ['.ts', '.js']
   },

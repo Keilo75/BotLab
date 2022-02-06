@@ -2,9 +2,6 @@
   "name": "botlab",
   "productName": "BotLab",
   "description": "An easy-to-use bot creator for Discord",
-  "author": {
-    "name": "Keilo75"
-  },
   "version": "1.0.0",
   "main": "./.webpack/main/index.js",
   "scripts": {
@@ -55,10 +52,11 @@
     "@typescript-eslint/parser": "4.27.0",
     "@vercel/webpack-asset-relocator-loader": "^1.6.0",
     "babel-loader": "8.2.2",
+    "copy-webpack-plugin": "^10.2.4",
     "cross-env": "7.0.3",
     "css-loader": "^5.2.6",
     "discord.js": "^13.1.0",
-    "electron": "13.1.2",
+    "electron": "17.0.0",
     "electron-devtools-installer": "^3.2.0",
     "eslint": "7.29.0",
     "eslint-config-prettier": "8.3.0",

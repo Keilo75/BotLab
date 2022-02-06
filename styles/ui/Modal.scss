@@ -41,14 +41,20 @@
     span {
       cursor: pointer;
     }
+
+    &:focus-visible {
+      box-shadow: 0 0 0 4px var(--focus-color);
+    }
+
+    :hover {
+      background-color: var(--overlay-white-1);
+    }
   }
 
-  .modal-close-button:focus-visible {
-    box-shadow: 0 0 0 4px var(--focus-color);
-  }
-
-  .modal-close-button:hover {
-    background-color: var(--overlay-white-1);
+  .modal-form {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
   }
 
   .modal-content {

@@ -1,0 +1,33 @@
+{
+  "package.json": {
+    "name": "botlab-template",
+    "version": "1.0.0",
+    "description": "Template for BotLab.",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "@discordjs/rest": "^0.3.0",
+      "discord-api-types": "^0.26.1",
+      "discord.js": "^13.6.0"
+    },
+    "devDependencies": {
+      "ts-node": "^10.4.0",
+      "typescript": "^4.5.5"
+    }
+  },
+  "tsconfig.json": {
+    "compilerOptions": {
+      "target": "es5",
+      "module": "commonjs",
+      "resolveJsonModule": true,
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true
+    }
+  }
+}

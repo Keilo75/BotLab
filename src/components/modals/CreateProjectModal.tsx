@@ -1,45 +1,47 @@
-import { Form, Formik } from "formik";
-import React from "react";
+import { Form, Formik, FormikBag } from "formik";
+import React, { useState } from "react";
 import { ModalLayout, useModalReturnValue } from "src/hooks/useModal";
-import Button from "../ui/button/Button";
+import Button from "../ui/inputs/Button";
 import RadioButton from "../ui/inputs/RadioButton";
 import TextInput from "../ui/inputs/TextInput";
 import Label from "../ui/Label";
 import ComponentGroup from "../ui/utils/ComponentGroup";
+import useLoadingBar from "src/hooks/useLoadingBar";
 
 interface Props {
   modal: useModalReturnValue;
 }
 
 const initialValues = {
-  projectName: "d",
+  projectName: "TestBot",
   projectFolder: "C:\\Users\\gesch\\Documents\\BotLab Bots\\TestBot",
-  template: 0,
 };
 type InitialValues = typeof initialValues;
 type Errors = Record<keyof InitialValues, string | undefined>;
 
 const CreateProjectModal: React.FC<Props> = ({ modal }) => {
+  const LoadingBar = useLoadingBar();
+
   const validate = async ({
     projectName,
     projectFolder,
-    template,
   }: InitialValues): Promise<Errors | undefined> => {
     const errors: Errors = {
       projectName: undefined,
       projectFolder: undefined,
-      template: undefined,
     };
 
     // Project name can't be empty
     if (projectName.length === 0) errors.projectName = "Required";
+    else if (!projectName.match(/^[a-zA-Z\s]*$/))
+      errors.projectName = "Project name may only include letters and spaces";
 
     // Project folder can't be empty
-    if (projectFolder.length === 0) {
-      errors.projectFolder = "Required";
-    } else {
+    if (projectFolder.length === 0) errors.projectFolder = "Required";
+    else {
       try {
         const isEmpty = await window.fs.isDirectoryEmpty(projectFolder);
+
         if (!isEmpty) errors.projectFolder = "The specified folder is not empty";
       } catch {
         errors.projectFolder = "The specified folder does not exist";
@@ -52,8 +54,6 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
     return errors;
   };
 
-  const handleSubmit = async (values: InitialValues) => {};
-
   return (
     <modal.Component>
       <Formik
@@ -61,7 +61,23 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
         validate={validate}
         validateOnChange={false}
         validateOnBlur={false}
-        onSubmit={handleSubmit}
+        onSubmit={async (values, { setSubmitting }) => {
+          setSubmitting(true);
+
+          LoadingBar.setPercentage(0);
+          LoadingBar.setText("Copying template");
+          await window.template.copyTemplate(values.projectFolder);
+          await sleep(500);
+
+          LoadingBar.setPercentage(100);
+          LoadingBar.setText("Installing dependencies");
+
+          return new Promise((resolve) => {
+            setTimeout(() => {
+              resolve(null);
+            }, 1500);
+          });
+        }}
       >
         {({ values, errors, setFieldValue, isSubmitting }) => {
           const handleInputChange = (text: string, name: string) => {
@@ -76,39 +92,36 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
           };
 
           return (
-            <Form>
+            <Form className="modal-form">
               <ModalLayout.Content padding>
                 <h2>Create Project</h2>
-                <ComponentGroup axis="vertical">
-                  <div>
-                    <Label text="Project Name" error={errors.projectName} />
-                    <TextInput
-                      name="projectName"
-                      value={values.projectName}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div>
-                    <Label text="Project Folder" error={errors.projectFolder} />
-                    <ComponentGroup axis="horizontal">
+                {isSubmitting === false ? (
+                  <ComponentGroup axis="vertical">
+                    <div>
+                      <Label text="Project Name" error={errors.projectName} />
                       <TextInput
-                        name="projectFolder"
-                        value={values.projectFolder}
+                        name="projectName"
+                        value={values.projectName}
                         onChange={handleInputChange}
                       />
-                      <Button text="Browse" type="primary" onClick={browseFolders} />
-                    </ComponentGroup>
-                  </div>
-                  <div>
-                    <Label text="Project Template" />
-                    <RadioButton
-                      name="projectTemplate"
-                      selectedIndex={0}
-                      onChange={() => null}
-                      options={["None"]}
-                    />
-                  </div>
-                </ComponentGroup>
+                    </div>
+                    <div>
+                      <Label text="Project Folder" error={errors.projectFolder} />
+                      <ComponentGroup axis="horizontal">
+                        <TextInput
+                          name="projectFolder"
+                          value={values.projectFolder}
+                          onChange={handleInputChange}
+                        />
+                        <Button text="Browse" type="primary" onClick={browseFolders} />
+                      </ComponentGroup>
+                    </div>
+                  </ComponentGroup>
+                ) : (
+                  <>
+                    <LoadingBar.Component />
+                  </>
+                )}
               </ModalLayout.Content>
               <ModalLayout.Footer>
                 <Button text="Create" type="success" submit disabled={isSubmitting} />
@@ -123,3 +136,7 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
 };
 
 export default CreateProjectModal;
+
+const sleep = async (ms: number): Promise<void> => {
+  return new Promise((resolve) => setTimeout(() => resolve(), ms));
+};

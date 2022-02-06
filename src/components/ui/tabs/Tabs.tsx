@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import React, { useState } from "react";
-import Button from "../button/Button";
+import Button from "../inputs/Button";
 import KeyboardList from "../keyboard-list/KeyboardList";
 import Label from "../Label";
 

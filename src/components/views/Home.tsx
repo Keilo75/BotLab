@@ -1,14 +1,18 @@
 import { IconPlus } from "@tabler/icons";
-import React from "react";
+import React, { useEffect } from "react";
 import useModal from "src/hooks/useModal";
 import CreateProjectModalComponent from "../modals/CreateProjectModal";
-import Button from "../ui/button/Button";
+import Button from "../ui/inputs/Button";
 import Tab from "../ui/tabs/Tab";
 import Tabs from "../ui/tabs/Tabs";
 import ComponentGroup from "../ui/utils/ComponentGroup";
 
 const Home: React.FC = () => {
   const CreateProjectModal = useModal({ name: "create-project-modal" });
+
+  useEffect(() => {
+    CreateProjectModal.show();
+  }, []);
 
   return (
     <>
