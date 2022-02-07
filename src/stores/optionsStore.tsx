@@ -5,26 +5,30 @@ export const defaultOptions = {
     theme: 0,
   },
   experimental: {
-    pruneFolderOnProjectCreation: false,
+    emptyFolderOnProjectCreation: false,
   },
 };
 
 export type Options = typeof defaultOptions;
 
 export interface OptionsStore {
-  options: Options;
+  options: Options | undefined;
   setOptions(value: Options): void;
   setGeneral(value: Options["general"]): void;
   setExperimental(value: Options["experimental"]): void;
 }
 
-export const optionsStore = create<OptionsStore>((set) => {
+export const optionsStore = create<OptionsStore>((set, get) => {
   const setCategory = <T extends keyof Options>(category: T, value: Options[T]) => {
-    set((state) => ({ options: { ...state.options, [category]: value } }));
+    set((state) => {
+      if (state.options) return { options: { ...state.options, [category]: value } };
+
+      return { options: undefined };
+    });
   };
 
   return {
-    options: defaultOptions,
+    options: undefined,
     setOptions: (value) => set({ options: value }),
     setGeneral: (value) => setCategory("general", value),
     setExperimental: (value) => setCategory("experimental", value),

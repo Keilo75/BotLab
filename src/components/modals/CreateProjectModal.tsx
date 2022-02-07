@@ -1,5 +1,5 @@
 import { Form, Formik, FormikBag } from "formik";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { ModalLayout, useModalReturnValue } from "src/hooks/useModal";
 import Button from "../ui/inputs/Button";
 import RadioButton from "../ui/inputs/RadioButton";
@@ -7,6 +7,8 @@ import TextInput from "../ui/inputs/TextInput";
 import Label from "../ui/Label";
 import ComponentGroup from "../ui/utils/ComponentGroup";
 import useLoadingBar from "src/hooks/useLoadingBar";
+import { optionsStore } from "src/stores/optionsStore";
+import InfoContainer from "../ui/InfoContainer";
 
 interface Props {
   modal: useModalReturnValue;
@@ -21,6 +23,9 @@ type Errors = Record<keyof InitialValues, string | undefined>;
 
 const CreateProjectModal: React.FC<Props> = ({ modal }) => {
   const LoadingBar = useLoadingBar();
+  const emptyFolderOnProjectCreation = optionsStore(
+    useCallback((state) => state.options?.experimental.emptyFolderOnProjectCreation, [])
+  );
 
   const validate = async ({
     projectName,
@@ -42,7 +47,8 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
       try {
         const isEmpty = await window.fs.isDirectoryEmpty(projectFolder);
 
-        if (!isEmpty) errors.projectFolder = "The specified folder is not empty";
+        if (!isEmpty && !emptyFolderOnProjectCreation)
+          errors.projectFolder = "The specified folder is not empty";
       } catch {
         errors.projectFolder = "The specified folder does not exist";
       }
@@ -63,6 +69,8 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
         validateOnBlur={false}
         onSubmit={async (values, { setSubmitting }) => {
           setSubmitting(true);
+
+          if (emptyFolderOnProjectCreation) await window.template.emptyFolder(values.projectFolder);
 
           LoadingBar.setPercentage(0);
           LoadingBar.setText("Copying template");
@@ -97,6 +105,12 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
                 <h2>Create Project</h2>
                 {isSubmitting === false ? (
                   <ComponentGroup axis="vertical">
+                    {emptyFolderOnProjectCreation && (
+                      <InfoContainer
+                        type="warning"
+                        text="Empty folder on project creation is enabled."
+                      />
+                    )}
                     <div>
                       <Label text="Project Name" error={errors.projectName} />
                       <TextInput

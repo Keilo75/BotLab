@@ -11,7 +11,7 @@ const Home: React.FC = () => {
   const CreateProjectModal = useModal({ name: "create-project-modal" });
 
   useEffect(() => {
-    //CreateProjectModal.show();
+    CreateProjectModal.show();
   }, []);
 
   return (

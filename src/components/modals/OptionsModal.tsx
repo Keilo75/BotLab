@@ -15,6 +15,7 @@ interface Props {
 
 const OptionsModalComponent: React.FC<Props> = ({ modal }) => {
   const options = optionsStore();
+  if (!options.options) return null;
 
   return (
     <modal.Component>
@@ -39,10 +40,11 @@ const OptionsModalComponent: React.FC<Props> = ({ modal }) => {
             <InputGroup state={options.options.experimental} onChange={options.setExperimental}>
               {(state, setState) => (
                 <>
+                  <Label text="Dangerous" />
                   <ToggleSwitch
-                    name="pruneFolderOnProjectCreation"
-                    label="Delete contents of folder on project creation"
-                    checked={state.pruneFolderOnProjectCreation}
+                    name="emptyFolderOnProjectCreation"
+                    label="Empty folder on project creation"
+                    checked={state.emptyFolderOnProjectCreation}
                     onChange={setState}
                   />
                 </>

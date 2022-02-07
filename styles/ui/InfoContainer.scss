@@ -1,0 +1,26 @@
+.container {
+  background-color: var(--container-color);
+  padding: var(--spacing);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--container-border-color);
+}
+
+.info-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing);
+
+  svg {
+    height: 24px;
+    width: 24px;
+  }
+
+  div {
+    height: 100%;
+  }
+}
+
+.info-container-warning {
+  background-color: var(--warning-color);
+  border-color: var(--warning-color-hover);
+}

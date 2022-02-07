@@ -1,5 +1,5 @@
 import { app, contextBridge, ipcRenderer } from "electron";
-import fs from "fs";
+import fs from "fs-extra";
 import { exec } from "child_process";
 import path from "path";
 import Store from "electron-store";
@@ -47,6 +47,10 @@ const storeBridge = {
 };
 
 const templateBridge = {
+  async emptyFolder(dest: string): Promise<void> {
+    return new Promise((resolve, reject) => fs.emptyDir(dest, () => resolve()));
+  },
+
   async copyTemplate(dest: string): Promise<void> {
     const configs = await import("./template/configs.json");
     ["package.json", "tsconfig.json"].forEach((key) => {
