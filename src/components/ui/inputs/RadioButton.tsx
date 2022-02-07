@@ -19,7 +19,11 @@ const RadioButton: React.FC<Props> = ({
 }) => {
   const handleRadioButtonClick = (e: React.MouseEvent) => {
     const index = e.currentTarget.getAttribute("data-radio-option-index");
-    if (index) onChange(parseInt(index), name);
+    if (!index) return;
+
+    const parsedIndex = parseInt(index);
+    if (parsedIndex === selectedIndex) return;
+    onChange(parsedIndex, name);
   };
 
   return (

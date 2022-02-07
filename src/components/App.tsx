@@ -11,15 +11,21 @@ import { MenuAction } from "src/models/menu-action";
 import useModal from "src/hooks/useModal";
 import OptionsModalComponent from "./modals/OptionsModal";
 import { optionsStore } from "src/stores/optionsStore";
+import useDebounce from "src/hooks/useDebounce";
 
 const App: React.FC = () => {
   const OptionsModal = useModal({ name: "options-modal", large: true });
+  const [options, setOptions] = optionsStore((state) => [state.options, state.setOptions]);
 
-  // Handle options change
-  const options = optionsStore((state) => state.options);
+  useEffect(() => {
+    setOptions(window.store.getOptions());
+  }, []);
+
   useEffect(() => {
     // Change theme
     document.body.classList.toggle("theme-dark", options.general.theme == 0);
+
+    window.store.setOptions(options);
   }, [options]);
 
   const handleMenuItemClick = (action: MenuAction) => {

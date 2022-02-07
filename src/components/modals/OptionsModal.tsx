@@ -4,6 +4,7 @@ import { optionsStore } from "src/stores/optionsStore";
 import Button from "../ui/inputs/Button";
 import InputGroup from "../ui/inputs/InputGroup";
 import RadioButton from "../ui/inputs/RadioButton";
+import ToggleSwitch from "../ui/inputs/ToggleSwitch";
 import Label from "../ui/Label";
 import Tab from "../ui/tabs/Tab";
 import Tabs from "../ui/tabs/Tabs";
@@ -23,7 +24,7 @@ const OptionsModalComponent: React.FC<Props> = ({ modal }) => {
             <InputGroup state={options.options.general} onChange={options.setGeneral}>
               {(state, setState) => (
                 <>
-                  <Label text="theme" />
+                  <Label text="Theme" />
                   <RadioButton
                     name="theme"
                     selectedIndex={state.theme}
@@ -34,8 +35,20 @@ const OptionsModalComponent: React.FC<Props> = ({ modal }) => {
               )}
             </InputGroup>
           </Tab>
-          <Tab name="Editor"></Tab>
-          <Tab name="About"></Tab>
+          <Tab name="Experimental">
+            <InputGroup state={options.options.experimental} onChange={options.setExperimental}>
+              {(state, setState) => (
+                <>
+                  <ToggleSwitch
+                    name="pruneFolderOnProjectCreation"
+                    label="Delete contents of folder on project creation"
+                    checked={state.pruneFolderOnProjectCreation}
+                    onChange={setState}
+                  />
+                </>
+              )}
+            </InputGroup>
+          </Tab>
         </Tabs>
       </ModalLayout.Content>
       <ModalLayout.Footer>

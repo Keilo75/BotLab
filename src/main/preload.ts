@@ -1,10 +1,18 @@
-import { contextBridge, ipcRenderer } from "electron";
+import { app, contextBridge, ipcRenderer } from "electron";
 import fs from "fs";
 import { exec } from "child_process";
 import path from "path";
+import Store from "electron-store";
 
 import { IPCChannels } from "src/models/ipc-channels";
 import { MenuAction } from "src/models/menu-action";
+import { defaultOptions, Options } from "src/stores/optionsStore";
+
+let appPath: string;
+
+(async () => {
+  appPath = await ipcRenderer.invoke(IPCChannels.GET_APP_PATH);
+})();
 
 const ipcBridge = {
   handleTitleBarAction(action: MenuAction) {
@@ -24,7 +32,21 @@ const fsBridge = {
   },
 };
 
-const template = {
+interface AppStore {
+  options: Options;
+}
+const store = new Store<AppStore>({ defaults: { options: defaultOptions } });
+const storeBridge = {
+  getOptions(): Options {
+    return store.get("options");
+  },
+
+  setOptions(options: Options): void {
+    store.set("options", options);
+  },
+};
+
+const templateBridge = {
   async copyTemplate(dest: string): Promise<void> {
     const configs = await import("./template/configs.json");
     ["package.json", "tsconfig.json"].forEach((key) => {
@@ -45,12 +67,14 @@ const template = {
 
 contextBridge.exposeInMainWorld("ipc", ipcBridge);
 contextBridge.exposeInMainWorld("fs", fsBridge);
-contextBridge.exposeInMainWorld("template", template);
+contextBridge.exposeInMainWorld("store", storeBridge);
+contextBridge.exposeInMainWorld("template", templateBridge);
 
 declare global {
   interface Window {
     ipc: typeof ipcBridge;
     fs: typeof fsBridge;
-    template: typeof template;
+    store: typeof storeBridge;
+    template: typeof templateBridge;
   }
 }

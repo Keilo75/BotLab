@@ -2,6 +2,7 @@ import { app, BrowserWindow, dialog, ipcMain, Menu } from "electron";
 import { handleSquirrelEvents } from "./handleSquirrelEvents";
 import path from "path";
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
+import Store from "electron-store";
 import { IPCChannels } from "../models/ipc-channels";
 import { MenuAction } from "../models/menu-action";
 
@@ -14,6 +15,8 @@ handleSquirrelEvents().then((value) => {
   // Handle creating/removing shortcuts on Windows when installing/uninstalling.
   if (require("electron-squirrel-startup")) app.quit();
 });
+
+Store.initRenderer();
 
 let mainWindow: BrowserWindow;
 const createWindow = (): void => {
@@ -110,4 +113,8 @@ ipcMain.on(IPCChannels.MENU_ACTION, (e, data: MenuAction) => {
 ipcMain.handle(IPCChannels.OPEN_DIALOG, async (e, options: Electron.OpenDialogOptions) => {
   const response = await dialog.showOpenDialog(options);
   return response;
+});
+
+ipcMain.handle(IPCChannels.GET_APP_PATH, () => {
+  return app.getPath("userData");
 });

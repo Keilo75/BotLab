@@ -19,6 +19,7 @@
     "@tabler/icons": "^1.53.0",
     "clsx": "^1.1.1",
     "electron-squirrel-startup": "^1.0.0",
+    "electron-store": "^8.0.1",
     "electron-window-state": "^5.0.3",
     "formik": "^2.2.9",
     "framer-motion": "^6.2.3",

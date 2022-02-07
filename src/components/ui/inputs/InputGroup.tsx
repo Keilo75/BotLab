@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface Props<T> {
   state: T;
@@ -6,12 +6,9 @@ interface Props<T> {
   children(state: T, setState: (value: any, name: string) => void): React.ReactElement;
 }
 
-const InputGroup = <T extends object>({ state: stateProps, onChange, children }: Props<T>) => {
-  const [state, setState] = useState(stateProps);
-
+const InputGroup = <T extends object>({ state, onChange, children }: Props<T>) => {
   const handleStateChange = (value: any, name: string) => {
     const newState = { ...state, [name]: value };
-    setState(newState);
     onChange(newState);
   };
 
