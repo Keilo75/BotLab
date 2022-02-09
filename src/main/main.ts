@@ -115,6 +115,6 @@ ipcMain.handle(IPCChannels.OPEN_DIALOG, async (e, options: Electron.OpenDialogOp
   return response;
 });
 
-ipcMain.handle(IPCChannels.GET_APP_PATH, () => {
-  return app.getPath("userData");
+ipcMain.handle(IPCChannels.GET_APP_PATHS, () => {
+  return { userData: app.getPath("userData") };
 });

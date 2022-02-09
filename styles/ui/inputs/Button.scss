@@ -20,13 +20,22 @@
   }
 }
 
-.button:disabled::after {
+.button:disabled:not(.button-transparent)::after {
   content: "";
   position: absolute;
   inset: 0;
   cursor: not-allowed;
   border-radius: var(--border-radius);
   background-color: var(--overlay-dark-5);
+}
+
+.button.button-transparent:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+
+  &:hover {
+    background-color: transparent;
+  }
 }
 
 .button:focus-visible {

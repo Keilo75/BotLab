@@ -68,23 +68,18 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
         validateOnChange={false}
         validateOnBlur={false}
         onSubmit={async (values, { setSubmitting }) => {
+          LoadingBar.setPercentage(0);
           setSubmitting(true);
 
           if (emptyFolderOnProjectCreation) await window.template.emptyFolder(values.projectFolder);
 
           LoadingBar.setPercentage(0);
           LoadingBar.setText("Copying template");
-          await window.template.copyTemplate(values.projectFolder);
-          await sleep(500);
+          await window.template.copyTemplate(values.projectFolder, values.projectName);
 
-          LoadingBar.setPercentage(100);
+          LoadingBar.setPercentage(30);
           LoadingBar.setText("Installing dependencies");
-
-          return new Promise((resolve) => {
-            setTimeout(() => {
-              resolve(null);
-            }, 1500);
-          });
+          await window.template.installDependencies();
         }}
       >
         {({ values, errors, setFieldValue, isSubmitting }) => {
@@ -139,7 +134,12 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
               </ModalLayout.Content>
               <ModalLayout.Footer>
                 <Button text="Create" type="success" submit disabled={isSubmitting} />
-                <Button text="Cancel" type="transparent" onClick={modal.hide} />
+                <Button
+                  text="Cancel"
+                  type="transparent"
+                  onClick={modal.hide}
+                  disabled={isSubmitting}
+                />
               </ModalLayout.Footer>
             </Form>
           );
@@ -150,7 +150,3 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
 };
 
 export default CreateProjectModal;
-
-const sleep = async (ms: number): Promise<void> => {
-  return new Promise((resolve) => setTimeout(() => resolve(), ms));
-};

@@ -46,7 +46,7 @@
       box-shadow: 0 0 0 4px var(--focus-color);
     }
 
-    :hover {
+    &:hover {
       background-color: var(--overlay-white-1);
     }
   }

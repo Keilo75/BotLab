@@ -1,6 +1,6 @@
-import { app, contextBridge, ipcRenderer } from "electron";
+import { contextBridge, ipcRenderer } from "electron";
 import fs from "fs-extra";
-import { exec } from "child_process";
+
 import path from "path";
 import Store from "electron-store";
 
@@ -8,10 +8,12 @@ import { IPCChannels } from "src/models/ipc-channels";
 import { MenuAction } from "src/models/menu-action";
 import { defaultOptions, Options } from "src/stores/optionsStore";
 
-let appPath: string;
+let appPaths = {
+  userData: "",
+};
 
 (async () => {
-  appPath = await ipcRenderer.invoke(IPCChannels.GET_APP_PATH);
+  appPaths = await ipcRenderer.invoke(IPCChannels.GET_APP_PATHS);
 })();
 
 const ipcBridge = {
@@ -48,25 +50,24 @@ const storeBridge = {
 
 const templateBridge = {
   async emptyFolder(dest: string): Promise<void> {
-    return new Promise((resolve, reject) => fs.emptyDir(dest, () => resolve()));
+    await fs.emptyDir(dest);
   },
 
-  async copyTemplate(dest: string): Promise<void> {
+  async copyTemplate(dest: string, name: string): Promise<void> {
     const configs = await import("./template/configs.json");
-    ["package.json", "tsconfig.json"].forEach((key) => {
-      const config = configs[key as "package.json" | "tsconfig.json"];
-      const configPath = path.join(dest, key);
-      fs.writeFileSync(configPath, JSON.stringify(config));
-    });
 
+    configs.package.name = name.toLowerCase().replace(/\s+/g, "-");
+    const packagePath = path.join(dest, `package.json`);
+    fs.writeFileSync(packagePath, JSON.stringify(configs.package));
+
+    const tsconfigPath = path.join(dest, `tsconfig.json`);
+    fs.writeFileSync(tsconfigPath, JSON.stringify(configs.tsconfig));
+
+    await sleep(500);
     return;
   },
 
-  async installDependencies(): Promise<void> {
-    exec("npm", (error, stdout, stderr) => {
-      console.log(stdout);
-    });
-  },
+  async installDependencies(): Promise<void> {},
 };
 
 contextBridge.exposeInMainWorld("ipc", ipcBridge);
@@ -82,3 +83,7 @@ declare global {
     template: typeof templateBridge;
   }
 }
+
+const sleep = async (ms: number): Promise<void> => {
+  return new Promise((resolve) => setTimeout(() => resolve(), ms));
+};
