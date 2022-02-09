@@ -20,12 +20,11 @@
       gap: var(--spacing-half);
     }
   }
+}
 
-  .tab-content {
-    height: 100%;
-    flex-grow: 1;
-    padding: var(--spacing-double);
-  }
+.tab-content {
+  flex-grow: 1;
+  padding: var(--spacing-double);
 }
 
 .tabs-horizontal {

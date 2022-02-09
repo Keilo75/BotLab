@@ -11,9 +11,11 @@ import { MenuAction } from "src/models/menu-action";
 import useModal from "src/hooks/useModal";
 import OptionsModalComponent from "./modals/OptionsModal";
 import { optionsStore } from "src/stores/optionsStore";
+import ErrorModal from "./modals/ErrorModal";
+import { ModalNames } from "src/models/ModalNames";
 
 const App: React.FC = () => {
-  const OptionsModal = useModal({ name: "options-modal", large: true });
+  const OptionsModal = useModal({ name: ModalNames.OPTIONS, large: true });
   const [options, setOptions] = optionsStore((state) => [state.options, state.setOptions]);
 
   useEffect(() => {
@@ -53,6 +55,7 @@ const App: React.FC = () => {
         </Router>
       </main>
       <OptionsModalComponent modal={OptionsModal} />
+      <ErrorModal />
       <Modal />
     </>
   );

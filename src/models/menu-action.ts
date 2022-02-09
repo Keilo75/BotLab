@@ -8,4 +8,6 @@ export enum MenuAction {
   OPTIONS,
   // View
   TOGGLE_DEV_TOOLS,
+  // Help
+  ABOUT,
 }

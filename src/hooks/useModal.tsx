@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { modalStore, ModalStore } from "src/stores/modalStore";
 import ReactDOM from "react-dom";
 import clsx from "clsx";
+import { ModalNames } from "src/models/ModalNames";
 
 interface ContentProps {
   padding?: boolean;
@@ -14,10 +15,6 @@ export const ModalLayout: { Content: React.FC<ContentProps>; Footer: React.FC } 
   Footer: ({ children }) => <div className="modal-footer">{children}</div>,
 };
 
-export interface currentModal extends useModalOptions {
-  hide(): void;
-}
-
 export interface useModalReturnValue {
   Component: React.FC;
   show(): void;
@@ -25,27 +22,43 @@ export interface useModalReturnValue {
 }
 
 export interface useModalOptions {
-  name: string;
+  name: ModalNames;
   large?: boolean;
 }
-
-const appStoreSelector = (state: ModalStore) => ({
-  setCurrentModal: state.setCurrentModal,
-});
 
 const useModal = (options: useModalOptions): useModalReturnValue => {
   const modal = document.getElementById("modal");
 
   const [visible, setVisible] = useState(false);
-  const { setCurrentModal } = modalStore(appStoreSelector);
+  const { currentModal, setCurrentModal, addModal, removeModal } = modalStore(
+    useCallback(
+      (state) => ({
+        currentModal: state.currentModal,
+        setCurrentModal: state.setCurrentModal,
+        addModal: state.addModal,
+        removeModal: state.removeModal,
+      }),
+      []
+    )
+  );
+
+  useEffect(() => {
+    if (currentModal) setVisible(currentModal.name === options.name);
+  }, [currentModal]);
+
+  useEffect(() => {
+    addModal({ ...options, hide });
+
+    return () => {
+      removeModal(options.name);
+    };
+  }, []);
 
   const show = () => {
-    setVisible(true);
-    setCurrentModal({ ...options, hide });
+    setCurrentModal(options.name);
   };
 
   const hide = () => {
-    setVisible(false);
     setCurrentModal(undefined);
   };
 

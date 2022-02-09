@@ -1,5 +1,6 @@
 import { contextBridge, ipcRenderer } from "electron";
 import fs from "fs-extra";
+import { fork, exec } from "child_process";
 
 import path from "path";
 import Store from "electron-store";
@@ -54,20 +55,39 @@ const templateBridge = {
   },
 
   async copyTemplate(dest: string, name: string): Promise<void> {
-    const configs = await import("./template/configs.json");
+    const config = await import("./template/config.json");
 
-    configs.package.name = name.toLowerCase().replace(/\s+/g, "-");
+    config.package.name = name.toLowerCase().replace(/\s+/g, "-");
+
     const packagePath = path.join(dest, `package.json`);
-    fs.writeFileSync(packagePath, JSON.stringify(configs.package));
-
-    const tsconfigPath = path.join(dest, `tsconfig.json`);
-    fs.writeFileSync(tsconfigPath, JSON.stringify(configs.tsconfig));
+    fs.writeFileSync(packagePath, JSON.stringify(config.package));
 
     await sleep(500);
     return;
   },
 
-  async installDependencies(): Promise<void> {},
+  async installDependencies(dest: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      // TODO: Don't use globally installed version
+      const cli = "C:/Program Files/nodejs/node_modules/npm/bin/npm-cli.js";
+      const args = ["indsstall"];
+
+      // Run installer
+      const installer = fork(cli, args, {
+        silent: true,
+        cwd: dest,
+      });
+
+      installer.on("exit", async (code) => {
+        if (code === 0) {
+          await sleep(500);
+          resolve();
+        } else {
+          reject();
+        }
+      });
+    });
+  },
 };
 
 contextBridge.exposeInMainWorld("ipc", ipcBridge);

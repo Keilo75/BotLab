@@ -15,24 +15,20 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <>
-      <Tabs name="Home" axis="horizontal">
-        <Tab name="Projects">
-          <ComponentGroup axis="horizontal">
-            <Button
-              text="Create Project"
-              type="success"
-              icon={IconPlus}
-              onClick={CreateProjectModal.show}
-            />
-            <Button text="Add Project" type="primary" />
-          </ComponentGroup>
-        </Tab>
-        <Tab name="Learn"></Tab>
-        <Tab name="About"></Tab>
-      </Tabs>
+    <div className="tab-content">
+      <h2>Projects</h2>
+      <ComponentGroup axis="horizontal">
+        <Button
+          text="Create Project"
+          type="success"
+          icon={IconPlus}
+          onClick={CreateProjectModal.show}
+        />
+        <Button text="Add Project" type="primary" />
+      </ComponentGroup>
+
       <CreateProjectModalComponent modal={CreateProjectModal} />
-    </>
+    </div>
   );
 };
 

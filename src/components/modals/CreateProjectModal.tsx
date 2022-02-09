@@ -9,6 +9,8 @@ import ComponentGroup from "../ui/utils/ComponentGroup";
 import useLoadingBar from "src/hooks/useLoadingBar";
 import { optionsStore } from "src/stores/optionsStore";
 import InfoContainer from "../ui/InfoContainer";
+import { modalStore } from "src/stores/modalStore";
+import { ModalNames } from "src/models/ModalNames";
 
 interface Props {
   modal: useModalReturnValue;
@@ -26,6 +28,7 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
   const emptyFolderOnProjectCreation = optionsStore(
     useCallback((state) => state.options?.experimental.emptyFolderOnProjectCreation, [])
   );
+  const openErrorModal = modalStore(useCallback((state) => state.openErrorModal, []));
 
   const validate = async ({
     projectName,
@@ -60,6 +63,31 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
     return errors;
   };
 
+  const handleSubmit = async (values: InitialValues): Promise<void> => {
+    if (emptyFolderOnProjectCreation)
+      try {
+        await window.template.emptyFolder(values.projectFolder);
+      } catch {
+        throw new Error("Could not empty folder");
+      }
+
+    LoadingBar.setPercentage(0);
+    LoadingBar.setText("Copying template");
+    try {
+      await window.template.copyTemplate(values.projectFolder, values.projectName);
+    } catch {
+      throw new Error("Could not copy template.");
+    }
+
+    LoadingBar.setPercentage(30);
+    LoadingBar.setText("Installing dependencies.");
+    try {
+      await window.template.installDependencies(values.projectFolder);
+    } catch {
+      throw new Error("Could not install dependencies.");
+    }
+  };
+
   return (
     <modal.Component>
       <Formik
@@ -71,15 +99,12 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
           LoadingBar.setPercentage(0);
           setSubmitting(true);
 
-          if (emptyFolderOnProjectCreation) await window.template.emptyFolder(values.projectFolder);
-
-          LoadingBar.setPercentage(0);
-          LoadingBar.setText("Copying template");
-          await window.template.copyTemplate(values.projectFolder, values.projectName);
-
-          LoadingBar.setPercentage(30);
-          LoadingBar.setText("Installing dependencies");
-          await window.template.installDependencies();
+          try {
+            await handleSubmit(values);
+          } catch (err) {
+            const error = err as Error;
+            openErrorModal(error.message);
+          }
         }}
       >
         {({ values, errors, setFieldValue, isSubmitting }) => {

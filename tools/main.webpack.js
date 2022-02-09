@@ -1,6 +1,8 @@
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 module.exports = {
   plugins: [
-
+    //new BundleAnalyzerPlugin()
   ],
   resolve: {
     extensions: ['.ts', '.js']

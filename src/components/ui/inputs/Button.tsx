@@ -3,7 +3,7 @@ import clsx from "clsx";
 import React, { MouseEventHandler } from "react";
 
 interface Props {
-  type: "primary" | "transparent" | "success";
+  type: "primary" | "transparent" | "success" | "red";
   text: string;
   textAlignment?: "center" | "left";
   onClick?: MouseEventHandler<HTMLButtonElement>;
