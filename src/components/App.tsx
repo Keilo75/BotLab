@@ -12,10 +12,10 @@ import useModal from "src/hooks/useModal";
 import OptionsModalComponent from "./modals/OptionsModal";
 import { optionsStore } from "src/stores/optionsStore";
 import ErrorModal from "./modals/ErrorModal";
-import { ModalNames } from "src/models/ModalNames";
+import { ModalName } from "src/models/modal-name";
 
 const App: React.FC = () => {
-  const OptionsModal = useModal({ name: ModalNames.OPTIONS, large: true });
+  const OptionsModal = useModal({ name: ModalName.OPTIONS, large: true });
   const [options, setOptions] = optionsStore((state) => [state.options, state.setOptions]);
 
   useEffect(() => {

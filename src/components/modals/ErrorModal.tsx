@@ -1,11 +1,11 @@
 import React, { useCallback } from "react";
 import useModal, { ModalLayout } from "src/hooks/useModal";
-import { ModalNames } from "src/models/ModalNames";
+import { ModalName } from "src/models/modal-name";
 import { modalStore } from "src/stores/modalStore";
 import Button from "../ui/inputs/Button";
 
 const ErrorModal: React.FC = () => {
-  const Modal = useModal({ name: ModalNames.ERROR });
+  const Modal = useModal({ name: ModalName.ERROR });
   const error = modalStore(useCallback((state) => state.currentModal?.error, []));
 
   return (

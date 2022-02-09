@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { modalStore, ModalStore } from "src/stores/modalStore";
 import ReactDOM from "react-dom";
 import clsx from "clsx";
-import { ModalNames } from "src/models/ModalNames";
+import { ModalName } from "src/models/modal-name";
 
 interface ContentProps {
   padding?: boolean;
@@ -22,7 +22,7 @@ export interface useModalReturnValue {
 }
 
 export interface useModalOptions {
-  name: ModalNames;
+  name: ModalName;
   large?: boolean;
 }
 

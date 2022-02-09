@@ -10,7 +10,7 @@ import useLoadingBar from "src/hooks/useLoadingBar";
 import { optionsStore } from "src/stores/optionsStore";
 import InfoContainer from "../ui/InfoContainer";
 import { modalStore } from "src/stores/modalStore";
-import { ModalNames } from "src/models/ModalNames";
+import { ModalName } from "src/models/modal-name";
 
 interface Props {
   modal: useModalReturnValue;

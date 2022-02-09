@@ -1,6 +1,7 @@
 # Modals
 
 Modals are a reusable component to render popups as well as error messages.
+Please note that modals inside modals are currently not supported.
 
 ## Usage
 
@@ -19,7 +20,7 @@ It is recommended to use the `ModalContent` and `ModalFooter` components inside 
 ```jsx
 import useModal, { ModalLayout } from "hooks/useModal";
 
-const ConfirmModal = useModal();
+const ConfirmModal = useModal({ name: "confirm-modal" });
 
 return (
   <>
@@ -31,12 +32,20 @@ return (
 );
 ```
 
-Please note that modals inside modals are currently not supported.
+Alternatively, you can use `modalStore.setCurrentModal(name: ModalName): void` to open a modal.
+
+## Special Modals
+
+**Error Modal**
+
+```js
+modalStore.openErrorModal("error text");
+```
 
 ## useModal API
 
 The `useModal` hook takes in an object of options, which are described here:
 | Option | Type | Optional | Description
 | --- | --- | --- |--- |
-| name |string | no | The name of the modal
+| name |ModalName | no | The name of the modal
 | large |boolean | yes | Wheter the modal should be full-screen

@@ -3,7 +3,7 @@ import { handleSquirrelEvents } from "./handleSquirrelEvents";
 import path from "path";
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
 import Store from "electron-store";
-import { IPCChannels } from "../models/ipc-channels";
+import { IPCChannel } from "../models/ipc-channel";
 import { MenuAction } from "../models/menu-action";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -81,7 +81,7 @@ app.on("activate", () => {
   }
 });
 
-ipcMain.on(IPCChannels.MENU_ACTION, (e, data: MenuAction) => {
+ipcMain.on(IPCChannel.MENU_ACTION, (e, data: MenuAction) => {
   if (!mainWindow) return;
 
   switch (data) {
@@ -110,11 +110,11 @@ ipcMain.on(IPCChannels.MENU_ACTION, (e, data: MenuAction) => {
   }
 });
 
-ipcMain.handle(IPCChannels.OPEN_DIALOG, async (e, options: Electron.OpenDialogOptions) => {
+ipcMain.handle(IPCChannel.OPEN_DIALOG, async (e, options: Electron.OpenDialogOptions) => {
   const response = await dialog.showOpenDialog(options);
   return response;
 });
 
-ipcMain.handle(IPCChannels.GET_APP_PATHS, () => {
+ipcMain.handle(IPCChannel.GET_APP_PATHS, () => {
   return { userData: app.getPath("userData") };
 });

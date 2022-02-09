@@ -1,5 +1,5 @@
 import { useModalOptions } from "src/hooks/useModal";
-import { ModalNames } from "src/models/ModalNames";
+import { ModalName } from "src/models/modal-name";
 import create from "zustand";
 
 export interface Modal extends useModalOptions {
@@ -9,10 +9,10 @@ export interface Modal extends useModalOptions {
 
 export interface ModalStore {
   currentModal: Modal | undefined;
-  setCurrentModal(name: ModalNames | undefined): void;
+  setCurrentModal(name: ModalName | undefined): void;
   modals: Modal[];
   addModal(modal: Modal): void;
-  removeModal(name: ModalNames): void;
+  removeModal(name: ModalName): void;
   openErrorModal(error: string): void;
 }
 
@@ -33,7 +33,7 @@ export const modalStore = create<ModalStore>((set, get) => ({
     set({ modals: get().modals.filter((modal) => modal.name !== name) });
   },
   openErrorModal: (error) => {
-    const errorModal = get().modals.find((modal) => modal.name === ModalNames.ERROR);
+    const errorModal = get().modals.find((modal) => modal.name === ModalName.ERROR);
 
     if (errorModal) {
       errorModal.error = error;

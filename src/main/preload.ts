@@ -5,7 +5,7 @@ import { fork, exec } from "child_process";
 import path from "path";
 import Store from "electron-store";
 
-import { IPCChannels } from "src/models/ipc-channels";
+import { IPCChannel } from "src/models/ipc-channel";
 import { MenuAction } from "src/models/menu-action";
 import { defaultOptions, Options } from "src/stores/optionsStore";
 
@@ -14,18 +14,18 @@ let appPaths = {
 };
 
 (async () => {
-  appPaths = await ipcRenderer.invoke(IPCChannels.GET_APP_PATHS);
+  appPaths = await ipcRenderer.invoke(IPCChannel.GET_APP_PATHS);
 })();
 
 const ipcBridge = {
   handleTitleBarAction(action: MenuAction) {
-    ipcRenderer.send(IPCChannels.MENU_ACTION, action);
+    ipcRenderer.send(IPCChannel.MENU_ACTION, action);
   },
 };
 
 const fsBridge = {
   async openDialog(options: Electron.OpenDialogOptions): Promise<Electron.OpenDialogReturnValue> {
-    return await ipcRenderer.invoke(IPCChannels.OPEN_DIALOG, options);
+    return await ipcRenderer.invoke(IPCChannel.OPEN_DIALOG, options);
   },
 
   async isDirectoryEmpty(path: string): Promise<boolean> {
