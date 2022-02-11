@@ -8,7 +8,6 @@ import Store from "electron-store";
 import { IPCChannel } from "src/models/ipc-channel";
 import { MenuAction } from "src/models/menu-action";
 import { defaultOptions, Options } from "src/stores/OptionsStore";
-import { sleep } from "src/lib/sleep";
 import { Project } from "src/models/project";
 
 let appPaths = {
@@ -90,7 +89,6 @@ const templateBridge = {
       fs.writeFileSync(path.join(dataPath, key + ".json"), JSON.stringify(config[key]));
     }
 
-    await sleep(500);
     return;
   },
 
@@ -108,7 +106,6 @@ const templateBridge = {
 
       installer.on("exit", async (code) => {
         if (code === 0) {
-          await sleep(500);
           resolve();
         } else {
           reject();

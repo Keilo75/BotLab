@@ -1,17 +1,14 @@
-import { Form, Formik, FormikBag } from "formik";
-import React, { useCallback, useState } from "react";
+import { Form, Formik } from "formik";
+import React, { useCallback } from "react";
 import { ModalLayout, useModalReturnValue } from "src/hooks/useModal";
 import Button from "../ui/inputs/Button";
-import RadioButton from "../ui/inputs/RadioButton";
 import TextInput from "../ui/inputs/TextInput";
 import Label from "../ui/Label";
 import ComponentGroup from "../ui/utils/ComponentGroup";
 import useLoadingBar from "src/hooks/useLoadingBar";
-import { IOptionsStore, OptionsStore } from "src/stores/OptionsStore";
+import { OptionsStore } from "src/stores/OptionsStore";
 import Container from "../ui/Container";
-import { IModalStore, ModalStore } from "src/stores/ModalStore";
-import { ModalName } from "src/models/modal-name";
-import { sleep } from "src/lib/sleep";
+import { ModalStore } from "src/stores/ModalStore";
 import { ProjectStore } from "src/stores/ProjectStore";
 import { v4 as uuid } from "uuid";
 
@@ -69,9 +66,6 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
   };
 
   const handleSubmit = async (values: InitialValues): Promise<void> => {
-    LoadingBar.setPercentage(0);
-    LoadingBar.setText("Copying template");
-
     if (emptyFolderOnProjectCreation)
       try {
         await window.template.emptyFolder(values.projectFolder);
@@ -85,31 +79,12 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
       throw new Error("Could not copy template.");
     }
 
-    LoadingBar.setPercentage(33);
-    LoadingBar.setText("Installing dependencies.");
-    try {
-      await window.template.installDependencies(values.projectFolder);
-    } catch {
-      throw new Error("Could not install dependencies.");
-    }
-
-    LoadingBar.setPercentage(66);
-    LoadingBar.setText("Creating project link");
-    try {
-      addProject({
-        name: values.projectName,
-        folder: values.projectFolder,
-        id: uuid(),
-        lastUpdated: Date.now(),
-      });
-      await sleep(500);
-    } catch {
-      throw new Error("Could not link project.");
-    }
-
-    LoadingBar.setPercentage(100);
-    LoadingBar.setText("Finishing");
-    await sleep(500);
+    addProject({
+      name: values.projectName,
+      folder: values.projectFolder,
+      id: uuid(),
+      lastUpdated: Date.now(),
+    });
   };
 
   return (
@@ -148,7 +123,7 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
             <Form className="modal-form">
               <ModalLayout.Content padding>
                 <h2>Create Project</h2>
-                {isSubmitting === false ? (
+                {
                   <ComponentGroup axis="vertical">
                     {emptyFolderOnProjectCreation && (
                       <Container
@@ -176,11 +151,7 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
                       </ComponentGroup>
                     </div>
                   </ComponentGroup>
-                ) : (
-                  <>
-                    <LoadingBar.Component />
-                  </>
-                )}
+                }
               </ModalLayout.Content>
               <ModalLayout.Footer>
                 <Button text="Create" type="success" submit disabled={isSubmitting} />
