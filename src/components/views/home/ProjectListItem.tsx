@@ -17,6 +17,10 @@ const ProjectListItem: React.FC<Props> = ({ project }) => {
     }
   };
 
+  const handleOpenInExplorerClick = () => {
+    window.fs.openPathInExplorer(project.folder);
+  };
+
   return (
     <div className="container project-item" tabIndex={0} onKeyDown={handleKeyDown}>
       <div className="project-info">
@@ -26,7 +30,7 @@ const ProjectListItem: React.FC<Props> = ({ project }) => {
       <ComponentGroup axis="horizontal">
         <Button text="Open" type="success" />
         <Tooltip content="Reveal in explorer">
-          <Button square type="primary" icon={IconFolder} />
+          <Button square type="primary" icon={IconFolder} onClick={handleOpenInExplorerClick} />
         </Tooltip>
         <Tooltip content="Remove from project list">
           <Button square type="red" icon={IconTrash} />

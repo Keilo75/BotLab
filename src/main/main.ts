@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, ipcMain, Menu } from "electron";
+import { app, BrowserWindow, dialog, ipcMain, Menu, shell } from "electron";
 import { handleSquirrelEvents } from "./handleSquirrelEvents";
 import path from "path";
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
@@ -117,4 +117,8 @@ ipcMain.handle(IPCChannel.OPEN_DIALOG, async (e, options: Electron.OpenDialogOpt
 
 ipcMain.handle(IPCChannel.GET_APP_PATHS, () => {
   return { userData: app.getPath("userData") };
+});
+
+ipcMain.on(IPCChannel.OPEN_PATH_IN_EXPLORER, (e, dir: string) => {
+  shell.openPath(dir);
 });

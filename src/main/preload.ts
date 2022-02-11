@@ -30,10 +30,14 @@ const fsBridge = {
     return await ipcRenderer.invoke(IPCChannel.OPEN_DIALOG, options);
   },
 
-  async isDirectoryEmpty(path: string): Promise<boolean> {
-    const files = fs.readdirSync(path);
+  async isDirectoryEmpty(dir: string): Promise<boolean> {
+    const files = fs.readdirSync(dir);
 
     return files.length === 0;
+  },
+
+  openPathInExplorer(dir: string): void {
+    ipcRenderer.send(IPCChannel.OPEN_PATH_IN_EXPLORER, dir);
   },
 };
 
