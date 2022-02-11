@@ -8,7 +8,7 @@ interface Props {
   className?: string;
 }
 
-const InfoContainer: React.FC<Props> = ({ type, text, className }) => {
+const Container: React.FC<Props> = ({ type, text, className }) => {
   return (
     <div className={clsx("container", "info-container", `info-container-${type}`, className)}>
       {type == "warning" && <IconAlertTriangle />}
@@ -17,4 +17,4 @@ const InfoContainer: React.FC<Props> = ({ type, text, className }) => {
   );
 };
 
-export default InfoContainer;
+export default Container;

@@ -1,0 +1,95 @@
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::before {
+  position: absolute;
+  content: attr(data-tooltip);
+  width: max-content;
+  padding: 5px 10px 5px 10px;
+  border-radius: 4px;
+  background: #000;
+  color: #fff;
+  text-align: center;
+  opacity: 0;
+  transition: 0.1s ease-in-out;
+  pointer-events: none;
+}
+
+[data-tooltip]::after {
+  content: "";
+  position: absolute;
+  border: 10px solid #000;
+  opacity: 0;
+  transition: 0.1s ease-in-out;
+  pointer-events: none;
+}
+
+.tooltip-top::before {
+  left: 50%;
+  transform: translate(-50%, -5px);
+  bottom: 100%;
+  margin-bottom: 10px;
+}
+
+.tooltip-top::after {
+  left: 50%;
+  bottom: 100%;
+  margin-bottom: -5px;
+  transform: translate(-50%, -5px);
+  border-color: black transparent transparent transparent;
+}
+
+.tooltip-top:hover:before,
+.tooltip-top:hover::after,
+.tooltip-top:focus-within::after,
+.tooltip-top:focus-within::before {
+  opacity: 1;
+  transform: translate(-50%, 0px);
+}
+
+.tooltip-bottom::before {
+  left: 50%;
+  transform: translate(-50%, 5px);
+  top: 100%;
+  margin-top: 10px;
+}
+
+.tooltip-bottom::after {
+  left: 50%;
+  top: 100%;
+  margin-top: -5px;
+  transform: translate(-50%, 5px);
+  border-color: transparent transparent black transparent;
+}
+
+.tooltip-bottom:hover:before,
+.tooltip-bottom:hover::after,
+.tooltip-bottom:focus-within::after,
+.tooltip-bottom:focus-within::before {
+  opacity: 1;
+  transform: translate(-50%, 0px);
+}
+
+.tooltip-left::before {
+  right: 100%;
+  transform: translate(-5px, -50%);
+  top: 50%;
+  margin-right: 10px;
+}
+
+.tooltip-left::after {
+  top: 50%;
+  right: 100%;
+  margin-right: -5px;
+  transform: translate(-5px, -50%);
+  border-color: transparent transparent transparent black;
+}
+
+.tooltip-left:hover:before,
+.tooltip-left:hover::after,
+.tooltip-left:focus-within::after,
+.tooltip-left:focus-within::before {
+  opacity: 1;
+  transform: translate(0px, -50%);
+}

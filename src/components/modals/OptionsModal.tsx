@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ModalLayout, useModalReturnValue } from "src/hooks/useModal";
-import { optionsStore } from "src/stores/optionsStore";
+import { OptionsStore } from "src/stores/OptionsStore";
 import Button from "../ui/inputs/Button";
 import InputGroup from "../ui/inputs/InputGroup";
 import RadioButton from "../ui/inputs/RadioButton";
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const OptionsModalComponent: React.FC<Props> = ({ modal }) => {
-  const options = optionsStore();
+  const options = OptionsStore();
   if (!options.options) return null;
 
   return (

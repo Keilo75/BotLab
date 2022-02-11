@@ -1,0 +1,23 @@
+.project-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing);
+
+  .project-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .project-info {
+      margin-right: var(--spacing-double);
+
+      h3 {
+        margin: 0;
+      }
+
+      span {
+        color: var(--text-secondary-color);
+      }
+    }
+  }
+}

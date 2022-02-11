@@ -4,12 +4,13 @@ import React, { MouseEventHandler } from "react";
 
 interface Props {
   type: "primary" | "transparent" | "success" | "red";
-  text: string;
+  text?: string;
   textAlignment?: "center" | "left";
   onClick?: MouseEventHandler<HTMLButtonElement>;
   icon?: TablerIcon;
   submit?: boolean;
   disabled?: boolean;
+  square?: boolean;
 }
 
 const Button: React.FC<Props> = ({
@@ -20,16 +21,22 @@ const Button: React.FC<Props> = ({
   icon: Icon,
   submit,
   disabled,
+  square,
 }) => {
   return (
     <button
-      className={clsx("button", `button-${type}`, textAlignment && `button-text-${textAlignment}`)}
+      className={clsx(
+        "button",
+        `button-${type}`,
+        textAlignment && `button-text-${textAlignment}`,
+        square && "button-square"
+      )}
       onClick={onClick}
       type={submit ? "submit" : "button"}
       disabled={disabled}
     >
       {Icon && <Icon />}
-      {text}
+      {!square && text}
     </button>
   );
 };

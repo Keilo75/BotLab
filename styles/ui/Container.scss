@@ -3,6 +3,11 @@
   padding: var(--spacing);
   border-radius: var(--border-radius);
   border: 1px solid var(--container-border-color);
+  outline: none;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 4px var(--focus-color);
+  }
 }
 
 .info-container {

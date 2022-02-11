@@ -7,10 +7,13 @@ import TextInput from "../ui/inputs/TextInput";
 import Label from "../ui/Label";
 import ComponentGroup from "../ui/utils/ComponentGroup";
 import useLoadingBar from "src/hooks/useLoadingBar";
-import { optionsStore } from "src/stores/optionsStore";
-import InfoContainer from "../ui/InfoContainer";
-import { modalStore } from "src/stores/modalStore";
+import { IOptionsStore, OptionsStore } from "src/stores/OptionsStore";
+import Container from "../ui/Container";
+import { IModalStore, ModalStore } from "src/stores/ModalStore";
 import { ModalName } from "src/models/modal-name";
+import { sleep } from "src/lib/sleep";
+import { ProjectStore } from "src/stores/ProjectStore";
+import { v4 as uuid } from "uuid";
 
 interface Props {
   modal: useModalReturnValue;
@@ -24,11 +27,13 @@ type InitialValues = typeof initialValues;
 type Errors = Record<keyof InitialValues, string | undefined>;
 
 const CreateProjectModal: React.FC<Props> = ({ modal }) => {
+  const addProject = ProjectStore(useCallback((state) => state.addProject, []));
+
   const LoadingBar = useLoadingBar();
-  const emptyFolderOnProjectCreation = optionsStore(
+  const emptyFolderOnProjectCreation = OptionsStore(
     useCallback((state) => state.options?.experimental.emptyFolderOnProjectCreation, [])
   );
-  const openErrorModal = modalStore(useCallback((state) => state.openErrorModal, []));
+  const openErrorModal = ModalStore(useCallback((state) => state.openErrorModal, []));
 
   const validate = async ({
     projectName,
@@ -64,28 +69,47 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
   };
 
   const handleSubmit = async (values: InitialValues): Promise<void> => {
+    LoadingBar.setPercentage(0);
+    LoadingBar.setText("Copying template");
+
     if (emptyFolderOnProjectCreation)
       try {
         await window.template.emptyFolder(values.projectFolder);
       } catch {
-        throw new Error("Could not empty folder");
+        throw new Error("Could not empty folder.");
       }
 
-    LoadingBar.setPercentage(0);
-    LoadingBar.setText("Copying template");
     try {
       await window.template.copyTemplate(values.projectFolder, values.projectName);
     } catch {
       throw new Error("Could not copy template.");
     }
 
-    LoadingBar.setPercentage(30);
+    LoadingBar.setPercentage(33);
     LoadingBar.setText("Installing dependencies.");
     try {
       await window.template.installDependencies(values.projectFolder);
     } catch {
       throw new Error("Could not install dependencies.");
     }
+
+    LoadingBar.setPercentage(66);
+    LoadingBar.setText("Creating project link");
+    try {
+      addProject({
+        name: values.projectName,
+        folder: values.projectFolder,
+        id: uuid(),
+        lastUpdated: Date.now(),
+      });
+      await sleep(500);
+    } catch {
+      throw new Error("Could not link project.");
+    }
+
+    LoadingBar.setPercentage(100);
+    LoadingBar.setText("Finishing");
+    await sleep(500);
   };
 
   return (
@@ -101,6 +125,7 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
 
           try {
             await handleSubmit(values);
+            modal.hide();
           } catch (err) {
             const error = err as Error;
             openErrorModal(error.message);
@@ -126,7 +151,7 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
                 {isSubmitting === false ? (
                   <ComponentGroup axis="vertical">
                     {emptyFolderOnProjectCreation && (
-                      <InfoContainer
+                      <Container
                         type="warning"
                         text="Empty folder on project creation is enabled."
                       />

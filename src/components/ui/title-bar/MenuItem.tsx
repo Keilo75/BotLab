@@ -29,7 +29,7 @@ const MenuItem: React.FC<Props> = ({ item, handleMenuItemClick }) => {
         <span>{item.name}</span>
         <span className="accelerator">{item.accelerator}</span>
       </li>
-      {item.divider && <hr className="divider" />}
+      {item.divider && <hr />}
     </>
   );
 };

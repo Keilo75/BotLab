@@ -1,6 +1,7 @@
 {
   "package": {
     "name": "botlab-template",
+    "productName": "BotLab Template",
     "version": "1.0.0",
     "description": "A discord bot",
     "main": "index.js",
@@ -12,5 +13,7 @@
     "dependencies": {
       "discord.js": "^13.6.0"
     }
-  }
+  },
+  "commands": [],
+  "settings": {}
 }

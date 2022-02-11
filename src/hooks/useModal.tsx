@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { modalStore, ModalStore } from "src/stores/modalStore";
+import { IModalStore, ModalStore } from "src/stores/ModalStore";
 import ReactDOM from "react-dom";
 import clsx from "clsx";
 import { ModalName } from "src/models/modal-name";
@@ -30,7 +30,7 @@ const useModal = (options: useModalOptions): useModalReturnValue => {
   const modal = document.getElementById("modal");
 
   const [visible, setVisible] = useState(false);
-  const { currentModal, setCurrentModal, addModal, removeModal } = modalStore(
+  const { currentModal, setCurrentModal, addModal, removeModal } = ModalStore(
     useCallback(
       (state) => ({
         currentModal: state.currentModal,
@@ -43,7 +43,11 @@ const useModal = (options: useModalOptions): useModalReturnValue => {
   );
 
   useEffect(() => {
-    if (currentModal) setVisible(currentModal.name === options.name);
+    if (currentModal) {
+      setVisible(currentModal.name === options.name);
+    } else {
+      setVisible(false);
+    }
   }, [currentModal]);
 
   useEffect(() => {

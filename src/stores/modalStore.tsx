@@ -7,7 +7,7 @@ export interface Modal extends useModalOptions {
   error?: string;
 }
 
-export interface ModalStore {
+export interface IModalStore {
   currentModal: Modal | undefined;
   setCurrentModal(name: ModalName | undefined): void;
   modals: Modal[];
@@ -16,14 +16,15 @@ export interface ModalStore {
   openErrorModal(error: string): void;
 }
 
-export const modalStore = create<ModalStore>((set, get) => ({
+export const ModalStore = create<IModalStore>((set, get) => ({
   currentModal: undefined,
   setCurrentModal: (name) => {
-    if (name === undefined) return set({ currentModal: undefined });
-
-    const modal = get().modals.find((modal) => modal.name === name);
-    if (modal) set({ currentModal: modal });
-    else throw new Error("Cannot find modal " + name);
+    if (name === undefined) set({ currentModal: name });
+    else {
+      const modal = get().modals.find((modal) => modal.name === name);
+      if (modal) set({ currentModal: modal });
+      else throw new Error("Cannot find modal " + name);
+    }
   },
   modals: [],
   addModal: (modal) => {

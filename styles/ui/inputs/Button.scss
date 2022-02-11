@@ -16,7 +16,7 @@
 
   svg {
     margin-right: var(--spacing-third);
-    cursor: pointer;
+    pointer-events: none;
   }
 }
 
@@ -78,4 +78,16 @@
 
 .button-text-left {
   justify-content: flex-start;
+}
+
+.button-square {
+  width: var(--button-height);
+  padding: 0;
+  display: grid;
+  place-items: center;
+
+  svg {
+    margin: 0;
+    pointer-events: none;
+  }
 }

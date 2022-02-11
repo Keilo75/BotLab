@@ -7,7 +7,9 @@ import Store from "electron-store";
 
 import { IPCChannel } from "src/models/ipc-channel";
 import { MenuAction } from "src/models/menu-action";
-import { defaultOptions, Options } from "src/stores/optionsStore";
+import { defaultOptions, Options } from "src/stores/OptionsStore";
+import { sleep } from "src/lib/sleep";
+import { Project } from "src/models/project";
 
 let appPaths = {
   userData: "",
@@ -37,8 +39,10 @@ const fsBridge = {
 
 interface AppStore {
   options: Options;
+  projects: Project[];
 }
-const store = new Store<AppStore>({ defaults: { options: defaultOptions } });
+
+const store = new Store<AppStore>({ defaults: { options: defaultOptions, projects: [] } });
 const storeBridge = {
   getOptions(): Options {
     return store.get("options");
@@ -46,6 +50,17 @@ const storeBridge = {
 
   setOptions(options: Options): void {
     store.set("options", options);
+  },
+
+  setProjects(projects: Project[]): void {
+    store.set("projects", projects);
+  },
+
+  getProjects(): Project[] {
+    const projects = store.get("projects");
+    console.log(projects);
+
+    return projects;
   },
 };
 
@@ -58,9 +73,18 @@ const templateBridge = {
     const config = await import("./template/config.json");
 
     config.package.name = name.toLowerCase().replace(/\s+/g, "-");
+    config.package.productName = name;
 
     const packagePath = path.join(dest, `package.json`);
     fs.writeFileSync(packagePath, JSON.stringify(config.package));
+
+    const dataPath = path.join(dest, "data");
+    await fs.mkdir(dataPath);
+
+    const data = ["commands", "settings"] as (keyof typeof config)[];
+    for (const key of data) {
+      fs.writeFileSync(path.join(dataPath, key + ".json"), JSON.stringify(config[key]));
+    }
 
     await sleep(500);
     return;
@@ -70,7 +94,7 @@ const templateBridge = {
     return new Promise((resolve, reject) => {
       // TODO: Don't use globally installed version
       const cli = "C:/Program Files/nodejs/node_modules/npm/bin/npm-cli.js";
-      const args = ["indsstall"];
+      const args = ["install"];
 
       // Run installer
       const installer = fork(cli, args, {
@@ -103,7 +127,3 @@ declare global {
     template: typeof templateBridge;
   }
 }
-
-const sleep = async (ms: number): Promise<void> => {
-  return new Promise((resolve) => setTimeout(() => resolve(), ms));
-};

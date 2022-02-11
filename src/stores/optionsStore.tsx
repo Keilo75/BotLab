@@ -1,4 +1,4 @@
-import create, { SetState } from "zustand";
+import create from "zustand";
 
 export const defaultOptions = {
   general: {
@@ -11,14 +11,14 @@ export const defaultOptions = {
 
 export type Options = typeof defaultOptions;
 
-export interface OptionsStore {
+export interface IOptionsStore {
   options: Options | undefined;
   setOptions(value: Options): void;
   setGeneral(value: Options["general"]): void;
   setExperimental(value: Options["experimental"]): void;
 }
 
-export const optionsStore = create<OptionsStore>((set, get) => {
+export const OptionsStore = create<IOptionsStore>((set, get) => {
   const setCategory = <T extends keyof Options>(category: T, value: Options[T]) => {
     set((state) => {
       if (state.options) return { options: { ...state.options, [category]: value } };
