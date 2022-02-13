@@ -9,7 +9,7 @@ import { v4 as uuid } from "uuid";
 import { IPCChannel } from "src/models/ipc-channel";
 import { MenuAction } from "src/models/menu-action";
 import { defaultOptions, Options } from "src/stores/OptionsStore";
-import { ProjectInfo } from "src/models/project";
+import { Project, ProjectInfo } from "src/models/project";
 import { fileExtensionWithoutDot } from "src/models/file-extension";
 
 let appPaths = {
@@ -41,23 +41,15 @@ const fsBridge = {
     ipcRenderer.send(IPCChannel.OPEN_PATH_IN_EXPLORER, dir);
   },
 
-  async getProjectInfoFromProjectFile(projectPath: string): Promise<ProjectInfo> {
-    const folder = path.dirname(projectPath);
-
-    const name = fs.readFileSync(projectPath, "utf8");
-
-    return {
-      name,
-      folder,
-      lastUpdated: Date.now(),
-      id: uuid(),
-    };
+  async getNameFromProjectFolder(projectPath: string): Promise<string> {
+    const config: Project = fs.readJSONSync(projectPath, "utf8");
+    return config.settings.name;
   },
 };
 
 interface AppStore {
   options: Options;
-  projects: ProjectInfo[];
+  projects: string[];
 }
 
 const store = new Store<AppStore>({ defaults: { options: defaultOptions, projects: [] } });
@@ -70,11 +62,11 @@ const storeBridge = {
     store.set("options", options);
   },
 
-  setProjects(projects: ProjectInfo[]): void {
+  setProjects(projects: string[]): void {
     store.set("projects", projects);
   },
 
-  getProjects(): ProjectInfo[] {
+  getProjects(): string[] {
     const projects = store.get("projects");
     console.log(projects);
 
@@ -87,24 +79,19 @@ const templateBridge = {
     await fs.emptyDir(dest);
   },
 
-  async copyTemplate(dest: string, name: string): Promise<void> {
-    const config = await import("./template/config.json");
+  async copyTemplate(dest: string, name: string): Promise<string> {
+    const config = await import("./template/config");
 
     const packagePath = path.join(dest, `package.json`);
-    fs.writeJSONSync(packagePath, config.package);
+    fs.writeJSONSync(packagePath, config.packageJSON);
 
     const botPath = path.join(dest, `${name}.${fileExtensionWithoutDot}`);
-    fs.writeFileSync(botPath, name);
 
-    const dataPath = path.join(dest, "data");
-    await fs.mkdir(dataPath);
+    const botFile = config.botFile;
+    botFile.settings.name = name;
+    fs.writeFileSync(botPath, JSON.stringify(botFile));
 
-    const data = ["commands", "settings"] as (keyof typeof config)[];
-    for (const key of data) {
-      fs.writeJSONSync(path.join(dataPath, key + ".json"), config[key]);
-    }
-
-    return;
+    return botPath;
   },
 
   async installDependencies(dest: string): Promise<void> {

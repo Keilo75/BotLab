@@ -83,7 +83,7 @@ body {
   }
 }
 
-:not(input):not(textarea) {
+:not(input):not(textarea):not(a) {
   &,
   &::after,
   &::before {
@@ -143,4 +143,18 @@ hr {
   margin: var(--spacing-third) 0;
   border-color: var(--overlay-white-2);
   border-width: 1px;
+}
+
+a {
+  color: var(--focus-color);
+  text-decoration: none;
+  border-radius: var(--border-radius);
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 4px solid var(--focus-color);
+  }
 }

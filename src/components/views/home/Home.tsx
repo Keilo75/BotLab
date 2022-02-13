@@ -1,5 +1,6 @@
 import { IconPlus } from "@tabler/icons";
 import React, { useCallback, useEffect } from "react";
+import { Link } from "react-router-dom";
 import useModal from "src/hooks/useModal";
 import { fileExtensionWithoutDot } from "src/models/file-extension";
 import { ModalName } from "src/models/modal-name";
@@ -8,7 +9,6 @@ import { ProjectStore } from "src/stores/ProjectStore";
 import CreateProjectModalComponent from "../../modals/CreateProjectModal";
 import Button from "../../ui/inputs/Button";
 import ComponentGroup from "../../ui/utils/ComponentGroup";
-import ProjectListItem from "./ProjectListItem";
 
 const Home: React.FC = () => {
   const CreateProjectModal = useModal({ name: ModalName.CREATE_NEW_PROJECT });
@@ -28,9 +28,11 @@ const Home: React.FC = () => {
     });
     if (response.canceled) return;
 
+    const projectPath = response.filePaths[0];
+
     try {
-      const project = await window.fs.getProjectInfoFromProjectFile(response.filePaths[0]);
-      addProject(project);
+      const name = await window.fs.getNameFromProjectFolder(response.filePaths[0]);
+      addProject({ name, path: projectPath });
     } catch {
       openErrorModal("Could not add project.");
     }
@@ -50,8 +52,11 @@ const Home: React.FC = () => {
       </ComponentGroup>
       <hr />
       <div className="project-list mt">
-        {projects.map((project) => (
-          <ProjectListItem key={project.id} project={project} />
+        {projects.map((project, index) => (
+          <div key={index}>
+            <Link to={""}>{project.name}</Link>
+            <span> {project.path}</span>
+          </div>
         ))}
       </div>
       <CreateProjectModalComponent modal={CreateProjectModal} />

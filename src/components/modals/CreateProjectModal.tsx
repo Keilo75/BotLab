@@ -11,6 +11,7 @@ import Container from "../ui/Container";
 import { ModalStore } from "src/stores/ModalStore";
 import { ProjectStore } from "src/stores/ProjectStore";
 import { v4 as uuid } from "uuid";
+import { fileExtensionWithoutDot } from "src/models/file-extension";
 
 interface Props {
   modal: useModalReturnValue;
@@ -73,18 +74,14 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
         throw new Error("Could not empty folder.");
       }
 
+    let botFilePath = "";
     try {
-      await window.template.copyTemplate(values.projectFolder, values.projectName);
+      botFilePath = await window.template.copyTemplate(values.projectFolder, values.projectName);
     } catch {
       throw new Error("Could not copy template.");
     }
 
-    addProject({
-      name: values.projectName,
-      folder: values.projectFolder,
-      id: uuid(),
-      lastUpdated: Date.now(),
-    });
+    addProject({ name: values.projectName, path: botFilePath });
   };
 
   return (

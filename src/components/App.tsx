@@ -28,13 +28,19 @@ const App: React.FC = () => {
 
   useEffect(() => {
     setOptions(window.store.getOptions());
-    setProjects(window.store.getProjects());
+    Promise.all(
+      window.store
+        .getProjects()
+        .map(async (p) => ({ name: await window.fs.getNameFromProjectFolder(p), path: p }))
+    ).then((values) => {
+      setProjects(values);
+    });
 
     setLoaded(true);
   }, []);
 
   useEffect(() => {
-    if (loaded) window.store.setProjects(projects);
+    if (loaded) window.store.setProjects(projects.map((p) => p.path));
   }, [projects]);
 
   useEffect(() => {

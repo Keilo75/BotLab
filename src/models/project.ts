@@ -1,6 +1,13 @@
 export interface ProjectInfo {
   name: string;
-  folder: string;
-  id: string;
-  lastUpdated: number;
+  path: string;
+}
+
+export interface Project {
+  settings: ProjectSettings;
+}
+
+export interface ProjectSettings {
+  name: string;
+  token: string;
 }
