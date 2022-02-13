@@ -41,7 +41,7 @@ const fsBridge = {
     ipcRenderer.send(IPCChannel.OPEN_PATH_IN_EXPLORER, dir);
   },
 
-  async getNameFromProjectFolder(projectPath: string): Promise<string> {
+  async getNameFromBotFile(projectPath: string): Promise<string> {
     const config: Project = fs.readJSONSync(projectPath, "utf8");
     return config.settings.name;
   },
@@ -82,11 +82,7 @@ const templateBridge = {
   async copyTemplate(dest: string, name: string): Promise<string> {
     const config = await import("./template/config");
 
-    const packagePath = path.join(dest, `package.json`);
-    fs.writeJSONSync(packagePath, config.packageJSON);
-
     const botPath = path.join(dest, `${name}.${fileExtensionWithoutDot}`);
-
     const botFile = config.botFile;
     botFile.settings.name = name;
     fs.writeFileSync(botPath, JSON.stringify(botFile));

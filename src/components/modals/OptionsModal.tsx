@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { ModalLayout, useModalReturnValue } from "src/hooks/useModal";
+import React from "react";
+import useModal, { ModalLayout } from "src/hooks/useModal";
+import { ModalName } from "src/models/modal-name";
 import { OptionsStore } from "src/stores/OptionsStore";
 import Button from "../ui/inputs/Button";
 import InputGroup from "../ui/inputs/InputGroup";
@@ -9,16 +10,14 @@ import Label from "../ui/Label";
 import Tab from "../ui/tabs/Tab";
 import Tabs from "../ui/tabs/Tabs";
 
-interface Props {
-  modal: useModalReturnValue;
-}
+const OptionsModal: React.FC = () => {
+  const Modal = useModal({ name: ModalName.OPTIONS, large: true });
 
-const OptionsModalComponent: React.FC<Props> = ({ modal }) => {
   const options = OptionsStore();
   if (!options.options) return null;
 
   return (
-    <modal.Component>
+    <Modal.Component>
       <ModalLayout.Content>
         <Tabs name="Options">
           <Tab name="General">
@@ -54,10 +53,10 @@ const OptionsModalComponent: React.FC<Props> = ({ modal }) => {
         </Tabs>
       </ModalLayout.Content>
       <ModalLayout.Footer>
-        <Button text="Close" type="primary" onClick={modal.hide} />
+        <Button text="Close" type="primary" onClick={Modal.hide} />
       </ModalLayout.Footer>
-    </modal.Component>
+    </Modal.Component>
   );
 };
 
-export default OptionsModalComponent;
+export default OptionsModal;

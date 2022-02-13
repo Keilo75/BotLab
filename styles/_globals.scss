@@ -145,10 +145,12 @@ hr {
   border-width: 1px;
 }
 
-a {
+a,
+.link {
   color: var(--focus-color);
   text-decoration: none;
   border-radius: var(--border-radius);
+  cursor: pointer;
 
   &:hover {
     text-decoration: underline;

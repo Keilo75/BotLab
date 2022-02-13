@@ -8,39 +8,50 @@ import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./views/home/Home";
 import Modal from "./ui/Modal";
 import { MenuAction } from "src/models/menu-action";
-import useModal from "src/hooks/useModal";
-import OptionsModalComponent from "./modals/OptionsModal";
+import OptionsModal from "./modals/OptionsModal";
 import { OptionsStore } from "src/stores/OptionsStore";
 import ErrorModal from "./modals/ErrorModal";
 import { ModalName } from "src/models/modal-name";
 import { ProjectStore } from "src/stores/ProjectStore";
+import AboutModal from "./modals/AboutModal";
+import { ModalStore } from "src/stores/ModalStore";
+import { ProjectInfo } from "src/models/project";
 
 const App: React.FC = () => {
   const [loaded, setLoaded] = useState(false);
 
-  const OptionsModal = useModal({ name: ModalName.OPTIONS, large: true });
   const [options, setOptions] = OptionsStore(
     useCallback((state) => [state.options, state.setOptions], [])
   );
-  const [projects, setProjects] = ProjectStore(
-    useCallback((state) => [state.projects, state.setProjects], [])
+  const [projects, setProjects, removeProject] = ProjectStore(
+    useCallback((state) => [state.projects, state.setProjects, state.removeProject], [])
   );
+  const setCurrentModal = ModalStore(useCallback((state) => state.setCurrentModal, []));
 
   useEffect(() => {
-    setOptions(window.store.getOptions());
-    Promise.all(
-      window.store
-        .getProjects()
-        .map(async (p) => ({ name: await window.fs.getNameFromProjectFolder(p), path: p }))
-    ).then((values) => {
-      setProjects(values);
-    });
+    async function loadProjects() {
+      const projectPaths = window.store.getProjects();
+      const projects: ProjectInfo[] = [];
 
-    setLoaded(true);
+      for (const projectPath of projectPaths) {
+        try {
+          const name = await window.fs.getNameFromBotFile(projectPath);
+          projects.push({ name, path: projectPath });
+        } catch {
+          removeProject(projectPath);
+        }
+      }
+
+      setProjects(projects);
+      setLoaded(true);
+    }
+
+    setOptions(window.store.getOptions());
+    loadProjects();
   }, []);
 
   useEffect(() => {
-    if (loaded) window.store.setProjects(projects.map((p) => p.path));
+    window.store.setProjects(projects.map((p) => p.path));
   }, [projects]);
 
   useEffect(() => {
@@ -60,7 +71,11 @@ const App: React.FC = () => {
 
     switch (action) {
       case MenuAction.OPTIONS:
-        OptionsModal.show();
+        setCurrentModal(ModalName.OPTIONS);
+        break;
+
+      case MenuAction.ABOUT:
+        setCurrentModal(ModalName.ABOUT);
         break;
     }
   };
@@ -76,8 +91,9 @@ const App: React.FC = () => {
           </Routes>
         </Router>
       </main>
-      <OptionsModalComponent modal={OptionsModal} />
+      <OptionsModal />
       <ErrorModal />
+      <AboutModal />
       <Modal />
     </>
   );

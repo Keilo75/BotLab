@@ -4,7 +4,7 @@ import create from "zustand";
 export interface IProjectStore {
   projects: ProjectInfo[];
   addProject: (dir: ProjectInfo) => void;
-  removeProject: (dir: ProjectInfo) => void;
+  removeProject: (dir: string) => void;
   setProjects: (projects: ProjectInfo[]) => void;
 }
 
@@ -18,7 +18,7 @@ export const ProjectStore = create<IProjectStore>((set, get) => ({
   },
   removeProject: (dir) => {
     const projects = get().projects;
-    set({ projects: projects.filter((project) => project.path !== dir.path) });
+    set({ projects: projects.filter((project) => project.path !== dir) });
   },
   setProjects: (projects) => {
     set({ projects });
