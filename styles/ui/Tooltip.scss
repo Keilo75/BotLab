@@ -41,9 +41,7 @@
 }
 
 .tooltip-top:hover:before,
-.tooltip-top:hover::after,
-.tooltip-top:focus-within::after,
-.tooltip-top:focus-within::before {
+.tooltip-top:hover::after {
   opacity: 1;
   transform: translate(-50%, 0px);
 }
@@ -64,9 +62,7 @@
 }
 
 .tooltip-bottom:hover:before,
-.tooltip-bottom:hover::after,
-.tooltip-bottom:focus-within::after,
-.tooltip-bottom:focus-within::before {
+.tooltip-bottom:hover::after {
   opacity: 1;
   transform: translate(-50%, 0px);
 }
@@ -87,9 +83,7 @@
 }
 
 .tooltip-left:hover:before,
-.tooltip-left:hover::after,
-.tooltip-left:focus-within::after,
-.tooltip-left:focus-within::before {
+.tooltip-left:hover::after {
   opacity: 1;
   transform: translate(0px, -50%);
 }

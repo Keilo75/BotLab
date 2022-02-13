@@ -4,7 +4,7 @@ import React, { useState } from "react";
 export type TooltipDirection = "top" | "bottom" | "right" | "left";
 
 interface Props {
-  children: React.ReactNode;
+  children: JSX.Element;
   content: string;
   direction?: TooltipDirection;
 }

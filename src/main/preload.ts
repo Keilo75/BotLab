@@ -4,11 +4,13 @@ import { fork, exec } from "child_process";
 
 import path from "path";
 import Store from "electron-store";
+import { v4 as uuid } from "uuid";
 
 import { IPCChannel } from "src/models/ipc-channel";
 import { MenuAction } from "src/models/menu-action";
 import { defaultOptions, Options } from "src/stores/OptionsStore";
-import { Project } from "src/models/project";
+import { ProjectInfo } from "src/models/project";
+import { fileExtensionWithoutDot } from "src/models/file-extension";
 
 let appPaths = {
   userData: "",
@@ -38,11 +40,24 @@ const fsBridge = {
   openPathInExplorer(dir: string): void {
     ipcRenderer.send(IPCChannel.OPEN_PATH_IN_EXPLORER, dir);
   },
+
+  async getProjectInfoFromProjectFile(projectPath: string): Promise<ProjectInfo> {
+    const folder = path.dirname(projectPath);
+
+    const name = fs.readFileSync(projectPath, "utf8");
+
+    return {
+      name,
+      folder,
+      lastUpdated: Date.now(),
+      id: uuid(),
+    };
+  },
 };
 
 interface AppStore {
   options: Options;
-  projects: Project[];
+  projects: ProjectInfo[];
 }
 
 const store = new Store<AppStore>({ defaults: { options: defaultOptions, projects: [] } });
@@ -55,11 +70,11 @@ const storeBridge = {
     store.set("options", options);
   },
 
-  setProjects(projects: Project[]): void {
+  setProjects(projects: ProjectInfo[]): void {
     store.set("projects", projects);
   },
 
-  getProjects(): Project[] {
+  getProjects(): ProjectInfo[] {
     const projects = store.get("projects");
     console.log(projects);
 
@@ -75,18 +90,18 @@ const templateBridge = {
   async copyTemplate(dest: string, name: string): Promise<void> {
     const config = await import("./template/config.json");
 
-    config.package.name = name.toLowerCase().replace(/\s+/g, "-");
-    config.package.productName = name;
-
     const packagePath = path.join(dest, `package.json`);
-    fs.writeFileSync(packagePath, JSON.stringify(config.package));
+    fs.writeJSONSync(packagePath, config.package);
+
+    const botPath = path.join(dest, `${name}.${fileExtensionWithoutDot}`);
+    fs.writeFileSync(botPath, name);
 
     const dataPath = path.join(dest, "data");
     await fs.mkdir(dataPath);
 
     const data = ["commands", "settings"] as (keyof typeof config)[];
     for (const key of data) {
-      fs.writeFileSync(path.join(dataPath, key + ".json"), JSON.stringify(config[key]));
+      fs.writeJSONSync(path.join(dataPath, key + ".json"), config[key]);
     }
 
     return;

@@ -1,7 +1,9 @@
 import { IconPlus } from "@tabler/icons";
 import React, { useCallback, useEffect } from "react";
 import useModal from "src/hooks/useModal";
+import { fileExtensionWithoutDot } from "src/models/file-extension";
 import { ModalName } from "src/models/modal-name";
+import { ModalStore } from "src/stores/ModalStore";
 import { ProjectStore } from "src/stores/ProjectStore";
 import CreateProjectModalComponent from "../../modals/CreateProjectModal";
 import Button from "../../ui/inputs/Button";
@@ -10,11 +12,29 @@ import ProjectListItem from "./ProjectListItem";
 
 const Home: React.FC = () => {
   const CreateProjectModal = useModal({ name: ModalName.CREATE_NEW_PROJECT });
-  const [projects] = ProjectStore(useCallback((state) => [state.projects], []));
+  const [projects, addProject] = ProjectStore(
+    useCallback((state) => [state.projects, state.addProject], [])
+  );
+  const openErrorModal = ModalStore(useCallback((state) => state.openErrorModal, []));
 
   useEffect(() => {
     //CreateProjectModal.show();
   }, []);
+
+  const handleAddProject = async () => {
+    const response = await window.fs.openDialog({
+      title: "Add Project",
+      filters: [{ name: "BotLab Files", extensions: [fileExtensionWithoutDot] }],
+    });
+    if (response.canceled) return;
+
+    try {
+      const project = await window.fs.getProjectInfoFromProjectFile(response.filePaths[0]);
+      addProject(project);
+    } catch {
+      openErrorModal("Could not add project.");
+    }
+  };
 
   return (
     <div className="tab-content">
@@ -26,7 +46,7 @@ const Home: React.FC = () => {
           icon={IconPlus}
           onClick={CreateProjectModal.show}
         />
-        <Button text="Add Project" type="primary" />
+        <Button text="Add Project" type="primary" onClick={handleAddProject} />
       </ComponentGroup>
       <hr />
       <div className="project-list mt">

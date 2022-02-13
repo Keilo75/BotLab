@@ -1,16 +1,19 @@
 import { IconFolder, IconTrash } from "@tabler/icons";
-import React from "react";
+import React, { useCallback } from "react";
 import Button from "src/components/ui/inputs/Button";
 import Tooltip from "src/components/ui/tooltip/Tooltip";
 import ComponentGroup from "src/components/ui/utils/ComponentGroup";
 import { getTimeSince } from "src/lib/getTimeSince";
-import { Project } from "src/models/project";
+import { ProjectInfo } from "src/models/project";
+import { ProjectStore } from "src/stores/ProjectStore";
 
 interface Props {
-  project: Project;
+  project: ProjectInfo;
 }
 
 const ProjectListItem: React.FC<Props> = ({ project }) => {
+  const removeProject = ProjectStore(useCallback((state) => state.removeProject, []));
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       // TODO: Implement opening
@@ -19,6 +22,10 @@ const ProjectListItem: React.FC<Props> = ({ project }) => {
 
   const handleOpenInExplorerClick = () => {
     window.fs.openPathInExplorer(project.folder);
+  };
+
+  const handleRemoveClick = () => {
+    removeProject(project.id);
   };
 
   return (
@@ -33,7 +40,7 @@ const ProjectListItem: React.FC<Props> = ({ project }) => {
           <Button square type="primary" icon={IconFolder} onClick={handleOpenInExplorerClick} />
         </Tooltip>
         <Tooltip content="Remove from project list">
-          <Button square type="red" icon={IconTrash} />
+          <Button square type="red" icon={IconTrash} onClick={handleRemoveClick} />
         </Tooltip>
       </ComponentGroup>
     </div>
