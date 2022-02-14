@@ -12,8 +12,8 @@ import ComponentGroup from "../../ui/utils/ComponentGroup";
 
 const Home: React.FC = () => {
   const CreateProjectModal = useModal({ name: ModalName.CREATE_NEW_PROJECT });
-  const [projects, addProject, removeProject] = ProjectStore(
-    useCallback((state) => [state.projects, state.addProject, state.removeProject], [])
+  const [projects, removeProject] = ProjectStore(
+    useCallback((state) => [state.projects, state.removeProject], [])
   );
   const [openErrorModal] = ModalStore(useCallback((state) => [state.openErrorModal], []));
   const navigate = useNavigate();
@@ -22,21 +22,15 @@ const Home: React.FC = () => {
     //CreateProjectModal.show();
   }, []);
 
-  const handleAddProject = async () => {
+  const handleOpenProject = async () => {
     const response = await window.fs.openDialog({
-      title: "Add Project",
+      title: "Open Project",
       filters: [{ name: "BotLab Files", extensions: [fileExtensionWithoutDot] }],
     });
     if (response.canceled) return;
 
     const projectPath = response.filePaths[0];
-
-    try {
-      const name = await window.fs.getNameFromBotFile(response.filePaths[0]);
-      addProject({ name, path: projectPath });
-    } catch {
-      openErrorModal("Could not add project.");
-    }
+    openProject(projectPath);
   };
 
   const handleProjectClick = (e: React.MouseEvent | React.KeyboardEvent) => {
@@ -73,7 +67,7 @@ const Home: React.FC = () => {
           icon={IconPlus}
           onClick={CreateProjectModal.show}
         />
-        <Button text="Add Project" type="primary" onClick={handleAddProject} />
+        <Button text="Open Project" type="primary" onClick={handleOpenProject} />
       </ComponentGroup>
       <hr />
       <div className="project-list mt">

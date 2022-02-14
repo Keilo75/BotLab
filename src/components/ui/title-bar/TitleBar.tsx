@@ -1,59 +1,90 @@
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import AppLogo from "assets/icon/icon.svg";
 import Minimize from "assets/images/minimize.svg";
 import Maximize from "assets/images/maximize.svg";
 import Close from "assets/images/close.svg";
 import MenuPane, { MenuPaneProps } from "./MenuPane";
 import { MenuAction } from "src/models/menu-action";
+import { GlobalHotKeys, KeyMap } from "react-hotkeys";
+import { MenuItemProps } from "./MenuItem";
+import { ModalStore } from "src/stores/ModalStore";
 
 interface Props {
   handleMenuItemClick(action: MenuAction): void;
 }
 
+interface KeyboardShortcuts {
+  keyMap: KeyMap;
+  handlers: {
+    [key: string]: (keyEvent?: KeyboardEvent | undefined) => void;
+  };
+}
+
 const TitleBar: React.FC<Props> = ({ handleMenuItemClick }) => {
   const [selectedPane, setSelectedPane] = useState<string>();
 
-  const menu: MenuPaneProps[] = [
-    {
-      name: "File",
-      children: [
-        {
-          name: "Save",
-          action: MenuAction.SAVE,
-          editorOnly: true,
-          accelerator: "Ctrl+S",
-          divider: true,
+  const menu: MenuPaneProps[] = useMemo(
+    () => [
+      {
+        name: "File",
+        children: [
+          { name: "Options", action: MenuAction.OPTIONS, accelerator: "Ctrl+,", divider: true },
+          {
+            name: "Close Editor",
+            action: MenuAction.CLOSE_EDITOR,
+            editorOnly: true,
+            accelerator: "Ctrl+F4",
+          },
+          { name: "Exit", action: MenuAction.EXIT, accelerator: "Alt+F4" },
+        ],
+      },
+      {
+        name: "View",
+        children: [
+          {
+            name: "Toggle Dev Tools",
+            action: MenuAction.TOGGLE_DEV_TOOLS,
+            accelerator: "Ctrl+Shift+I",
+          },
+        ],
+      },
+      {
+        name: "Help",
+        children: [
+          {
+            name: "About",
+            action: MenuAction.ABOUT,
+          },
+        ],
+      },
+    ],
+    []
+  );
+
+  const shortcuts = useMemo(() => {
+    return menu
+      .reduce<MenuItemProps[]>((acc, cur) => [...acc, ...cur.children], [])
+      .reduce<KeyboardShortcuts>(
+        (acc, cur) => {
+          if (cur.accelerator) {
+            const name = cur.name.toUpperCase().replace(/\s+/g, "_");
+
+            return {
+              keyMap: {
+                ...acc.keyMap,
+                [name]: cur.accelerator,
+              },
+              handlers: {
+                ...acc.handlers,
+                [name]: () => console.log(cur.action),
+              },
+            };
+          }
+          return acc;
         },
-        { name: "Options", action: MenuAction.OPTIONS, accelerator: "Ctrl+,", divider: true },
-        {
-          name: "Close Editor",
-          action: MenuAction.CLOSE_EDITOR,
-          editorOnly: true,
-          accelerator: "Ctrl+F4",
-        },
-        { name: "Exit", action: MenuAction.EXIT, accelerator: "Alt+F4" },
-      ],
-    },
-    {
-      name: "View",
-      children: [
-        {
-          name: "Toggle Dev Tools",
-          action: MenuAction.TOGGLE_DEV_TOOLS,
-          accelerator: "Ctrl+Shift+I",
-        },
-      ],
-    },
-    {
-      name: "Help",
-      children: [
-        {
-          name: "About",
-          action: MenuAction.ABOUT,
-        },
-      ],
-    },
-  ];
+        { keyMap: {}, handlers: {} }
+      );
+  }, [menu]);
 
   const handleWindowControlClick = (e: React.MouseEvent) => {
     const actions = {
@@ -115,6 +146,7 @@ const TitleBar: React.FC<Props> = ({ handleMenuItemClick }) => {
         </div>
       </div>
       {selectedPane && <div className="overlay" onClick={handleOverlayClick} />}
+      <GlobalHotKeys {...shortcuts} />
     </>
   );
 };

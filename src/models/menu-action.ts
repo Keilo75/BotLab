@@ -1,14 +1,14 @@
 export enum MenuAction {
   // Window Control
-  EXIT,
-  MINIMIZE,
-  MAXIMIZE,
+  EXIT = "exit",
+  MINIMIZE = "minimize",
+  MAXIMIZE = "maximize",
   // File
-  SAVE,
-  OPTIONS,
-  CLOSE_EDITOR,
+  SAVE = "save",
+  OPTIONS = "options",
+  CLOSE_EDITOR = "close-editor",
   // View
-  TOGGLE_DEV_TOOLS,
+  TOGGLE_DEV_TOOLS = "toggle-dev-tools",
   // Help
-  ABOUT,
+  ABOUT = "about",
 }

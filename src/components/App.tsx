@@ -28,7 +28,7 @@ const App: React.FC = () => {
   const [projects, setProjects, removeProject] = ProjectStore(
     useCallback((state) => [state.projects, state.setProjects, state.removeProject], [])
   );
-  const setCurrentModal = ModalStore(useCallback((state) => state.setCurrentModal, []));
+  const [setCurrentModal] = ModalStore(useCallback((state) => [state.setCurrentModal], []));
 
   useEffect(() => {
     async function loadProjects() {
