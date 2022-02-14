@@ -6,6 +6,7 @@ export enum MenuAction {
   // File
   SAVE,
   OPTIONS,
+  CLOSE_EDITOR,
   // View
   TOGGLE_DEV_TOOLS,
   // Help

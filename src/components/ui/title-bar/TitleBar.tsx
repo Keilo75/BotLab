@@ -20,11 +20,17 @@ const TitleBar: React.FC<Props> = ({ handleMenuItemClick }) => {
         {
           name: "Save",
           action: MenuAction.SAVE,
-          accelerator: "Ctrl+S",
           editorOnly: true,
+          accelerator: "Ctrl+S",
           divider: true,
         },
         { name: "Options", action: MenuAction.OPTIONS, accelerator: "Ctrl+,", divider: true },
+        {
+          name: "Close Editor",
+          action: MenuAction.CLOSE_EDITOR,
+          editorOnly: true,
+          accelerator: "Ctrl+F4",
+        },
         { name: "Exit", action: MenuAction.EXIT, accelerator: "Alt+F4" },
       ],
     },

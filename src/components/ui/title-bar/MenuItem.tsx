@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import React from "react";
+import { useLocation } from "react-router-dom";
 import { MenuAction } from "src/models/menu-action";
 
 export interface MenuItemProps {
@@ -17,7 +18,8 @@ interface Props {
 }
 
 const MenuItem: React.FC<Props> = ({ item, handleMenuItemClick }) => {
-  const disabled = item.disabled || item.editorOnly;
+  const location = useLocation();
+  const disabled = item.disabled || (item.editorOnly && !location.pathname.includes("editor"));
 
   const handleClick = () => {
     if (!disabled) handleMenuItemClick(item.action);

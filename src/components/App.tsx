@@ -4,7 +4,7 @@ import "styles/_globals.scss";
 import "styles/_variables.scss";
 import "styles/_ui.scss";
 import TitleBar from "./ui/title-bar/TitleBar";
-import { HashRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes, useNavigate } from "react-router-dom";
 import Home from "./views/home/Home";
 import Modal from "./ui/Modal";
 import { MenuAction } from "src/models/menu-action";
@@ -16,9 +16,11 @@ import { ProjectStore } from "src/stores/ProjectStore";
 import AboutModal from "./modals/AboutModal";
 import { ModalStore } from "src/stores/ModalStore";
 import { ProjectInfo } from "src/models/project";
+import Editor from "./views/editor/Editor";
 
 const App: React.FC = () => {
   const [loaded, setLoaded] = useState(false);
+  const [menuAction, setMenuAction] = useState<MenuAction | undefined>(undefined);
 
   const [options, setOptions] = OptionsStore(
     useCallback((state) => [state.options, state.setOptions], [])
@@ -69,6 +71,11 @@ const App: React.FC = () => {
       return window.ipc.handleTitleBarAction(action);
     }
 
+    const editorActions = [MenuAction.SAVE, MenuAction.CLOSE_EDITOR];
+    if (editorActions.includes(action)) {
+      return setMenuAction(action);
+    }
+
     switch (action) {
       case MenuAction.OPTIONS:
         setCurrentModal(ModalName.OPTIONS);
@@ -83,14 +90,18 @@ const App: React.FC = () => {
   if (!loaded) return null;
   return (
     <>
-      <TitleBar handleMenuItemClick={handleMenuItemClick} />
-      <main>
-        <Router>
+      <HashRouter>
+        <TitleBar handleMenuItemClick={handleMenuItemClick} />
+        <main>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route
+              path="editor/:projectPath"
+              element={<Editor menuAction={menuAction} setMenuAction={setMenuAction} />}
+            />
           </Routes>
-        </Router>
-      </main>
+        </main>
+      </HashRouter>
       <OptionsModal />
       <ErrorModal />
       <AboutModal />

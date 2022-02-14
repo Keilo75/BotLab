@@ -45,6 +45,11 @@ const fsBridge = {
     const config: Project = fs.readJSONSync(projectPath, "utf8");
     return config.settings.name;
   },
+
+  async getProjectFromBotFile(projectPath: string): Promise<Project> {
+    const config: Project = fs.readJSONSync(projectPath, "utf8");
+    return config;
+  },
 };
 
 interface AppStore {

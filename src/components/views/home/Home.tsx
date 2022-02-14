@@ -1,6 +1,6 @@
 import { IconPlus } from "@tabler/icons";
 import React, { useCallback, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useModal from "src/hooks/useModal";
 import { fileExtensionWithoutDot } from "src/models/file-extension";
 import { ModalName } from "src/models/modal-name";
@@ -16,6 +16,7 @@ const Home: React.FC = () => {
     useCallback((state) => [state.projects, state.addProject, state.removeProject], [])
   );
   const [openErrorModal] = ModalStore(useCallback((state) => [state.openErrorModal], []));
+  const navigate = useNavigate();
 
   useEffect(() => {
     //CreateProjectModal.show();
@@ -55,6 +56,7 @@ const Home: React.FC = () => {
   const openProject = async (projectPath: string) => {
     try {
       await window.fs.getNameFromBotFile(projectPath);
+      navigate(`editor/${projectPath}`);
     } catch {
       openErrorModal("Could not find file.");
       removeProject(projectPath);
