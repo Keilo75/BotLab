@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import AppLogo from "assets/icon/icon.svg";
 import Minimize from "assets/images/minimize.svg";
 import Maximize from "assets/images/maximize.svg";
@@ -7,7 +7,6 @@ import MenuPane, { MenuPaneProps } from "./MenuPane";
 import { MenuAction } from "src/models/menu-action";
 import { GlobalHotKeys, KeyMap } from "react-hotkeys";
 import { MenuItemProps } from "./MenuItem";
-import { ModalStore } from "src/stores/ModalStore";
 
 interface Props {
   handleMenuItemClick(action: MenuAction): void;
@@ -41,6 +40,7 @@ const TitleBar: React.FC<Props> = ({ handleMenuItemClick }) => {
       {
         name: "View",
         children: [
+          { name: "Reload", action: MenuAction.RELOAD, accelerator: "Ctrl+R" },
           {
             name: "Toggle Dev Tools",
             action: MenuAction.TOGGLE_DEV_TOOLS,
@@ -61,9 +61,20 @@ const TitleBar: React.FC<Props> = ({ handleMenuItemClick }) => {
     []
   );
 
+  interface MenuItemPropsWithCategory extends MenuItemProps {
+    category: string;
+    index: number;
+  }
   const shortcuts = useMemo(() => {
     return menu
-      .reduce<MenuItemProps[]>((acc, cur) => [...acc, ...cur.children], [])
+      .reduce<MenuItemPropsWithCategory[]>((acc, cur) => {
+        const children = cur.children.map((child, index) => ({
+          ...child,
+          category: cur.name,
+          index,
+        }));
+        return [...acc, ...children];
+      }, [])
       .reduce<KeyboardShortcuts>(
         (acc, cur) => {
           if (cur.accelerator) {
@@ -72,11 +83,31 @@ const TitleBar: React.FC<Props> = ({ handleMenuItemClick }) => {
             return {
               keyMap: {
                 ...acc.keyMap,
-                [name]: cur.accelerator,
+                [name]: cur.accelerator.toLowerCase(),
               },
               handlers: {
                 ...acc.handlers,
-                [name]: () => console.log(cur.action),
+                [name]: () => {
+                  // Modal is open
+                  const modal = document.querySelector("#modal");
+                  if (modal && modal.children.length > 1) return;
+
+                  setSelectedPane(cur.category);
+                  const menuPane = document.querySelector(
+                    `[data-menu-pane=${cur.category}]`
+                  ) as HTMLButtonElement;
+
+                  const items = menuPane.parentElement?.children[1].querySelectorAll(
+                    "li"
+                  ) as NodeListOf<HTMLLIElement>;
+                  const item = items[cur.index];
+
+                  if (!item.classList.contains("menu-item-disabled")) {
+                    item.click();
+                  }
+
+                  setSelectedPane(undefined);
+                },
               },
             };
           }

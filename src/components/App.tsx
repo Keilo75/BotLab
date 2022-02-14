@@ -81,6 +81,10 @@ const App: React.FC = () => {
         setCurrentModal(ModalName.OPTIONS);
         break;
 
+      case MenuAction.RELOAD:
+        window.location.reload();
+        break;
+
       case MenuAction.ABOUT:
         setCurrentModal(ModalName.ABOUT);
         break;

@@ -33,7 +33,12 @@ const MenuPane: React.FC<Props> = ({ pane, selectedPane, setSelectedPane, handle
 
   return (
     <div className="menu-pane" onMouseEnter={handleMenuPaneHover}>
-      <button className="menu-button" onClick={handleMenuPaneClick} tabIndex={-1}>
+      <button
+        className="menu-button"
+        onClick={handleMenuPaneClick}
+        tabIndex={-1}
+        data-menu-pane={pane.name}
+      >
         {pane.name}
       </button>
       {isSelected && (

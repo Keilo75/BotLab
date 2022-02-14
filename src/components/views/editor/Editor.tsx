@@ -18,7 +18,6 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction }) => {
   useEffect(() => {
     if (projectPath)
       window.fs.getProjectFromBotFile(projectPath).then((project) => {
-        console.log(project);
         addProject({ name: project.settings.name, path: projectPath });
       });
   }, []);
@@ -28,10 +27,6 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction }) => {
       switch (menuAction) {
         case MenuAction.CLOSE_EDITOR:
           navigate("/");
-          break;
-
-        case MenuAction.SAVE:
-          console.log("save");
           break;
       }
 
