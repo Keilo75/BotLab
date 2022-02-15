@@ -1,20 +1,24 @@
 import { IconPlus } from "@tabler/icons";
 import React, { useCallback, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useModal from "src/hooks/useModal";
 import { fileExtensionWithoutDot } from "src/models/file-extension";
 import { ModalName } from "src/models/modal-name";
+import { ProjectInfo } from "src/models/project";
 import { ModalStore } from "src/stores/ModalStore";
-import { ProjectStore } from "src/stores/ProjectStore";
+import { ProjectAction } from "src/stores/ProjectReducer";
 import CreateProjectModalComponent from "../../modals/CreateProjectModal";
 import Button from "../../ui/inputs/Button";
 import ComponentGroup from "../../ui/utils/ComponentGroup";
 
-const Home: React.FC = () => {
+interface Props {
+  projects: ProjectInfo[];
+  dispatchProjects: React.Dispatch<ProjectAction>;
+}
+
+const Home: React.FC<Props> = ({ projects, dispatchProjects }) => {
   const CreateProjectModal = useModal({ name: ModalName.CREATE_NEW_PROJECT });
-  const [projects, removeProject] = ProjectStore(
-    useCallback((state) => [state.projects, state.removeProject], [])
-  );
+
   const [openErrorModal] = ModalStore(useCallback((state) => [state.openErrorModal], []));
   const navigate = useNavigate();
 
@@ -53,12 +57,12 @@ const Home: React.FC = () => {
       navigate(`editor/${projectPath}`);
     } catch {
       openErrorModal("Could not find file.");
-      removeProject(projectPath);
+      dispatchProjects({ type: "remove", projectPath });
     }
   };
 
   return (
-    <div className="tab-content">
+    <div className="main-content">
       <h2>Projects</h2>
       <ComponentGroup axis="horizontal" className="mb">
         <Button
@@ -71,7 +75,7 @@ const Home: React.FC = () => {
       </ComponentGroup>
       <hr />
       <div className="project-list mt">
-        {projects.map((project, index) => (
+        {projects.slice(0, 10).map((project, index) => (
           <div key={index}>
             <span
               className="link"
@@ -86,7 +90,7 @@ const Home: React.FC = () => {
           </div>
         ))}
       </div>
-      <CreateProjectModalComponent modal={CreateProjectModal} />
+      <CreateProjectModalComponent modal={CreateProjectModal} dispatchProjects={dispatchProjects} />
     </div>
   );
 };

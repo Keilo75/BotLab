@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useReducer, useState } from "react";
 import "styles/_themes.scss";
 import "styles/_globals.scss";
 import "styles/_variables.scss";
@@ -12,7 +12,7 @@ import OptionsModal from "./modals/OptionsModal";
 import { OptionsStore } from "src/stores/OptionsStore";
 import ErrorModal from "./modals/ErrorModal";
 import { ModalName } from "src/models/modal-name";
-import { ProjectStore } from "src/stores/ProjectStore";
+import { projectReducer } from "src/stores/ProjectReducer";
 import AboutModal from "./modals/AboutModal";
 import { ModalStore } from "src/stores/ModalStore";
 import { ProjectInfo } from "src/models/project";
@@ -25,9 +25,8 @@ const App: React.FC = () => {
   const [options, setOptions] = OptionsStore(
     useCallback((state) => [state.options, state.setOptions], [])
   );
-  const [projects, setProjects, removeProject] = ProjectStore(
-    useCallback((state) => [state.projects, state.setProjects, state.removeProject], [])
-  );
+
+  const [projects, dispatchProjects] = useReducer(projectReducer, []);
   const [setCurrentModal] = ModalStore(useCallback((state) => [state.setCurrentModal], []));
 
   useEffect(() => {
@@ -40,11 +39,11 @@ const App: React.FC = () => {
           const name = await window.fs.getNameFromBotFile(projectPath);
           projects.push({ name, path: projectPath });
         } catch {
-          removeProject(projectPath);
+          dispatchProjects({ type: "remove", projectPath });
         }
       }
 
-      setProjects(projects);
+      dispatchProjects({ type: "set", projects });
       setLoaded(true);
     }
 
@@ -98,10 +97,19 @@ const App: React.FC = () => {
         <TitleBar handleMenuItemClick={handleMenuItemClick} />
         <main>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route
+              path="/"
+              element={<Home projects={projects} dispatchProjects={dispatchProjects} />}
+            />
             <Route
               path="editor/:projectPath"
-              element={<Editor menuAction={menuAction} setMenuAction={setMenuAction} />}
+              element={
+                <Editor
+                  menuAction={menuAction}
+                  setMenuAction={setMenuAction}
+                  dispatchProjects={dispatchProjects}
+                />
+              }
             />
           </Routes>
         </main>

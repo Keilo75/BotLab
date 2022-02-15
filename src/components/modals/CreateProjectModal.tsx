@@ -9,12 +9,11 @@ import useLoadingBar from "src/hooks/useLoadingBar";
 import { OptionsStore } from "src/stores/OptionsStore";
 import Container from "../ui/Container";
 import { ModalStore } from "src/stores/ModalStore";
-import { ProjectStore } from "src/stores/ProjectStore";
-import { v4 as uuid } from "uuid";
-import { fileExtensionWithoutDot } from "src/models/file-extension";
+import { ProjectAction } from "src/stores/ProjectReducer";
 
 interface Props {
   modal: useModalReturnValue;
+  dispatchProjects: React.Dispatch<ProjectAction>;
 }
 
 const initialValues = {
@@ -24,9 +23,7 @@ const initialValues = {
 type InitialValues = typeof initialValues;
 type Errors = Record<keyof InitialValues, string | undefined>;
 
-const CreateProjectModal: React.FC<Props> = ({ modal }) => {
-  const addProject = ProjectStore(useCallback((state) => state.addProject, []));
-
+const CreateProjectModal: React.FC<Props> = ({ modal, dispatchProjects }) => {
   const LoadingBar = useLoadingBar();
   const emptyFolderOnProjectCreation = OptionsStore(
     useCallback((state) => state.options?.experimental.emptyFolderOnProjectCreation, [])
@@ -81,7 +78,7 @@ const CreateProjectModal: React.FC<Props> = ({ modal }) => {
       throw new Error("Could not copy template.");
     }
 
-    addProject({ name: values.projectName, path: botFilePath });
+    dispatchProjects({ type: "add", project: { name: values.projectName, path: botFilePath } });
   };
 
   return (

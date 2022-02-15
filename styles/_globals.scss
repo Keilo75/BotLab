@@ -79,7 +79,10 @@ body {
 
   > main {
     height: calc(100% - var(--title-bar-height));
-    padding: 0 100px;
+
+    .main-content {
+      padding: var(--spacing-double) 100px;
+    }
   }
 }
 
