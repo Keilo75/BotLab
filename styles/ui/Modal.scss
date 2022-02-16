@@ -1,3 +1,5 @@
+$modal-footer-height: calc(var(--button-height) + 2 * var(--spacing-double));
+
 .modal-overlay {
   position: absolute;
   inset: 0;
@@ -58,7 +60,8 @@
   }
 
   .modal-content {
-    flex-grow: 1;
+    width: 100%;
+    height: calc(100% - #{$modal-footer-height});
   }
 
   .modal-content-padding {
@@ -66,7 +69,7 @@
   }
 
   .modal-footer {
-    height: calc(var(--button-height) + 2 * var(--spacing-double));
+    height: $modal-footer-height;
     background-color: var(--title-bar-color);
     border-bottom-left-radius: var(--border-radius);
     border-bottom-right-radius: var(--border-radius);

@@ -48,15 +48,6 @@ const TitleBar: React.FC<Props> = ({ handleMenuItemClick }) => {
           },
         ],
       },
-      {
-        name: "Help",
-        children: [
-          {
-            name: "About",
-            action: MenuAction.ABOUT,
-          },
-        ],
-      },
     ],
     []
   );

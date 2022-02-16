@@ -41,11 +41,6 @@ const fsBridge = {
     ipcRenderer.send(IPCChannel.OPEN_PATH_IN_EXPLORER, dir);
   },
 
-  async getNameFromBotFile(projectPath: string): Promise<string> {
-    const config: Project = fs.readJSONSync(projectPath, "utf8");
-    return config.settings.name;
-  },
-
   async getProjectFromBotFile(projectPath: string): Promise<Project> {
     const config: Project = fs.readJSONSync(projectPath, "utf8");
     return config;
@@ -72,10 +67,7 @@ const storeBridge = {
   },
 
   getProjects(): string[] {
-    const projects = store.get("projects");
-    console.log(projects);
-
-    return projects;
+    return store.get("projects");
   },
 };
 
@@ -95,27 +87,7 @@ const templateBridge = {
     return botPath;
   },
 
-  async installDependencies(dest: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      // TODO: Don't use globally installed version
-      const cli = "C:/Program Files/nodejs/node_modules/npm/bin/npm-cli.js";
-      const args = ["install"];
-
-      // Run installer
-      const installer = fork(cli, args, {
-        silent: true,
-        cwd: dest,
-      });
-
-      installer.on("exit", async (code) => {
-        if (code === 0) {
-          resolve();
-        } else {
-          reject();
-        }
-      });
-    });
-  },
+  async installDependencies(dest: string): Promise<void> {},
 };
 
 contextBridge.exposeInMainWorld("ipc", ipcBridge);

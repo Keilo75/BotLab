@@ -12,6 +12,10 @@ interface Props {
 const KeyboardList: React.FC<Props> = ({ length, children, selectedIndex, axis = "vertical" }) => {
   const [focused, setFocused] = useState(selectedIndex);
 
+  useEffect(() => {
+    setFocused(selectedIndex);
+  }, [selectedIndex, setFocused]);
+
   const refs = useMemo(
     () =>
       Array(length)

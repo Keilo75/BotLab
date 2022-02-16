@@ -13,7 +13,6 @@ import { OptionsStore } from "src/stores/OptionsStore";
 import ErrorModal from "./modals/ErrorModal";
 import { ModalName } from "src/models/modal-name";
 import { projectReducer } from "src/stores/ProjectReducer";
-import AboutModal from "./modals/AboutModal";
 import { ModalStore } from "src/stores/ModalStore";
 import { ProjectInfo } from "src/models/project";
 import Editor from "./views/editor/Editor";
@@ -36,8 +35,8 @@ const App: React.FC = () => {
 
       for (const projectPath of projectPaths) {
         try {
-          const name = await window.fs.getNameFromBotFile(projectPath);
-          projects.push({ name, path: projectPath });
+          const project = await window.fs.getProjectFromBotFile(projectPath);
+          projects.push({ name: project.settings.name, path: projectPath });
         } catch {
           dispatchProjects({ type: "remove", projectPath });
         }
@@ -83,10 +82,6 @@ const App: React.FC = () => {
       case MenuAction.RELOAD:
         window.location.reload();
         break;
-
-      case MenuAction.ABOUT:
-        setCurrentModal(ModalName.ABOUT);
-        break;
     }
   };
 
@@ -116,7 +111,6 @@ const App: React.FC = () => {
       </HashRouter>
       <OptionsModal />
       <ErrorModal />
-      <AboutModal />
       <Modal />
     </>
   );

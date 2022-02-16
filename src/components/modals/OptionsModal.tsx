@@ -19,7 +19,7 @@ const OptionsModal: React.FC = () => {
   return (
     <Modal.Component>
       <ModalLayout.Content>
-        <Tabs name="Options">
+        <Tabs name="Options" defaultTab={0}>
           <Tab name="General">
             <InputGroup state={options.options.general} onChange={options.setGeneral}>
               {(state, setState) => (

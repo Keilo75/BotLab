@@ -10,6 +10,4 @@ export enum MenuAction {
   // View
   TOGGLE_DEV_TOOLS = "toggle-dev-tools",
   RELOAD = "reload",
-  // Help
-  ABOUT = "about",
 }

@@ -14,11 +14,12 @@ To create tabs, use the `Tabs` component:
 
 ## Props
 
-| Prop     | Type                       | Optional | Description                                                                          |
-| -------- | -------------------------- | -------- | ------------------------------------------------------------------------------------ |
-| name     | string                     | no       | The name of the tabs                                                                 |
-| axis     | "horizontal" \| "vertical" | yes      | Wheter the tabs should be aligned horizontally or vertically. Defaults to `vertical` |
-| children | Tab[]                      | no       | All tabs                                                                             |
+| Prop       | Type                       | Optional | Description                                                                          |
+| ---------- | -------------------------- | -------- | ------------------------------------------------------------------------------------ |
+| name       | string                     | no       | The name of the tabs                                                                 |
+| defaultTab | number                     | no       | The default tab                                                                      |
+| children   | Tab[]                      | no       | All tabs                                                                             |
+| axis       | "horizontal" \| "vertical" | yes      | Wheter the tabs should be aligned horizontally or vertically. Defaults to `vertical` |
 
 ## Important considerations
 
