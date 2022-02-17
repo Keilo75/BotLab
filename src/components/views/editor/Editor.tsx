@@ -20,15 +20,16 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
 
   // Load project
   useEffect(() => {
-    if (projectPath)
-      window.fs.getProjectFromBotFile(projectPath).then((project) => {
-        dispatchProjects({
-          type: "add",
-          project: { name: project.settings.name, path: projectPath },
-        });
+    if (!projectPath) return;
 
-        setSettings(project.settings);
+    window.fs.getProjectFromBotFile(projectPath).then((project) => {
+      dispatchProjects({
+        type: "add",
+        project: { name: project.settings.name, path: projectPath },
       });
+
+      setSettings(project.settings);
+    });
   }, []);
 
   // Handle menu action

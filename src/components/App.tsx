@@ -55,12 +55,12 @@ const App: React.FC = () => {
   }, [projects]);
 
   useEffect(() => {
-    if (options !== undefined) {
-      // Change theme
-      document.body.classList.toggle("theme-dark", options.general.theme == 0);
+    if (!options) return;
 
-      window.store.setOptions(options);
-    }
+    // Change theme
+    document.body.classList.toggle("theme-dark", options.general.theme == 0);
+
+    window.store.setOptions(options);
   }, [options]);
 
   const handleMenuItemClick = (action: MenuAction) => {

@@ -95,20 +95,17 @@ const KeyboardList: React.FC<Props> = ({ length, children, selectedIndex, axis =
 
   useEffect(() => {
     const element = refs[focused].current;
-    if (element) {
-      element.addEventListener("keydown", keydownHandler);
-      element.addEventListener("blur", blurHandler);
-      element.tabIndex = 0;
-    }
+    if (!element) return;
+
+    element.addEventListener("keydown", keydownHandler);
+    element.addEventListener("blur", blurHandler);
+    element.tabIndex = 0;
 
     return () => {
       // Remove all event listeners
-      const element = refs[focused].current;
-      if (element) {
-        element.removeEventListener("keydown", keydownHandler);
-        element.removeEventListener("blur", blurHandler);
-        element.tabIndex = -1;
-      }
+      element.removeEventListener("keydown", keydownHandler);
+      element.removeEventListener("blur", blurHandler);
+      element.tabIndex = -1;
     };
   }, [focused, keydownHandler, blurHandler]);
 
