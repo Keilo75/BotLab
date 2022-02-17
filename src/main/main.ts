@@ -125,3 +125,7 @@ ipcMain.handle(IPCChannel.GET_APP_PATHS, () => {
 ipcMain.on(IPCChannel.OPEN_PATH_IN_EXPLORER, (e, dir: string) => {
   shell.openPath(dir);
 });
+
+ipcMain.on(IPCChannel.OPEN_LINK_IN_BROWSER, (e, link: string) => {
+  shell.openExternal(link);
+});

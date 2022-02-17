@@ -41,6 +41,10 @@ const fsBridge = {
     ipcRenderer.send(IPCChannel.OPEN_PATH_IN_EXPLORER, dir);
   },
 
+  openLinkInBrowser(link: string): void {
+    ipcRenderer.send(IPCChannel.OPEN_LINK_IN_BROWSER, link);
+  },
+
   async getProjectFromBotFile(projectPath: string): Promise<Project> {
     const config: Project = fs.readJSONSync(projectPath, "utf8");
     return config;

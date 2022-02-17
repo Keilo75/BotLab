@@ -163,3 +163,18 @@ a,
     outline: 4px solid var(--focus-color);
   }
 }
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--overlay-white-1);
+  margin: var(--spacing) 0;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--title-bar-color);
+  border-radius: 6px;
+}
