@@ -10,6 +10,7 @@ import { OptionsStore } from "src/stores/OptionsStore";
 import Container from "../ui/Container";
 import { ModalStore } from "src/stores/ModalStore";
 import { ProjectAction } from "src/stores/ProjectReducer";
+import { getProjectNameError } from "src/lib/getProjectNameError";
 
 interface Props {
   modal: useModalReturnValue;
@@ -39,10 +40,8 @@ const CreateProjectModal: React.FC<Props> = ({ modal, dispatchProjects }) => {
       projectFolder: undefined,
     };
 
-    // Project name can't be empty
-    if (projectName.length === 0) errors.projectName = "Required";
-    else if (!projectName.match(/^[a-zA-Z\s]*$/))
-      errors.projectName = "Project name may only include letters and spaces";
+    // Validate project name
+    errors.projectName = getProjectNameError(projectName);
 
     // Project folder can't be empty
     if (projectFolder.length === 0) errors.projectFolder = "Required";

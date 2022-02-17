@@ -142,6 +142,10 @@ p {
   margin-top: var(--spacing);
 }
 
+.mt-half {
+  margin-top: var(--spacing-half);
+}
+
 hr {
   margin: var(--spacing-third) 0;
   border-color: var(--overlay-white-2);
@@ -177,4 +181,8 @@ a,
 ::-webkit-scrollbar-thumb {
   background: var(--title-bar-color);
   border-radius: 6px;
+}
+
+.text {
+  color: var(--text-secondary-color);
 }

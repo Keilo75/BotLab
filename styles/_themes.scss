@@ -1,16 +1,19 @@
 // Non-specific variables
 :root {
   --primary-color: hsl(231, 48%, 48%);
-  --primary-color-hover: hsl(231, 48%, 40%);
+  --primary-hover-color: hsl(231, 48%, 40%);
 
   --success-color: hsl(153, 56%, 34%);
-  --success-color-hover: hsl(153, 56%, 26%);
+  --success-hover-color: hsl(153, 56%, 26%);
 
   --red-color: hsl(0, 85%, 61%);
-  --red-color-hover: hsl(0, 59%, 51%);
+  --red-hover-color: hsl(0, 59%, 51%);
 
-  --warning-color: hsla(38, 95.7%, 54.1%, 0.1);
-  --warning-color-hover: hsla(38, 95.7%, 54.1%);
+  --warning-color: hsla(38, 95%, 54%, 0.1);
+  --warning-border-color: hsla(38, 95%, 54%);
+
+  --danger-color: hsla(359, 82%, 59%, 0.1);
+  --danger-border-color: hsla(359, 47%, 43%);
 
   --focus-color: hsl(212, 97%, 43%);
 }

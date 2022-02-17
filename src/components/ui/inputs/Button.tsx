@@ -11,6 +11,7 @@ interface Props {
   submit?: boolean;
   disabled?: boolean;
   square?: boolean;
+  className?: string;
 }
 
 const Button: React.FC<Props> = ({
@@ -22,6 +23,7 @@ const Button: React.FC<Props> = ({
   submit,
   disabled,
   square,
+  className,
 }) => {
   return (
     <button
@@ -29,7 +31,8 @@ const Button: React.FC<Props> = ({
         "button",
         `button-${type}`,
         textAlignment && `button-text-${textAlignment}`,
-        square && "button-square"
+        square && "button-square",
+        className
       )}
       onClick={onClick}
       type={submit ? "submit" : "button"}

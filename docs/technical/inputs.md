@@ -26,12 +26,13 @@ const [value, setValue] = useState("");
 return <TextInput name="text-input" value={value} onChange={(value) => setValue(value)} />;
 ```
 
-| Prop      | Type                                | Optional | Description                 |
-| --------- | ----------------------------------- | -------- | --------------------------- |
-| name      | string                              | no       | The name of the text input  |
-| value     | string                              | no       | The value of the text input |
-| onChange  | (text: string, name?: string): void | no       | The change event handler    |
-| className | string                              | yes      | Additional class names      |
+| Prop      | Type                                | Optional | Description                      |
+| --------- | ----------------------------------- | -------- | -------------------------------- |
+| name      | string                              | no       | The name of the text input       |
+| value     | string                              | no       | The value of the text input      |
+| onChange  | (text: string, name?: string): void | no       | The change event handler         |
+| className | string                              | yes      | Additional class names           |
+| error     | boolean                             | yes      | Wheter the input contains errors |
 
 ## RadioButton
 

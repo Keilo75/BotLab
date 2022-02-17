@@ -4,6 +4,7 @@ import React from "react";
 interface Props {
   name: string;
   icon?: TablerIcon;
+  className?: string;
 }
 
 const Tab: React.FC<Props> = ({ name, children }) => {
