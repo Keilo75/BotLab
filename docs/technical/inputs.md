@@ -76,3 +76,26 @@ return (
 | label    | string                                  | no       | The label of the toggle switch |
 | checked  | boolean                                 | no       | Wheter the switch is checked   |
 | onChange | (checked: boolean, name?: string): void | no       | The change event handler       |
+
+## Dropdown Button
+
+```jsx
+const handleDropdownClick = (type: string) => {
+  console.log(type);
+};
+
+return (
+  <DropdownButton
+    text="Add Interaction"
+    options={["Command", "Command Group"]}
+    onClick={handleDropdownClick}
+  />
+);
+```
+
+| Prop      | Type                   | Optional | Description             |
+| --------- | ---------------------- | -------- | ----------------------- |
+| text      | string                 | no       | The label of the button |
+| optioms   | string[]               | no       | The available options   |
+| onClick   | (type: string) => void | no       | The click event handler |
+| className | string                 | yes      | Additional class names  |
