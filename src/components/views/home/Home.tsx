@@ -5,6 +5,7 @@ import useModal from "src/hooks/useModal";
 import { fileExtensionWithoutDot } from "src/models/file-extension";
 import { ModalName } from "src/models/modal-name";
 import { ProjectInfo } from "src/models/project";
+import { InfoStore } from "src/stores/InfoStore";
 import { ModalStore } from "src/stores/ModalStore";
 import { ProjectAction } from "src/stores/ProjectReducer";
 import CreateProjectModalComponent from "../../modals/CreateProjectModal";
@@ -14,16 +15,22 @@ import ComponentGroup from "../../ui/utils/ComponentGroup";
 interface Props {
   projects: ProjectInfo[];
   dispatchProjects: React.Dispatch<ProjectAction>;
+  loadProjects: () => Promise<void>;
 }
 
-const Home: React.FC<Props> = ({ projects, dispatchProjects }) => {
+const Home: React.FC<Props> = ({ projects, dispatchProjects, loadProjects }) => {
   const CreateProjectModal = useModal({ name: ModalName.CREATE_NEW_PROJECT });
 
   const [openErrorModal] = ModalStore(useCallback((state) => [state.openErrorModal], []));
+  const [setTitle, setDirty] = InfoStore(
+    useCallback((state) => [state.setTitle, state.setDirty], [])
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
-    //CreateProjectModal.show();
+    loadProjects();
+    setTitle("BotLab", true);
+    setDirty(false);
   }, []);
 
   const handleOpenProject = async () => {

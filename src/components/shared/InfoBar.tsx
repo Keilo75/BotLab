@@ -1,16 +1,22 @@
 import { IconCheck, IconX } from "@tabler/icons";
-import React, { useCallback } from "react";
-import { InfoBarStore } from "src/stores/InfoBarStore";
+import React, { useCallback, useEffect } from "react";
+import { InfoStore } from "src/stores/InfoStore";
 
 const InfoBar: React.FC = () => {
-  const [text, type] = InfoBarStore(useCallback((state) => [state.text, state.type], []));
+  const [info, clearInfoMessage] = InfoStore(
+    useCallback((state) => [state.infoMessage, state.clearInfoMessage], [])
+  );
+
+  useEffect(() => {
+    clearInfoMessage();
+  }, []);
 
   return (
     <div className="info-bar">
-      {type === "success" && <IconCheck className="icon icon-success" />}
-      {type === "error" && <IconX className="icon icon-error" />}
-      {type === "loading" && <div className="icon icon-loading" />}
-      {text}
+      {info.type === "success" && <IconCheck className="icon icon-success" />}
+      {info.type === "error" && <IconX className="icon icon-error" />}
+      {info.type === "loading" && <div className="icon icon-loading" />}
+      {info.text}
     </div>
   );
 };

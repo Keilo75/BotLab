@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import AppLogo from "assets/icon/icon.svg";
 import Minimize from "assets/images/minimize.svg";
 import Maximize from "assets/images/maximize.svg";
@@ -7,6 +7,8 @@ import MenuPane, { MenuPaneProps } from "./MenuPane";
 import { MenuAction } from "src/models/menu-action";
 import { GlobalHotKeys, KeyMap } from "react-hotkeys";
 import { MenuItemProps } from "./MenuItem";
+import { useLocation } from "react-router-dom";
+import { InfoStore } from "src/stores/InfoStore";
 
 interface Props {
   handleMenuItemClick(action: MenuAction): void;
@@ -21,13 +23,21 @@ interface KeyboardShortcuts {
 
 const TitleBar: React.FC<Props> = ({ handleMenuItemClick }) => {
   const [selectedPane, setSelectedPane] = useState<string>();
+  const [title, dirty] = InfoStore(useCallback((state) => [state.title, state.dirty], []));
+  const location = useLocation();
 
   const menu: MenuPaneProps[] = useMemo(
     () => [
       {
         name: "File",
         children: [
-          { name: "Save", action: MenuAction.SAVE, accelerator: "Ctrl+S", divider: true },
+          {
+            name: "Save",
+            action: MenuAction.SAVE,
+            accelerator: "Ctrl+S",
+            editorOnly: true,
+            divider: true,
+          },
           { name: "Options", action: MenuAction.OPTIONS, accelerator: "Ctrl+,", divider: true },
           {
             name: "Close Editor",
@@ -141,6 +151,11 @@ const TitleBar: React.FC<Props> = ({ handleMenuItemClick }) => {
             />
           ))}
         </div>
+        <div className="title-text">
+          {dirty && "●"}
+          {title}
+        </div>
+
         <div className="window-control">
           <button
             className="window-control-btn"

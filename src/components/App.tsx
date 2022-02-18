@@ -16,10 +16,8 @@ import { projectReducer } from "src/stores/ProjectReducer";
 import { ModalStore } from "src/stores/ModalStore";
 import { ProjectInfo } from "src/models/project";
 import Editor from "./views/editor/Editor";
-import InfoBar from "./shared/InfoBar";
 
 const App: React.FC = () => {
-  const [loaded, setLoaded] = useState(false);
   const [menuAction, setMenuAction] = useState<MenuAction | undefined>(undefined);
 
   const [options, setOptions] = OptionsStore(
@@ -29,26 +27,24 @@ const App: React.FC = () => {
   const [projects, dispatchProjects] = useReducer(projectReducer, []);
   const [setCurrentModal] = ModalStore(useCallback((state) => [state.setCurrentModal], []));
 
-  useEffect(() => {
-    async function loadProjects() {
-      const projectPaths = window.store.getProjects();
-      const projects: ProjectInfo[] = [];
+  const loadProjects = useCallback(async () => {
+    const projectPaths = window.store.getProjects();
+    const projects: ProjectInfo[] = [];
 
-      for (const projectPath of projectPaths) {
-        try {
-          const project = await window.project.getProjectFromBotFile(projectPath);
-          projects.push({ name: project.settings.name, path: projectPath });
-        } catch {
-          dispatchProjects({ type: "remove", projectPath });
-        }
+    for (const projectPath of projectPaths) {
+      try {
+        const project = await window.project.getProjectFromBotFile(projectPath);
+        projects.push({ name: project.settings.name, path: projectPath });
+      } catch {
+        dispatchProjects({ type: "remove", projectPath });
       }
-
-      dispatchProjects({ type: "set", projects });
-      setLoaded(true);
     }
 
+    dispatchProjects({ type: "set", projects });
+  }, []);
+
+  useEffect(() => {
     setOptions(window.store.getOptions());
-    loadProjects();
   }, []);
 
   useEffect(() => {
@@ -86,7 +82,6 @@ const App: React.FC = () => {
     }
   };
 
-  if (!loaded) return null;
   return (
     <>
       <HashRouter>
@@ -95,7 +90,13 @@ const App: React.FC = () => {
           <Routes>
             <Route
               path="/"
-              element={<Home projects={projects} dispatchProjects={dispatchProjects} />}
+              element={
+                <Home
+                  projects={projects}
+                  dispatchProjects={dispatchProjects}
+                  loadProjects={loadProjects}
+                />
+              }
             />
             <Route
               path="editor/:projectPath"
@@ -109,7 +110,6 @@ const App: React.FC = () => {
             />
           </Routes>
         </main>
-        <InfoBar />
       </HashRouter>
       <OptionsModal />
       <ErrorModal />
