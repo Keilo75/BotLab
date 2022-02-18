@@ -1,4 +1,5 @@
 import React from "react";
+import useKeyboardClick from "src/hooks/useKeyboardClick";
 
 interface Props {
   href: string;
@@ -6,25 +7,14 @@ interface Props {
 }
 
 const Link: React.FC<Props> = ({ href, text }) => {
-  const handleLinkClick = (
-    e: React.MouseEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLAnchorElement>
-  ) => {
-    if (e.type === "click") {
-      e.preventDefault();
-      window.fs.openLinkInBrowser(e.currentTarget.href);
-    }
-
-    if (e.type === "keydown") {
-      const key = (e as React.KeyboardEvent).key;
-      if (key === "Enter" || key === " ") {
-        e.preventDefault();
-        window.fs.openLinkInBrowser(e.currentTarget.href);
-      }
-    }
+  const handleLinkClick = (anchor: HTMLAnchorElement) => {
+    window.fs.openLinkInBrowser(anchor.href);
   };
 
+  const keyboardClickEvents = useKeyboardClick(handleLinkClick, { preventDefault: true });
+
   return (
-    <a className="link" href={href} onClick={handleLinkClick} onKeyDown={handleLinkClick}>
+    <a className="link" href={href} {...keyboardClickEvents}>
       {text}
     </a>
   );

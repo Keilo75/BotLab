@@ -51,7 +51,7 @@ Please note that you cannot assign the ref directly.
 // Bad, not going to work
 <button ref={refs[index].current} />
 // Good
-<button ref={(ref) => (refs[index.current] = ref)} />
+<button ref={(ref) => (refs[index].current = ref)} />
 ```
 
 Furthermore, your render children should have an onClick method which updates the selectedIndex prop.

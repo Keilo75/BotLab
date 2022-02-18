@@ -1,16 +1,5 @@
-.settings-tab {
-  display: flex;
-  gap: var(--spacing-double);
-
-  .settings {
-    flex-grow: 1;
-
-    .toggle-token-btn {
-      width: 70px;
-    }
-  }
-
-  .imported-actions {
-    width: 500px;
+.settings {
+  .toggle-token-btn {
+    width: 70px;
   }
 }

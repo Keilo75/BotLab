@@ -5,12 +5,13 @@ interface Props {
   name: string;
   icon?: TablerIcon;
   className?: string;
+  fullscreen?: boolean;
 }
 
-const Tab: React.FC<Props> = ({ name, children }) => {
+const Tab: React.FC<Props> = ({ name, children, fullscreen }) => {
   return (
     <>
-      <h2>{name}</h2>
+      {!fullscreen && <h2>{name}</h2>}
       {children}
     </>
   );

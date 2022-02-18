@@ -1,0 +1,40 @@
+.dropdown-button {
+  position: relative;
+
+  .button {
+    width: 100%;
+  }
+
+  &:focus-within {
+    .dropdown-button-list {
+      opacity: 1;
+    }
+  }
+
+  .dropdown-button-list {
+    opacity: 0;
+    margin: 0;
+    width: 100%;
+    position: absolute;
+    top: calc(var(--button-height) + var(--spacing-half));
+    border-radius: var(--border-radius);
+    background-color: var(--overlay-dark-5);
+    list-style: none;
+    padding: 0;
+
+    li {
+      padding: 0 var(--spacing);
+      cursor: pointer;
+      border-radius: var(--border-radius);
+      outline: none;
+
+      &:hover {
+        background-color: var(--overlay-white-1);
+      }
+
+      &:focus-visible {
+        box-shadow: 0 0 0 4px var(--focus-color);
+      }
+    }
+  }
+}

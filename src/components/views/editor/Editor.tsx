@@ -98,7 +98,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
   return (
     <>
       <Tabs name="Editor" axis="horizontal" defaultTab={0}>
-        <Tab name="Interactions" icon={IconMessages} className="tab-flex">
+        <Tab name="Interactions" icon={IconMessages} fullscreen className="interactions">
           <Interactions interactions={interactions} setInteractions={setInteractions} />
         </Tab>
         <Tab name="Settings" icon={IconSettings}>

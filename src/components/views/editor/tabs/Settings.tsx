@@ -32,50 +32,48 @@ const Settings: React.FC<Props> = ({ settings, setSettings }) => {
         Account in the{" "}
         <Link href="https://discord.com/developers/applications" text="Discord Developer Portal" />.
       </p>
-      <div className="settings-tab">
-        <div className="settings">
-          <InputGroup state={settings} onChange={handleSettingsChange}>
-            {(state, setState) => (
-              <ComponentGroup axis="vertical">
-                <div>
-                  <Label text="Project Name" error={projectNameError} />
+      <ComponentGroup axis="vertical" className="settings">
+        <InputGroup state={settings} onChange={handleSettingsChange}>
+          {(state, setState) => (
+            <>
+              <div>
+                <Label text="Project Name" error={projectNameError} />
+                <TextInput
+                  name="name"
+                  value={state.name}
+                  onChange={setState}
+                  error={projectNameError !== undefined}
+                />
+              </div>
+              <div>
+                <Label text="Bot Token" />
+                <ComponentGroup axis="horizontal">
                   <TextInput
-                    name="name"
-                    value={state.name}
+                    name="token"
+                    value={state.token}
                     onChange={setState}
-                    error={projectNameError !== undefined}
+                    type={tokenVisible ? "text" : "password"}
                   />
-                </div>
-                <div>
-                  <Label text="Bot Token" />
-                  <ComponentGroup axis="horizontal">
-                    <TextInput
-                      name="token"
-                      value={state.token}
-                      onChange={setState}
-                      type={tokenVisible ? "text" : "password"}
-                    />
-                    <Button
-                      text={tokenVisible ? "Hide" : "Show"}
-                      type="primary"
-                      onClick={toggleTokenVisible}
-                      className="toggle-token-btn"
-                    />
-                  </ComponentGroup>
-                  <Container type="warning" className="mt">
-                    Never share your bots token with anybody! If you leak it, hackers can abuse your
-                    bot and perform malicious acts with it.
-                  </Container>
-                </div>
-              </ComponentGroup>
-            )}
-          </InputGroup>
-        </div>
-        <div className="imported-actions">
+                  <Button
+                    text={tokenVisible ? "Hide" : "Show"}
+                    type="primary"
+                    onClick={toggleTokenVisible}
+                    className="toggle-token-btn"
+                  />
+                </ComponentGroup>
+                <Container type="warning" className="mt">
+                  Never share your bots token with anybody! If you leak it, hackers can abuse your
+                  bot and perform malicious acts with it.
+                </Container>
+              </div>
+            </>
+          )}
+        </InputGroup>
+        <div>
           <Label text="Imported Actions" />
           <p className="text">This is a list of all actions you can use in this project.</p>
         </div>
-      </div>
+      </ComponentGroup>
     </>
   );
 };

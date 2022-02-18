@@ -1,0 +1,18 @@
+.interactions {
+  flex-grow: 1;
+  display: flex;
+
+  .sidebar {
+    width: 20%;
+    background-color: var(--container-color);
+    box-shadow: inset 0px 8px 18px -5px var(--title-bar-color);
+
+    .sidebar-head {
+      padding: var(--spacing);
+
+      .add-button {
+        width: 100%;
+      }
+    }
+  }
+}

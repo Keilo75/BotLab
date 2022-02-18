@@ -91,6 +91,16 @@ const KeyboardList: React.FC<Props> = ({ length, children, selectedIndex, axis =
 
       if (element) element.tabIndex = -1;
     }
+
+    return () => {
+      for (let i = 0; i < length; i++) {
+        const element = refs[i].current;
+        if (!element) continue;
+
+        element.removeEventListener("keydown", keydownHandler);
+        element.removeEventListener("blur", blurHandler);
+      }
+    };
   }, []);
 
   useEffect(() => {
