@@ -1,0 +1,41 @@
+.info-bar {
+  height: var(--title-bar-height);
+  width: 100%;
+  background-color: var(--title-bar-color);
+  display: flex;
+  padding-left: var(--spacing);
+  align-items: center;
+
+  .icon {
+    width: 24px;
+    height: 24px;
+    margin-right: var(--spacing-half);
+  }
+
+  .icon-success {
+    color: var(--success-color);
+  }
+
+  .icon-error {
+    color: var(--red-color);
+  }
+
+  .icon-loading {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    border-color: #fff transparent transparent transparent;
+    animation: spinner 0.7s cubic-bezier(0.25, 0, 0.25, 1) infinite;
+  }
+
+  @keyframes spinner {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

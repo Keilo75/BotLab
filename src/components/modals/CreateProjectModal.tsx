@@ -130,6 +130,7 @@ const CreateProjectModal: React.FC<Props> = ({ modal, dispatchProjects }) => {
                         name="projectName"
                         value={values.projectName}
                         onChange={handleInputChange}
+                        error={errors.projectName !== undefined}
                       />
                     </div>
                     <div>
@@ -139,6 +140,7 @@ const CreateProjectModal: React.FC<Props> = ({ modal, dispatchProjects }) => {
                           name="projectFolder"
                           value={values.projectFolder}
                           onChange={handleInputChange}
+                          error={errors.projectFolder !== undefined}
                         />
                         <Button text="Browse" type="primary" onClick={browseFolders} />
                       </ComponentGroup>

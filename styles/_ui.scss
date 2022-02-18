@@ -3,7 +3,9 @@
 
 @import "views/editor/Settings.scss";
 
-@import "ui/TitleBar";
+@import "shared/TitleBar.scss";
+@import "shared/InfoBar.scss";
+
 @import "ui/Modal.scss";
 @import "ui/Tabs.scss";
 @import "ui/Label.scss";

@@ -3,7 +3,7 @@ import "styles/_themes.scss";
 import "styles/_globals.scss";
 import "styles/_variables.scss";
 import "styles/_ui.scss";
-import TitleBar from "./ui/title-bar/TitleBar";
+import TitleBar from "./shared/title-bar/TitleBar";
 import { HashRouter, Route, Routes, useNavigate } from "react-router-dom";
 import Home from "./views/home/Home";
 import Modal from "./ui/Modal";
@@ -16,6 +16,7 @@ import { projectReducer } from "src/stores/ProjectReducer";
 import { ModalStore } from "src/stores/ModalStore";
 import { ProjectInfo } from "src/models/project";
 import Editor from "./views/editor/Editor";
+import InfoBar from "./shared/InfoBar";
 
 const App: React.FC = () => {
   const [loaded, setLoaded] = useState(false);
@@ -35,7 +36,7 @@ const App: React.FC = () => {
 
       for (const projectPath of projectPaths) {
         try {
-          const project = await window.fs.getProjectFromBotFile(projectPath);
+          const project = await window.project.getProjectFromBotFile(projectPath);
           projects.push({ name: project.settings.name, path: projectPath });
         } catch {
           dispatchProjects({ type: "remove", projectPath });
@@ -108,6 +109,7 @@ const App: React.FC = () => {
             />
           </Routes>
         </main>
+        <InfoBar />
       </HashRouter>
       <OptionsModal />
       <ErrorModal />

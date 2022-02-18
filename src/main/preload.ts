@@ -4,12 +4,11 @@ import { fork, exec } from "child_process";
 
 import path from "path";
 import Store from "electron-store";
-import { v4 as uuid } from "uuid";
 
 import { IPCChannel } from "src/models/ipc-channel";
 import { MenuAction } from "src/models/menu-action";
 import { defaultOptions, Options } from "src/stores/OptionsStore";
-import { Project, ProjectInfo } from "src/models/project";
+import { Project } from "src/models/project";
 import { fileExtensionWithoutDot } from "src/models/file-extension";
 
 let appPaths = {
@@ -44,10 +43,16 @@ const fsBridge = {
   openLinkInBrowser(link: string): void {
     ipcRenderer.send(IPCChannel.OPEN_LINK_IN_BROWSER, link);
   },
+};
 
+const projectBridge = {
   async getProjectFromBotFile(projectPath: string): Promise<Project> {
     const config: Project = fs.readJSONSync(projectPath, "utf8");
     return config;
+  },
+
+  async saveProject(project: Project, projectPath: string): Promise<void> {
+    fs.writeJSONSync(projectPath, project);
   },
 };
 
@@ -96,6 +101,7 @@ const templateBridge = {
 
 contextBridge.exposeInMainWorld("ipc", ipcBridge);
 contextBridge.exposeInMainWorld("fs", fsBridge);
+contextBridge.exposeInMainWorld("project", projectBridge);
 contextBridge.exposeInMainWorld("store", storeBridge);
 contextBridge.exposeInMainWorld("template", templateBridge);
 
@@ -103,6 +109,7 @@ declare global {
   interface Window {
     ipc: typeof ipcBridge;
     fs: typeof fsBridge;
+    project: typeof projectBridge;
     store: typeof storeBridge;
     template: typeof templateBridge;
   }

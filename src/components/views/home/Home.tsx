@@ -53,7 +53,7 @@ const Home: React.FC<Props> = ({ projects, dispatchProjects }) => {
 
   const openProject = async (projectPath: string) => {
     try {
-      await window.fs.getProjectFromBotFile(projectPath);
+      await window.project.getProjectFromBotFile(projectPath);
       navigate(`editor/${projectPath}`);
     } catch {
       openErrorModal("Could not find file.");
