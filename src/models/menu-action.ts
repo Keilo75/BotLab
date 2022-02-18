@@ -7,6 +7,8 @@ export enum MenuAction {
   SAVE = "save",
   OPTIONS = "options",
   CLOSE_EDITOR = "close-editor",
+  // Project
+  OPEN_IN_EXPLORER = "open-in-explorer",
   // View
   TOGGLE_DEV_TOOLS = "toggle-dev-tools",
   RELOAD = "reload",

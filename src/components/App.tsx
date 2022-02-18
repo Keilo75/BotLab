@@ -66,7 +66,7 @@ const App: React.FC = () => {
       return window.ipc.handleTitleBarAction(action);
     }
 
-    const editorActions = [MenuAction.SAVE, MenuAction.CLOSE_EDITOR];
+    const editorActions = [MenuAction.SAVE, MenuAction.CLOSE_EDITOR, MenuAction.OPEN_IN_EXPLORER];
     if (editorActions.includes(action)) {
       return setMenuAction(action);
     }

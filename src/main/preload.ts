@@ -46,6 +46,11 @@ const fsBridge = {
 };
 
 const projectBridge = {
+  openProjectInExplorer(projectPath: string): void {
+    const projectDir = path.dirname(projectPath);
+    fsBridge.openPathInExplorer(projectDir);
+  },
+
   async getProjectFromBotFile(projectPath: string): Promise<Project> {
     const config: Project = fs.readJSONSync(projectPath, "utf8");
     return config;

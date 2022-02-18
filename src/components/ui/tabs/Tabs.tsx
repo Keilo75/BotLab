@@ -52,7 +52,12 @@ const Tabs: React.FC<Props> = ({ children, name, defaultTab, axis = "vertical" }
           </KeyboardList>
         </div>
       </div>
-      <div className={clsx("tab-content main-content", children[selected].props.className)}>
+      <div
+        className={clsx(
+          !children[selected].props.fullscreen && "tab-content main-content",
+          children[selected].props.className
+        )}
+      >
         {children[selected]}
       </div>
     </div>

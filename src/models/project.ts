@@ -5,7 +5,7 @@ export interface ProjectInfo {
 
 export interface Project {
   settings: ProjectSettings;
-  commands: ProjectCommand[];
+  interactions: ProjectInteraction[];
 }
 
 export interface ProjectSettings {
@@ -13,4 +13,4 @@ export interface ProjectSettings {
   token: string;
 }
 
-export interface ProjectCommand {}
+export interface ProjectInteraction {}

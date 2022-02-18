@@ -21,5 +21,5 @@ export const botFile: Project = {
     name: "",
     token: "",
   },
-  commands: [],
+  interactions: [],
 };

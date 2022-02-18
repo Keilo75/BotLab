@@ -7,9 +7,10 @@ import Tabs from "src/components/ui/tabs/Tabs";
 import { getProjectNameError } from "src/lib/getProjectNameError";
 import { sleep } from "src/lib/sleep";
 import { MenuAction } from "src/models/menu-action";
-import { ProjectSettings, ProjectCommand } from "src/models/project";
+import { ProjectSettings, ProjectInteraction } from "src/models/project";
 import { InfoStore } from "src/stores/InfoStore";
 import { ProjectAction } from "src/stores/ProjectReducer";
+import Interactions from "./tabs/Interactions";
 import Settings from "./tabs/Settings";
 
 interface Props {
@@ -24,7 +25,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
     useCallback((state) => [state.setInfoMessage, state.setTitle, state.setDirty], [])
   );
   const [settings, setSettings] = useState<ProjectSettings>();
-  const [commands, setCommands] = useState<ProjectCommand[]>([]);
+  const [interactions, setInteractions] = useState<ProjectInteraction[]>([]);
   const hasProjectLoaded = useRef(false);
 
   // Load project
@@ -38,7 +39,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
       });
 
       setSettings(project.settings);
-      setCommands(project.commands);
+      setInteractions(project.interactions);
       setTitle(project.settings.name);
 
       hasProjectLoaded.current = true;
@@ -47,7 +48,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
 
   useEffect(() => {
     if (hasProjectLoaded.current) setDirty(true);
-  }, [settings, commands]);
+  }, [settings, interactions]);
 
   // Handle menu action
   useEffect(() => {
@@ -56,6 +57,10 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
     switch (menuAction) {
       case MenuAction.CLOSE_EDITOR:
         navigate("/");
+        break;
+
+      case MenuAction.OPEN_IN_EXPLORER:
+        if (projectPath) window.project.openProjectInExplorer(projectPath);
         break;
 
       case MenuAction.SAVE:
@@ -68,7 +73,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
   }, [menuAction]);
 
   const saveProject = async () => {
-    if (!settings || !commands || !projectPath) return;
+    if (!settings || !interactions || !projectPath) return;
 
     setInfoMessage("Saving...", "loading");
     await sleep(100);
@@ -78,7 +83,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
       return setInfoMessage("Could not save. Project Name: " + projectNameError, "error");
 
     try {
-      await window.project.saveProject({ settings, commands }, projectPath);
+      await window.project.saveProject({ settings, interactions }, projectPath);
     } catch (err) {
       return setInfoMessage("Could not save: " + err, "error");
     }
@@ -92,8 +97,10 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
 
   return (
     <>
-      <Tabs name="Editor" axis="horizontal" defaultTab={1}>
-        <Tab name="Interactions" icon={IconMessages}></Tab>
+      <Tabs name="Editor" axis="horizontal" defaultTab={0}>
+        <Tab name="Interactions" icon={IconMessages} className="tab-flex">
+          <Interactions interactions={interactions} setInteractions={setInteractions} />
+        </Tab>
         <Tab name="Settings" icon={IconSettings}>
           <Settings settings={settings} setSettings={setSettings} />
         </Tab>
