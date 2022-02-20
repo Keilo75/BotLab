@@ -7,6 +7,7 @@ import Label from "src/components/ui/Label";
 import ComponentGroup from "src/components/ui/utils/ComponentGroup";
 import {
   convertInteractionsToNodeModelArray,
+  convertNodeModelToInteractionsArray,
   getDepth,
   InteractionNode,
 } from "src/models/interaction-list";
@@ -15,8 +16,8 @@ import { InteractionStore } from "src/stores/project-stores/InteractionStore";
 import InteractionListNode from "./InteractionListNode";
 
 const InteractionList: React.FC = () => {
-  const [interactions, addInteraction] = InteractionStore(
-    useCallback((state) => [state.interactions, state.addInteraction], [])
+  const [interactions, setInteractions, addInteraction] = InteractionStore(
+    useCallback((state) => [state.interactions, state.setInteractions, state.addInteraction], [])
   );
 
   if (!interactions) return null;
@@ -25,7 +26,8 @@ const InteractionList: React.FC = () => {
   const [treeData, setTreeData] = useState<InteractionNode[]>();
 
   useEffect(() => {
-    setTreeData(convertInteractionsToNodeModelArray(interactions));
+    const newTree = convertInteractionsToNodeModelArray(interactions);
+    setTreeData(newTree);
   }, [interactions]);
 
   const handleAddInteraction = (option: string) => {
@@ -37,7 +39,8 @@ const InteractionList: React.FC = () => {
   };
 
   const handleDrop = (newTree: InteractionNode[]) => {
-    setTreeData(newTree);
+    const newInteractions = convertNodeModelToInteractionsArray(newTree);
+    setInteractions(newInteractions);
   };
 
   const collapseAll = () => {
@@ -77,6 +80,13 @@ const InteractionList: React.FC = () => {
           <InteractionListNode node={node} depth={depth} isOpen={isOpen} onToggle={onToggle} />
         )}
         canDrop={(tree, { dropTargetId, dropTarget, dragSource }) => {
+          // Do not drag context menus
+          if (
+            dragSource?.data?.type === "message_context_menu" ||
+            dragSource?.data?.type === "user_context_menu"
+          )
+            return false;
+
           const depth = getDepth(tree, dropTargetId);
 
           // Allow maximum depth of 2
@@ -95,7 +105,6 @@ const InteractionList: React.FC = () => {
           <div className="placeholder" style={{ left: depth * 20 }} />
         )}
         sort={false}
-        insertDroppableFirst={false}
       />
     </>
   );

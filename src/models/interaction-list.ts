@@ -18,6 +18,24 @@ export const convertInteractionsToNodeModelArray = (
   }));
 };
 
+export const convertNodeModelToInteractionsArray = (
+  nodeModels: InteractionNode[]
+): Interaction[] => {
+  const interactions: Interaction[] = [];
+
+  for (const m of nodeModels) {
+    if (m.data)
+      interactions.push({
+        id: m.id.toString(),
+        parent: m.parent.toString(),
+        name: m.text,
+        ...m.data,
+      });
+  }
+
+  return interactions;
+};
+
 export const getDepth = (tree: InteractionNode[], id: string | number, depth = 0): number => {
   const target = tree.find((node) => node.id === id);
 

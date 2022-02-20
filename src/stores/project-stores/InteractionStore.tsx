@@ -1,5 +1,5 @@
 import { Interaction, InteractionType } from "src/models/project";
-import create from "zustand";
+import create, { EqualityChecker } from "zustand";
 import { v4 as uuid } from "uuid";
 
 export interface IInteractionStore {

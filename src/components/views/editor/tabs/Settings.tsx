@@ -11,12 +11,10 @@ import useToggle from "src/hooks/useToggle";
 import { getProjectNameError } from "src/lib/getProjectNameError";
 import { ProjectSettings } from "src/models/project";
 import { SettingsStore } from "src/stores/project-stores/SettingsStore";
-import shallow from "zustand/shallow";
 
 const Settings: React.FC = () => {
   const [settings, setSettings] = SettingsStore(
-    useCallback((state) => [state.settings, state.setSettings], []),
-    shallow
+    useCallback((state) => [state.settings, state.setSettings], [])
   );
   if (!settings) return null;
 

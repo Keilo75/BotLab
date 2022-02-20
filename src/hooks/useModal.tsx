@@ -3,7 +3,6 @@ import { IModalStore, ModalStore } from "src/stores/ModalStore";
 import ReactDOM from "react-dom";
 import clsx from "clsx";
 import { ModalName } from "src/models/modal-name";
-import shallow from "zustand/shallow";
 
 interface ContentProps {
   padding?: boolean;
@@ -40,8 +39,7 @@ const useModal = (options: useModalOptions): useModalReturnValue => {
         removeModal: state.removeModal,
       }),
       []
-    ),
-    shallow
+    )
   );
 
   useEffect(() => {

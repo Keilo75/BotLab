@@ -16,14 +16,12 @@ import { projectReducer } from "src/stores/ProjectReducer";
 import { ModalStore } from "src/stores/ModalStore";
 import { ProjectInfo } from "src/models/project";
 import Editor from "./views/editor/Editor";
-import shallow from "zustand/shallow";
 
 const App: React.FC = () => {
   const [menuAction, setMenuAction] = useState<MenuAction | undefined>(undefined);
 
   const [options, setOptions] = OptionsStore(
-    useCallback((state) => [state.options, state.setOptions], []),
-    shallow
+    useCallback((state) => [state.options, state.setOptions], [])
   );
 
   const [projects, dispatchProjects] = useReducer(projectReducer, []);
