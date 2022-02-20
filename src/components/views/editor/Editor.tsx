@@ -9,6 +9,7 @@ import { sleep } from "src/lib/sleep";
 import { MenuAction } from "src/models/menu-action";
 import { ProjectSettings, Interaction } from "src/models/project";
 import { InfoStore } from "src/stores/InfoStore";
+import { SettingsStore } from "src/stores/project-stores/SettingsStore";
 import { ProjectAction } from "src/stores/ProjectReducer";
 import Interactions from "./tabs/Interactions";
 import Settings from "./tabs/Settings";
@@ -24,9 +25,10 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
   const [setInfoMessage, setTitle, setDirty] = InfoStore(
     useCallback((state) => [state.setInfoMessage, state.setTitle, state.setDirty], [])
   );
-  const [settings, setSettings] = useState<ProjectSettings>();
   const [interactions, setInteractions] = useState<Interaction[]>([]);
   const hasProjectLoaded = useRef(false);
+
+  const setSettings = SettingsStore(useCallback((state) => state.setSettings, []));
 
   // Load project
   useEffect(() => {
@@ -45,10 +47,6 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
       hasProjectLoaded.current = true;
     });
   }, []);
-
-  useEffect(() => {
-    if (hasProjectLoaded.current) setDirty(true);
-  }, [settings, interactions]);
 
   // Handle menu action
   useEffect(() => {
@@ -73,6 +71,8 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
   }, [menuAction]);
 
   const saveProject = async () => {
+    const settings = SettingsStore.getState().settings;
+
     if (!settings || !interactions || !projectPath) return;
 
     setInfoMessage("Saving...", "loading");
@@ -93,8 +93,6 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
     setDirty(false);
   };
 
-  if (!settings) return null;
-
   return (
     <>
       <Tabs name="Editor" axis="horizontal" defaultTab={0}>
@@ -102,7 +100,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
           <Interactions interactions={interactions} setInteractions={setInteractions} />
         </Tab>
         <Tab name="Settings" icon={IconSettings}>
-          <Settings settings={settings} setSettings={setSettings} />
+          <Settings />
         </Tab>
         <Tab name="Dashboard" icon={IconTerminal2}></Tab>
       </Tabs>

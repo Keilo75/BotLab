@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import Container from "src/components/ui/Container";
 import Button from "src/components/ui/inputs/Button";
 import InputGroup from "src/components/ui/inputs/InputGroup";
@@ -10,13 +10,16 @@ import ComponentGroup from "src/components/ui/utils/ComponentGroup";
 import useToggle from "src/hooks/useToggle";
 import { getProjectNameError } from "src/lib/getProjectNameError";
 import { ProjectSettings } from "src/models/project";
+import { SettingsStore } from "src/stores/project-stores/SettingsStore";
+import shallow from "zustand/shallow";
 
-interface Props {
-  settings: ProjectSettings;
-  setSettings: React.Dispatch<React.SetStateAction<ProjectSettings | undefined>>;
-}
+const Settings: React.FC = () => {
+  const [settings, setSettings] = SettingsStore(
+    useCallback((state) => [state.settings, state.setSettings], []),
+    shallow
+  );
+  if (!settings) return null;
 
-const Settings: React.FC<Props> = ({ settings, setSettings }) => {
   const [tokenVisible, toggleTokenVisible] = useToggle(false);
 
   const handleSettingsChange = (state: ProjectSettings) => {
