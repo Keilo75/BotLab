@@ -1,6 +1,6 @@
 import { Tree, TreeMethods } from "@minoru/react-dnd-treeview";
 import { IconFolder, IconSquareMinus } from "@tabler/icons";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import Button from "src/components/ui/inputs/Button";
 import DropdownButton from "src/components/ui/inputs/DropdownButton";
 import Label from "src/components/ui/Label";
@@ -10,14 +10,14 @@ import {
   getDepth,
   InteractionNode,
 } from "src/models/interaction-list";
-import { Interaction } from "src/models/project";
+import { InteractionStore } from "src/stores/project-stores/InteractionStore";
 import InteractionListNode from "./InteractionListNode";
 
-interface Props {
-  interactions: Interaction[];
-}
+const InteractionList: React.FC = () => {
+  const interactions = InteractionStore(useCallback((state) => state.interactions, []));
 
-const InteractionList: React.FC<Props> = ({ interactions }) => {
+  if (!interactions) return null;
+
   const treeRef = useRef<TreeMethods>(null);
   const [treeData, setTreeData] = useState(convertInteractionsToNodeModelArray(interactions));
 

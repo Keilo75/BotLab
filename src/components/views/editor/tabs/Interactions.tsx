@@ -2,16 +2,11 @@ import React from "react";
 import { Interaction } from "src/models/project";
 import InteractionList from "./interactions/interaction-list/InteractionList";
 
-interface Props {
-  interactions: Interaction[];
-  setInteractions: React.Dispatch<React.SetStateAction<Interaction[]>>;
-}
-
-const Interactions: React.FC<Props> = ({ interactions, setInteractions }) => {
+const Interactions: React.FC = () => {
   return (
     <>
       <div className="sidebar">
-        <InteractionList interactions={interactions} />
+        <InteractionList />
       </div>
       <div className="interaction"></div>
     </>

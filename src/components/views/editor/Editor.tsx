@@ -9,6 +9,7 @@ import { sleep } from "src/lib/sleep";
 import { MenuAction } from "src/models/menu-action";
 import { ProjectSettings, Interaction } from "src/models/project";
 import { InfoStore } from "src/stores/InfoStore";
+import { InteractionStore } from "src/stores/project-stores/InteractionStore";
 import { SettingsStore } from "src/stores/project-stores/SettingsStore";
 import { ProjectAction } from "src/stores/ProjectReducer";
 import Interactions from "./tabs/Interactions";
@@ -25,10 +26,10 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
   const [setInfoMessage, setTitle, setDirty] = InfoStore(
     useCallback((state) => [state.setInfoMessage, state.setTitle, state.setDirty], [])
   );
-  const [interactions, setInteractions] = useState<Interaction[]>([]);
-  const hasProjectLoaded = useRef(false);
+  const [hasLoaded, setHasLoaded] = useState(false);
 
   const setSettings = SettingsStore(useCallback((state) => state.setSettings, []));
+  const setInteractions = InteractionStore(useCallback((state) => state.setInteractions, []));
 
   // Load project
   useEffect(() => {
@@ -44,7 +45,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
       setInteractions(project.interactions);
       setTitle(project.settings.name);
 
-      hasProjectLoaded.current = true;
+      setHasLoaded(true);
     });
   }, []);
 
@@ -72,6 +73,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
 
   const saveProject = async () => {
     const settings = SettingsStore.getState().settings;
+    const interactions = InteractionStore.getState().interactions;
 
     if (!settings || !interactions || !projectPath) return;
 
@@ -93,11 +95,13 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
     setDirty(false);
   };
 
+  if (!hasLoaded) return null;
+
   return (
     <>
       <Tabs name="Editor" axis="horizontal" defaultTab={0}>
         <Tab name="Interactions" icon={IconMessages} fullscreen className="interactions">
-          <Interactions interactions={interactions} setInteractions={setInteractions} />
+          <Interactions />
         </Tab>
         <Tab name="Settings" icon={IconSettings}>
           <Settings />
