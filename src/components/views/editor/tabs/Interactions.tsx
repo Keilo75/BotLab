@@ -1,5 +1,4 @@
 import React from "react";
-import { Interaction } from "src/models/project";
 import InteractionList from "./interactions/interaction-list/InteractionList";
 
 const Interactions: React.FC = () => {

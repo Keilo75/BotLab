@@ -1,5 +1,5 @@
 import { useDragOver } from "@minoru/react-dnd-treeview";
-import { IconFolder } from "@tabler/icons";
+import { IconFolder, IconMail, IconUser } from "@tabler/icons";
 import clsx from "clsx";
 import React from "react";
 import Repeater from "src/components/ui/utils/Repeater";
@@ -28,6 +28,8 @@ const InteractionListNode: React.FC<Props> = ({ node, depth, isOpen, onToggle })
       </Repeater>
       {node.data?.type === "folder" && <IconFolder />}
       {node.data?.type === "command" && "/"}
+      {node.data?.type === "message_context_menu" && <IconMail />}
+      {node.data?.type === "user_context_menu" && <IconUser />}
       {node.text}
     </div>
   );

@@ -1,6 +1,6 @@
 import { Tree, TreeMethods } from "@minoru/react-dnd-treeview";
 import { IconFolder, IconSquareMinus } from "@tabler/icons";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Button from "src/components/ui/inputs/Button";
 import DropdownButton from "src/components/ui/inputs/DropdownButton";
 import Label from "src/components/ui/Label";
@@ -10,16 +10,31 @@ import {
   getDepth,
   InteractionNode,
 } from "src/models/interaction-list";
+import { InteractionType, InteractionTypes } from "src/models/project";
 import { InteractionStore } from "src/stores/project-stores/InteractionStore";
 import InteractionListNode from "./InteractionListNode";
 
 const InteractionList: React.FC = () => {
-  const interactions = InteractionStore(useCallback((state) => state.interactions, []));
+  const [interactions, addInteraction] = InteractionStore(
+    useCallback((state) => [state.interactions, state.addInteraction], [])
+  );
 
   if (!interactions) return null;
 
   const treeRef = useRef<TreeMethods>(null);
-  const [treeData, setTreeData] = useState(convertInteractionsToNodeModelArray(interactions));
+  const [treeData, setTreeData] = useState<InteractionNode[]>();
+
+  useEffect(() => {
+    setTreeData(convertInteractionsToNodeModelArray(interactions));
+  }, [interactions]);
+
+  const handleAddInteraction = (option: string) => {
+    const type = Object.keys(InteractionTypes).find(
+      (key) => InteractionTypes[key as InteractionType] === option
+    ) as InteractionType;
+
+    addInteraction(type);
+  };
 
   const handleDrop = (newTree: InteractionNode[]) => {
     setTreeData(newTree);
@@ -29,6 +44,8 @@ const InteractionList: React.FC = () => {
     treeRef.current?.closeAll();
   };
 
+  if (!treeData) return null;
+
   return (
     <>
       <div className="sidebar-head">
@@ -36,8 +53,8 @@ const InteractionList: React.FC = () => {
         <ComponentGroup axis="horizontal">
           <DropdownButton
             text="Add Interaction"
-            options={["Command", "Folder", "User Context Menu", "Message Context Menu"]}
-            onClick={() => null}
+            options={Object.values(InteractionTypes)}
+            onClick={handleAddInteraction}
             className="add-button"
             disabled
           />
