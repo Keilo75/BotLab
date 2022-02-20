@@ -35,7 +35,7 @@ const InteractionList: React.FC = () => {
       (key) => InteractionTypes[key as InteractionType] === option
     ) as InteractionType;
 
-    addInteraction(type);
+    addInteraction(type, "0");
   };
 
   const handleDrop = (newTree: InteractionNode[]) => {
@@ -79,22 +79,26 @@ const InteractionList: React.FC = () => {
         render={(node, { depth, isOpen, onToggle }) => (
           <InteractionListNode node={node} depth={depth} isOpen={isOpen} onToggle={onToggle} />
         )}
-        canDrop={(tree, { dropTargetId, dropTarget, dragSource }) => {
+        canDrop={(tree, { dropTargetId, dragSource }) => {
           // Do not drag context menus
           if (
-            dragSource?.data?.type === "message_context_menu" ||
-            dragSource?.data?.type === "user_context_menu"
+            dragSource?.data?.type === "message-context-menu" ||
+            dragSource?.data?.type === "user-context-menu"
           )
             return false;
 
           const depth = getDepth(tree, dropTargetId);
+
+          if (dragSource?.data?.type === "folder") {
+            // Allow maximum depth of 1 for folders
+            if (depth > 1) return false;
+          }
 
           // Allow maximum depth of 2
           if (depth > 2) return false;
 
           if (dragSource?.parent === dropTargetId) return true;
         }}
-        dropTargetOffset={10}
         dragPreviewRender={(monitorProps) => (
           <div className="interaction-drag-preview">
             {monitorProps.item.data?.type === "folder" && <IconFolder />}

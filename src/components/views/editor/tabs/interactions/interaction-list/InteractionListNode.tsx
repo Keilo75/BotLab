@@ -28,8 +28,8 @@ const InteractionListNode: React.FC<Props> = ({ node, depth, isOpen, onToggle })
       </Repeater>
       {node.data?.type === "folder" && <IconFolder />}
       {node.data?.type === "command" && "/"}
-      {node.data?.type === "message_context_menu" && <IconMail />}
-      {node.data?.type === "user_context_menu" && <IconUser />}
+      {node.data?.type === "message-context-menu" && <IconMail />}
+      {node.data?.type === "user-context-menu" && <IconUser />}
       {node.text}
     </div>
   );

@@ -13,13 +13,13 @@ export interface ProjectSettings {
   token: string;
 }
 
-export type InteractionType = "command" | "folder" | "user_context_menu" | "message_context_menu";
+export type InteractionType = "command" | "folder" | "user-context-menu" | "message-context-menu";
 
 export const InteractionTypes: Record<InteractionType, string> = {
   command: "Command",
   folder: "Folder",
-  user_context_menu: "User Context Menu",
-  message_context_menu: "Message Context Menu",
+  "user-context-menu": "User Context Menu",
+  "message-context-menu": "Message Context Menu",
 };
 
 export interface Interaction {

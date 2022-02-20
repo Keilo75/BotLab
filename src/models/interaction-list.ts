@@ -1,5 +1,5 @@
 import { NodeModel } from "@minoru/react-dnd-treeview";
-import { Interaction } from "./project";
+import { Interaction, InteractionType, InteractionTypes } from "./project";
 
 export type NodeModelInteractionData = Pick<Interaction, "type">;
 export type InteractionNode = NodeModel<NodeModelInteractionData>;
@@ -42,4 +42,30 @@ export const getDepth = (tree: InteractionNode[], id: string | number, depth = 0
   if (target) return getDepth(tree, target.parent, depth + 1);
 
   return depth;
+};
+
+export const getInteractionName = (
+  interactions: Interaction[],
+  type: InteractionType,
+  parent: string
+): string => {
+  const humanName = `new-${type}`;
+
+  const filteredInteractions = interactions
+    .filter((cmd) => cmd.parent === parent && cmd.name.startsWith(humanName))
+    .map((cmd) => {
+      const numbers = cmd.name.match(/\d+/);
+      if (numbers) return numbers[0];
+
+      return "1";
+    });
+
+  if (filteredInteractions.length === 0) return humanName;
+
+  let lowestNumber = 1;
+  while (!filteredInteractions.includes(lowestNumber.toString())) {
+    lowestNumber++;
+  }
+
+  return `${humanName}-${lowestNumber}`;
 };
