@@ -16,9 +16,19 @@ import { InteractionStore } from "src/stores/project-stores/InteractionStore";
 import InteractionListNode from "./InteractionListNode";
 
 const InteractionList: React.FC = () => {
-  const [interactions, setInteractions, addInteraction] = InteractionStore(
-    useCallback((state) => [state.interactions, state.setInteractions, state.addInteraction], [])
-  );
+  const [interactions, setInteractions, addInteraction, selectedInteraction, selectInteraction] =
+    InteractionStore(
+      useCallback(
+        (state) => [
+          state.interactions,
+          state.setInteractions,
+          state.addInteraction,
+          state.selectedInteraction,
+          state.selectInteraction,
+        ],
+        []
+      )
+    );
 
   if (!interactions) return null;
 
@@ -28,6 +38,12 @@ const InteractionList: React.FC = () => {
   useEffect(() => {
     const newTree = convertInteractionsToNodeModelArray(interactions);
     setTreeData(newTree);
+
+    if (!selectedInteraction) {
+      // Select first root item
+      const selected = interactions.find((i) => i.parent === "0");
+      if (selected) selectInteraction(selected.id);
+    }
   }, [interactions]);
 
   const handleAddInteraction = (option: string) => {
@@ -35,16 +51,12 @@ const InteractionList: React.FC = () => {
       (key) => InteractionTypes[key as InteractionType] === option
     ) as InteractionType;
 
-    addInteraction(type, "0");
+    addInteraction(type);
   };
 
   const handleDrop = (newTree: InteractionNode[]) => {
     const newInteractions = convertNodeModelToInteractionsArray(newTree);
     setInteractions(newInteractions);
-  };
-
-  const collapseAll = () => {
-    treeRef.current?.closeAll();
   };
 
   if (!treeData) return null;
@@ -53,16 +65,13 @@ const InteractionList: React.FC = () => {
     <>
       <div className="sidebar-head">
         <Label text="Interactions" />
-        <ComponentGroup axis="horizontal">
-          <DropdownButton
-            text="Add Interaction"
-            options={Object.values(InteractionTypes)}
-            onClick={handleAddInteraction}
-            className="add-button"
-            disabled
-          />
-          <Button type="transparent" icon={IconSquareMinus} square onClick={collapseAll} />
-        </ComponentGroup>
+        <DropdownButton
+          text="Add Interaction"
+          options={Object.values(InteractionTypes)}
+          onClick={handleAddInteraction}
+          className="add-button"
+          disabled
+        />
       </div>
       <hr />
       <Tree
@@ -77,7 +86,14 @@ const InteractionList: React.FC = () => {
           placeholder: "placeholder-container",
         }}
         render={(node, { depth, isOpen, onToggle }) => (
-          <InteractionListNode node={node} depth={depth} isOpen={isOpen} onToggle={onToggle} />
+          <InteractionListNode
+            node={node}
+            depth={depth}
+            isOpen={isOpen}
+            onToggle={onToggle}
+            isSelected={node.id === selectedInteraction?.id}
+            selectInteraction={selectInteraction}
+          />
         )}
         canDrop={(tree, { dropTargetId, dragSource }) => {
           // Do not drag context menus

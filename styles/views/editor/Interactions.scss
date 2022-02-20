@@ -40,15 +40,31 @@
           border-left: 2px solid var(--overlay-white-2);
           margin-left: 4px;
           margin-right: var(--spacing);
+          cursor: pointer;
         }
 
         svg {
           width: 16px;
           margin-right: var(--spacing-third);
           height: 16px;
+          flex-shrink: 0;
+          cursor: pointer;
+        }
+
+        .node-text {
+          flex-grow: 1;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          cursor: pointer;
         }
 
         &:hover {
+          background-color: var(--overlay-black-3);
+        }
+
+        &.selected-node {
+          border-left: 5px solid var(--primary-color);
           background-color: var(--overlay-white-1);
         }
       }
@@ -58,7 +74,7 @@
       }
 
       .drop-target {
-        background-color: var(--overlay-white-2);
+        background-color: var(--overlay-white-1);
       }
     }
   }

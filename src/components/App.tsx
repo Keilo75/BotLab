@@ -16,6 +16,7 @@ import { projectReducer } from "src/stores/ProjectReducer";
 import { ModalStore } from "src/stores/ModalStore";
 import { ProjectInfo } from "src/models/project";
 import Editor from "./views/editor/Editor";
+import ContextMenu from "./shared/ContextMenu";
 
 const App: React.FC = () => {
   const [menuAction, setMenuAction] = useState<MenuAction | undefined>(undefined);
@@ -111,6 +112,7 @@ const App: React.FC = () => {
           </Routes>
         </main>
       </HashRouter>
+      <ContextMenu />
       <OptionsModal />
       <ErrorModal />
       <Modal />

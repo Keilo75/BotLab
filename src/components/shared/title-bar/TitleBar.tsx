@@ -7,7 +7,6 @@ import MenuPane, { MenuPaneProps } from "./MenuPane";
 import { MenuAction } from "src/models/menu-action";
 import { GlobalHotKeys, KeyMap } from "react-hotkeys";
 import { MenuItemProps } from "./MenuItem";
-import { useLocation } from "react-router-dom";
 import { InfoStore } from "src/stores/InfoStore";
 
 interface Props {
@@ -24,7 +23,6 @@ interface KeyboardShortcuts {
 const TitleBar: React.FC<Props> = ({ handleMenuItemClick }) => {
   const [selectedPane, setSelectedPane] = useState<string>();
   const [title, dirty] = InfoStore(useCallback((state) => [state.title, state.dirty], []));
-  const location = useLocation();
 
   const menu: MenuPaneProps[] = useMemo(
     () => [

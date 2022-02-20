@@ -44,26 +44,22 @@ export const getDepth = (tree: InteractionNode[], id: string | number, depth = 0
   return depth;
 };
 
-export const getInteractionName = (
-  interactions: Interaction[],
-  type: InteractionType,
-  parent: string
-): string => {
+export const getInteractionName = (interactions: Interaction[], type: InteractionType): string => {
   const humanName = `new-${type}`;
 
   const filteredInteractions = interactions
-    .filter((cmd) => cmd.parent === parent && cmd.name.startsWith(humanName))
+    .filter((cmd) => cmd.name.startsWith(humanName))
     .map((cmd) => {
       const numbers = cmd.name.match(/\d+/);
       if (numbers) return numbers[0];
 
-      return "1";
+      return "0";
     });
 
   if (filteredInteractions.length === 0) return humanName;
 
   let lowestNumber = 1;
-  while (!filteredInteractions.includes(lowestNumber.toString())) {
+  while (filteredInteractions.includes(lowestNumber.toString())) {
     lowestNumber++;
   }
 

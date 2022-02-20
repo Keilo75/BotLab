@@ -8,8 +8,7 @@ import Label from "src/components/ui/Label";
 import Link from "src/components/ui/Link";
 import ComponentGroup from "src/components/ui/utils/ComponentGroup";
 import useToggle from "src/hooks/useToggle";
-import { getProjectNameError } from "src/lib/getProjectNameError";
-import { ProjectSettings } from "src/models/project";
+import { getProjectNameError, ProjectSettings } from "src/models/project";
 import { SettingsStore } from "src/stores/project-stores/SettingsStore";
 
 const Settings: React.FC = () => {

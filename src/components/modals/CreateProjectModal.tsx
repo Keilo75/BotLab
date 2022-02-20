@@ -10,7 +10,7 @@ import { OptionsStore } from "src/stores/OptionsStore";
 import Container from "../ui/Container";
 import { ModalStore } from "src/stores/ModalStore";
 import { ProjectAction } from "src/stores/ProjectReducer";
-import { getProjectNameError } from "src/lib/getProjectNameError";
+import { getProjectNameError } from "src/models/project";
 
 interface Props {
   modal: useModalReturnValue;

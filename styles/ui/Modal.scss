@@ -4,7 +4,7 @@ $modal-footer-height: calc(var(--button-height) + 2 * var(--spacing-double));
   position: absolute;
   inset: 0;
   z-index: var(--overlay-z-index);
-  background-color: var(--overlay-dark-5);
+  background-color: var(--overlay-black-5);
   display: grid;
   place-items: center;
   pointer-events: none;
