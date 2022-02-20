@@ -21,7 +21,7 @@ interface Props {
 const Home: React.FC<Props> = ({ projects, dispatchProjects, loadProjects }) => {
   const CreateProjectModal = useModal({ name: ModalName.CREATE_NEW_PROJECT });
 
-  const [openErrorModal] = ModalStore(useCallback((state) => [state.openErrorModal], []));
+  const openErrorModal = ModalStore(useCallback((state) => state.openErrorModal, []));
   const [setTitle, setDirty] = InfoStore(
     useCallback((state) => [state.setTitle, state.setDirty], [])
   );

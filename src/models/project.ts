@@ -5,7 +5,7 @@ export interface ProjectInfo {
 
 export interface Project {
   settings: ProjectSettings;
-  interactions: ProjectInteraction[];
+  interactions: Interaction[];
 }
 
 export interface ProjectSettings {
@@ -13,4 +13,11 @@ export interface ProjectSettings {
   token: string;
 }
 
-export interface ProjectInteraction {}
+export type InteractionType = "command" | "folder" | "user_context_menu" | "message_context_menu";
+
+export interface Interaction {
+  type: InteractionType;
+  id: string;
+  parent: string;
+  name: string;
+}

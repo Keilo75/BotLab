@@ -4,7 +4,7 @@ import "styles/_globals.scss";
 import "styles/_variables.scss";
 import "styles/_ui.scss";
 import TitleBar from "./shared/title-bar/TitleBar";
-import { HashRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import Home from "./views/home/Home";
 import Modal from "./ui/Modal";
 import { MenuAction } from "src/models/menu-action";
@@ -16,16 +16,18 @@ import { projectReducer } from "src/stores/ProjectReducer";
 import { ModalStore } from "src/stores/ModalStore";
 import { ProjectInfo } from "src/models/project";
 import Editor from "./views/editor/Editor";
+import shallow from "zustand/shallow";
 
 const App: React.FC = () => {
   const [menuAction, setMenuAction] = useState<MenuAction | undefined>(undefined);
 
   const [options, setOptions] = OptionsStore(
-    useCallback((state) => [state.options, state.setOptions], [])
+    useCallback((state) => [state.options, state.setOptions], []),
+    shallow
   );
 
   const [projects, dispatchProjects] = useReducer(projectReducer, []);
-  const [setCurrentModal] = ModalStore(useCallback((state) => [state.setCurrentModal], []));
+  const setCurrentModal = ModalStore(useCallback((state) => state.setCurrentModal, []));
 
   const loadProjects = useCallback(async () => {
     const projectPaths = window.store.getProjects();

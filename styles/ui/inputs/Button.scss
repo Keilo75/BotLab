@@ -68,6 +68,15 @@ $button-colors: "primary" "success" "red";
   justify-content: flex-start;
 }
 
+.button-icon-right {
+  flex-direction: row-reverse;
+  justify-content: space-between;
+
+  svg {
+    margin: 0;
+  }
+}
+
 .button-square {
   width: var(--button-height);
   padding: 0;

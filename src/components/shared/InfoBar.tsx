@@ -1,10 +1,12 @@
 import { IconCheck, IconX } from "@tabler/icons";
 import React, { useCallback, useEffect } from "react";
 import { InfoStore } from "src/stores/InfoStore";
+import shallow from "zustand/shallow";
 
 const InfoBar: React.FC = () => {
   const [info, clearInfoMessage] = InfoStore(
-    useCallback((state) => [state.infoMessage, state.clearInfoMessage], [])
+    useCallback((state) => [state.infoMessage, state.clearInfoMessage], []),
+    shallow
   );
 
   useEffect(() => {

@@ -93,9 +93,10 @@ return (
 );
 ```
 
-| Prop      | Type                   | Optional | Description             |
-| --------- | ---------------------- | -------- | ----------------------- |
-| text      | string                 | no       | The label of the button |
-| optioms   | string[]               | no       | The available options   |
-| onClick   | (type: string) => void | no       | The click event handler |
-| className | string                 | yes      | Additional class names  |
+| Prop      | Type                   | Optional | Description                    |
+| --------- | ---------------------- | -------- | ------------------------------ |
+| text      | string                 | no       | The label of the button        |
+| optioms   | string[]               | no       | The available options          |
+| onClick   | (type: string) => void | no       | The click event handler        |
+| className | string                 | yes      | Additional class names         |
+| disabled  | boolean                | yes      | Wheter this button is disabled |

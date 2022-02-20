@@ -7,7 +7,7 @@ import Tabs from "src/components/ui/tabs/Tabs";
 import { getProjectNameError } from "src/lib/getProjectNameError";
 import { sleep } from "src/lib/sleep";
 import { MenuAction } from "src/models/menu-action";
-import { ProjectSettings, ProjectInteraction } from "src/models/project";
+import { ProjectSettings, Interaction } from "src/models/project";
 import { InfoStore } from "src/stores/InfoStore";
 import { ProjectAction } from "src/stores/ProjectReducer";
 import Interactions from "./tabs/Interactions";
@@ -25,7 +25,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
     useCallback((state) => [state.setInfoMessage, state.setTitle, state.setDirty], [])
   );
   const [settings, setSettings] = useState<ProjectSettings>();
-  const [interactions, setInteractions] = useState<ProjectInteraction[]>([]);
+  const [interactions, setInteractions] = useState<Interaction[]>([]);
   const hasProjectLoaded = useRef(false);
 
   // Load project

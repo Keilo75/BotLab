@@ -6,6 +6,7 @@ interface Props {
   type: "primary" | "transparent" | "success" | "red";
   text?: string;
   textAlignment?: "center" | "left";
+  iconAlignment?: "right";
   onClick?: MouseEventHandler<HTMLButtonElement>;
   icon?: TablerIcon;
   submit?: boolean;
@@ -19,6 +20,7 @@ const Button: React.FC<Props> = ({
   onClick,
   text,
   textAlignment,
+  iconAlignment,
   icon: Icon,
   submit,
   disabled,
@@ -31,6 +33,7 @@ const Button: React.FC<Props> = ({
         "button",
         `button-${type}`,
         textAlignment && `button-text-${textAlignment}`,
+        iconAlignment && `button-icon-${iconAlignment}`,
         square && "button-square",
         className
       )}
