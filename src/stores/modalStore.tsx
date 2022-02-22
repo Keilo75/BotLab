@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import { ModalName } from "src/models/modal-name";
 import create from "zustand";
 
 interface ContentProps {
@@ -13,6 +12,13 @@ export const ModalLayout: { Content: React.FC<ContentProps>; Footer: React.FC } 
   Footer: ({ children }) => <div className="modal-footer">{children}</div>,
 };
 
+export enum ModalName {
+  OPTIONS = "options",
+  CREATE_NEW_PROJECT = "create-new-project",
+  ERROR = "error",
+  ABOUT = "about",
+}
+
 export interface Modal {
   name: ModalName;
   large?: boolean;
@@ -20,7 +26,7 @@ export interface Modal {
 
 export interface IModalStore {
   currentModal: Modal | undefined;
-  setCurrentModal: (name: ModalName | undefined, data?: any) => void;
+  setCurrentModal: (name: ModalName, data?: any) => void;
   hideModal: () => void;
   modals: Modal[];
   addModal: (modal: Modal) => void;
@@ -31,12 +37,9 @@ export interface IModalStore {
 export const ModalStore = create<IModalStore>((set, get) => ({
   currentModal: undefined,
   setCurrentModal: (name, data) => {
-    if (name === undefined) set({ currentModal: undefined, data: undefined });
-    else {
-      const modal = get().modals.find((modal) => modal.name === name);
-      if (modal) set({ currentModal: modal, data });
-      else throw new Error("Cannot find modal " + name);
-    }
+    const modal = get().modals.find((modal) => modal.name === name);
+    if (modal) set({ currentModal: modal, data });
+    else throw new Error("Cannot find modal " + name);
   },
   hideModal: () => {
     set({ currentModal: undefined, data: undefined });

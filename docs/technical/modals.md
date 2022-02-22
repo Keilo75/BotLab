@@ -5,39 +5,39 @@ Please note that modals inside modals are currently not supported.
 
 ## Usage
 
-To create a new modal, use the `useModal` hook:
+To create a new modal, use the `Modal` component:
 
 ```jsx
-const Modal = useModal();
-Modal.show();
-Modal.hide();
-
-return <Modal.Component>...</Modal.Component>;
+<Modal name={ModalName.MODAL_NAME}>
+  <ModalLayout.Content padding>
+    <h2>I'm a modal</h2>
+  </ModalLayout.Content>
+  <ModalLayout.Footer>
+    <Button text="Close" type="primary" onClick={hideModal} />
+  </ModalLayout.Footer>
+</Modal>
 ```
 
 It is recommended to use the `ModalContent` and `ModalFooter` components inside the modal root, as they ensure a consistent styling.
 
-```jsx
-import useModal, { ModalLayout } from "hooks/useModal";
+## Modal Store
 
-const ConfirmModal = useModal({ name: "confirm-modal" });
+By using the modal store, you can easily manage modals.
 
-return (
-  <>
-    <ConfirmModal.Component>
-      <ModalLayout.Content>...</ModalLayout.Content>
-      <ModalLayout.Footer>...</ModalLayout.Footer>
-    </ConfirmModal.Component>
-  </>
-);
+```js
+import { ModalStore } from "src/stores/ModalStore";
+const store = ModalStore();
 ```
 
-Alternatively, you can use `modalStore.setCurrentModal(name: ModalName): void` to open a modal.
+| Key             | Type                                  | Description                                               |
+| --------------- | ------------------------------------- | --------------------------------------------------------- |
+| data            | any                                   | Modal data which is passed to the modal on initialization |
+| setCurrentModal | (name: ModalName, data?: any) => void | Show a modal                                              |
+| hideModal       | () => void                            | Hide the current modal                                    |
 
-## useModal API
+## Modal Props
 
-The `useModal` hook takes in an object of options, which are described here:
-| Option | Type | Optional | Description
-| --- | --- | --- |--- |
-| name |ModalName | no | The name of the modal
-| large |boolean | yes | Wheter the modal should be full-screen
+| Prop  | Type      | Optional | Description                                    |
+| ----- | --------- | -------- | ---------------------------------------------- |
+| name  | ModalName | no       | The name of modal                              |
+| large | boolean   | yes      | Wheter the modal is large. Defaults to `false` |

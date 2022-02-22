@@ -5,9 +5,7 @@ import React, { useCallback, useState } from "react";
 import Repeater from "src/components/ui/utils/Repeater";
 import useContextMenu from "src/hooks/useContextMenu";
 import { InteractionNode } from "src/models/interaction-list";
-import { ModalName } from "src/models/modal-name";
 import { ModalStore } from "src/stores/ModalStore";
-import { OptionsStore } from "src/stores/OptionsStore";
 
 interface Props {
   node: InteractionNode;

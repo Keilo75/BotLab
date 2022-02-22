@@ -1,5 +1,4 @@
 import React, { useCallback } from "react";
-import { ModalName } from "src/models/modal-name";
 import { ModalLayout, ModalStore } from "src/stores/ModalStore";
 import { OptionsStore } from "src/stores/OptionsStore";
 import Button from "../ui/inputs/Button";

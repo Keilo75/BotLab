@@ -1,15 +1,14 @@
 import { Form, Formik } from "formik";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import Button from "../ui/inputs/Button";
 import TextInput from "../ui/inputs/TextInput";
 import Label from "../ui/Label";
 import ComponentGroup from "../ui/utils/ComponentGroup";
 import { OptionsStore } from "src/stores/OptionsStore";
 import Container from "../ui/Container";
-import { ModalLayout, ModalStore } from "src/stores/ModalStore";
+import { ModalLayout, ModalName, ModalStore } from "src/stores/ModalStore";
 import { ProjectAction } from "src/stores/ProjectReducer";
 import { getProjectNameError } from "src/models/project";
-import { ModalName } from "src/models/modal-name";
 
 interface Props {
   dispatchProjects: React.Dispatch<ProjectAction>;
