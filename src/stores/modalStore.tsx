@@ -1,30 +1,45 @@
-import { useModalOptions } from "src/hooks/useModal";
+import clsx from "clsx";
 import { ModalName } from "src/models/modal-name";
 import create from "zustand";
 
-export interface Modal extends useModalOptions {
-  hide(): void;
-  error?: string;
+interface ContentProps {
+  padding?: boolean;
+}
+
+export const ModalLayout: { Content: React.FC<ContentProps>; Footer: React.FC } = {
+  Content: ({ children, padding }) => (
+    <div className={clsx("modal-content", padding && "modal-content-padding")}>{children}</div>
+  ),
+  Footer: ({ children }) => <div className="modal-footer">{children}</div>,
+};
+
+export interface Modal {
+  name: ModalName;
+  large?: boolean;
 }
 
 export interface IModalStore {
   currentModal: Modal | undefined;
-  setCurrentModal(name: ModalName | undefined): void;
+  setCurrentModal: (name: ModalName | undefined, data?: any) => void;
+  hideModal: () => void;
   modals: Modal[];
-  addModal(modal: Modal): void;
-  removeModal(name: ModalName): void;
-  openErrorModal(error: string): void;
+  addModal: (modal: Modal) => void;
+  removeModal: (name: ModalName) => void;
+  data: any;
 }
 
 export const ModalStore = create<IModalStore>((set, get) => ({
   currentModal: undefined,
-  setCurrentModal: (name) => {
-    if (name === undefined) set({ currentModal: name });
+  setCurrentModal: (name, data) => {
+    if (name === undefined) set({ currentModal: undefined, data: undefined });
     else {
       const modal = get().modals.find((modal) => modal.name === name);
-      if (modal) set({ currentModal: modal });
+      if (modal) set({ currentModal: modal, data });
       else throw new Error("Cannot find modal " + name);
     }
+  },
+  hideModal: () => {
+    set({ currentModal: undefined, data: undefined });
   },
   modals: [],
   addModal: (modal) => {
@@ -33,12 +48,5 @@ export const ModalStore = create<IModalStore>((set, get) => ({
   removeModal: (name) => {
     set({ modals: get().modals.filter((modal) => modal.name !== name) });
   },
-  openErrorModal: (error) => {
-    const errorModal = get().modals.find((modal) => modal.name === ModalName.ERROR);
-
-    if (errorModal) {
-      errorModal.error = error;
-      set({ currentModal: errorModal });
-    }
-  },
+  data: undefined,
 }));

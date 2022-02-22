@@ -1,6 +1,6 @@
-import React from "react";
-import useModal, { ModalLayout } from "src/hooks/useModal";
+import React, { useCallback } from "react";
 import { ModalName } from "src/models/modal-name";
+import { ModalLayout, ModalStore } from "src/stores/ModalStore";
 import { OptionsStore } from "src/stores/OptionsStore";
 import Button from "../ui/inputs/Button";
 import InputGroup from "../ui/inputs/InputGroup";
@@ -11,13 +11,13 @@ import Tab from "../ui/tabs/Tab";
 import Tabs from "../ui/tabs/Tabs";
 
 const OptionsModal: React.FC = () => {
-  const Modal = useModal({ name: ModalName.OPTIONS, large: true });
+  const hideModal = ModalStore(useCallback((state) => state.hideModal, []));
 
   const options = OptionsStore();
   if (!options.options) return null;
 
   return (
-    <Modal.Component>
+    <>
       <ModalLayout.Content>
         <Tabs name="Options" defaultTab={0}>
           <Tab name="General">
@@ -30,6 +30,21 @@ const OptionsModal: React.FC = () => {
                     selectedIndex={state.theme}
                     onChange={setState}
                     options={["Dark", "Light"]}
+                  />
+                </>
+              )}
+            </InputGroup>
+          </Tab>
+          <Tab name="Editor">
+            <InputGroup state={options.options.editor} onChange={options.setEditor}>
+              {(state, setState) => (
+                <>
+                  <Label text="Ask for confirmation when" />
+                  <ToggleSwitch
+                    name="confirmInteractionDeletion"
+                    label="Deleting an interaction"
+                    checked={state.confirmInteractionDeletion}
+                    onChange={setState}
                   />
                 </>
               )}
@@ -53,9 +68,9 @@ const OptionsModal: React.FC = () => {
         </Tabs>
       </ModalLayout.Content>
       <ModalLayout.Footer>
-        <Button text="Close" type="primary" onClick={Modal.hide} />
+        <Button text="Close" type="primary" onClick={hideModal} />
       </ModalLayout.Footer>
-    </Modal.Component>
+    </>
   );
 };
 

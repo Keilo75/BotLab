@@ -1,15 +1,17 @@
-import { AnimatePresence, motion } from "framer-motion";
-import React, { MouseEventHandler, useCallback, useEffect, useRef } from "react";
-import { IModalStore, ModalStore } from "src/stores/ModalStore";
+import { motion } from "framer-motion";
+import React, { MouseEventHandler, useCallback, useEffect, useMemo, useState } from "react";
+import { ModalStore, Modal as ModalProps } from "src/stores/ModalStore";
 import ReactDOM from "react-dom";
 import clsx from "clsx";
 import ReactFocusLock from "react-focus-lock";
 
-const Modal: React.FC = () => {
+const ModalTemplate: React.FC = () => {
   const modalRoot = document.getElementById("modal-root");
   if (!modalRoot) return null;
 
-  const currentModal = ModalStore(useCallback((state) => state.currentModal, []));
+  const [currentModal, hideModal] = ModalStore(
+    useCallback((state) => [state.currentModal, state.hideModal], [])
+  );
 
   const handleModalClick: MouseEventHandler = (e) => {
     e.stopPropagation();
@@ -21,7 +23,7 @@ const Modal: React.FC = () => {
     <motion.div
       key="modal-overlay"
       className={clsx("modal-overlay", currentModal && "modal-overlay-visible")}
-      onMouseDown={currentModal?.hide}
+      onMouseDown={hideModal}
       initial={{ opacity: 0 }}
       animate={{ opacity: animationValue }}
       transition={{ duration: 0.2 }}
@@ -38,7 +40,7 @@ const Modal: React.FC = () => {
         >
           <button
             className="modal-close-button"
-            onClick={currentModal?.hide}
+            onClick={hideModal}
             tabIndex={currentModal ? 0 : -1}
           >
             <span>×</span>
@@ -51,4 +53,29 @@ const Modal: React.FC = () => {
   return ReactDOM.createPortal(component, modalRoot);
 };
 
-export default Modal;
+export default ModalTemplate;
+
+export const Modal: React.FC<ModalProps> = (props) => {
+  const modalTemplate = document.getElementById("modal");
+  const [visible, setVisible] = useState(false);
+
+  const [currentModal, addModal, removeModal] = ModalStore(
+    useCallback((state) => [state.currentModal, state.addModal, state.removeModal], [])
+  );
+  useEffect(() => {
+    const { children, ...modalProps } = props;
+    addModal(modalProps);
+
+    return () => {
+      removeModal(props.name);
+    };
+  }, []);
+
+  useEffect(() => {
+    setVisible(currentModal?.name === props.name);
+  }, [currentModal]);
+
+  if (!visible || !modalTemplate) return null;
+
+  return ReactDOM.createPortal(props.children, modalTemplate);
+};

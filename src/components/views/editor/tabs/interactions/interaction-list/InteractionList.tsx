@@ -46,6 +46,10 @@ const InteractionList: React.FC = () => {
     }
   }, [interactions]);
 
+  useEffect(() => {
+    if (selectedInteraction) treeRef.current?.open(selectedInteraction.id);
+  }, [selectedInteraction]);
+
   const handleAddInteraction = (option: string) => {
     const type = Object.keys(InteractionTypes).find(
       (key) => InteractionTypes[key as InteractionType] === option

@@ -6,7 +6,7 @@ import "styles/_ui.scss";
 import TitleBar from "./shared/title-bar/TitleBar";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import Home from "./views/home/Home";
-import Modal from "./ui/Modal";
+import ModalTemplate, { Modal } from "./ui/Modal";
 import { MenuAction } from "src/models/menu-action";
 import OptionsModal from "./modals/OptionsModal";
 import { OptionsStore } from "src/stores/OptionsStore";
@@ -113,9 +113,13 @@ const App: React.FC = () => {
         </main>
       </HashRouter>
       <ContextMenu />
-      <OptionsModal />
-      <ErrorModal />
-      <Modal />
+      <Modal name={ModalName.OPTIONS} large>
+        <OptionsModal />
+      </Modal>
+      <Modal name={ModalName.ERROR}>
+        <ErrorModal />
+      </Modal>
+      <ModalTemplate />
     </>
   );
 };

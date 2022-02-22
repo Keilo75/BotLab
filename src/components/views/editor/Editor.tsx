@@ -1,12 +1,12 @@
 import { IconMessages, IconSettings, IconTerminal2 } from "@tabler/icons";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import InfoBar from "src/components/shared/InfoBar";
 import Tab from "src/components/ui/tabs/Tab";
 import Tabs from "src/components/ui/tabs/Tabs";
 import { sleep } from "src/lib/sleep";
 import { MenuAction } from "src/models/menu-action";
-import { ProjectSettings, Interaction, getProjectNameError } from "src/models/project";
+import { getProjectNameError } from "src/models/project";
 import { InfoStore } from "src/stores/InfoStore";
 import { InteractionStore } from "src/stores/project-stores/InteractionStore";
 import { SettingsStore } from "src/stores/project-stores/SettingsStore";

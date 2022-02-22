@@ -5,6 +5,9 @@ import React, { useCallback, useState } from "react";
 import Repeater from "src/components/ui/utils/Repeater";
 import useContextMenu from "src/hooks/useContextMenu";
 import { InteractionNode } from "src/models/interaction-list";
+import { ModalName } from "src/models/modal-name";
+import { ModalStore } from "src/stores/ModalStore";
+import { OptionsStore } from "src/stores/OptionsStore";
 
 interface Props {
   node: InteractionNode;
@@ -24,7 +27,12 @@ const InteractionListNode: React.FC<Props> = ({
 }) => {
   const handleContextMenu = useContextMenu([
     { name: "Rename", action: () => console.log(true) },
-    { name: "Delete", action: () => console.log("hi") },
+    {
+      name: "Delete",
+      action: () => {
+        //ModalStore.getState().setCurrentModal(ModalName.)
+      },
+    },
   ]);
 
   const handleToggle = (e: React.MouseEvent) => {

@@ -1,19 +1,17 @@
 import { Form, Formik } from "formik";
-import React, { useCallback } from "react";
-import { ModalLayout, useModalReturnValue } from "src/hooks/useModal";
+import React, { useCallback, useEffect } from "react";
 import Button from "../ui/inputs/Button";
 import TextInput from "../ui/inputs/TextInput";
 import Label from "../ui/Label";
 import ComponentGroup from "../ui/utils/ComponentGroup";
-import useLoadingBar from "src/hooks/useLoadingBar";
 import { OptionsStore } from "src/stores/OptionsStore";
 import Container from "../ui/Container";
-import { ModalStore } from "src/stores/ModalStore";
+import { ModalLayout, ModalStore } from "src/stores/ModalStore";
 import { ProjectAction } from "src/stores/ProjectReducer";
 import { getProjectNameError } from "src/models/project";
+import { ModalName } from "src/models/modal-name";
 
 interface Props {
-  modal: useModalReturnValue;
   dispatchProjects: React.Dispatch<ProjectAction>;
 }
 
@@ -24,12 +22,13 @@ const initialValues = {
 type InitialValues = typeof initialValues;
 type Errors = Record<keyof InitialValues, string | undefined>;
 
-const CreateProjectModal: React.FC<Props> = ({ modal, dispatchProjects }) => {
-  const LoadingBar = useLoadingBar();
+const CreateProjectModal: React.FC<Props> = ({ dispatchProjects }) => {
   const emptyFolderOnProjectCreation = OptionsStore(
     useCallback((state) => state.options?.experimental.emptyFolderOnProjectCreation, [])
   );
-  const openErrorModal = ModalStore(useCallback((state) => state.openErrorModal, []));
+  const [setCurrentModal, hideModal] = ModalStore(
+    useCallback((state) => [state.setCurrentModal, state.hideModal], [])
+  );
 
   const validate = async ({
     projectName,
@@ -81,87 +80,79 @@ const CreateProjectModal: React.FC<Props> = ({ modal, dispatchProjects }) => {
   };
 
   return (
-    <modal.Component>
-      <Formik
-        initialValues={initialValues}
-        validate={validate}
-        validateOnChange={false}
-        validateOnBlur={false}
-        onSubmit={async (values, { setSubmitting }) => {
-          LoadingBar.setPercentage(0);
-          setSubmitting(true);
+    <Formik
+      initialValues={initialValues}
+      validate={validate}
+      validateOnChange={false}
+      validateOnBlur={false}
+      onSubmit={async (values) => {
+        try {
+          await handleSubmit(values);
+          hideModal();
+        } catch (err) {
+          const error = err as Error;
+          setCurrentModal(ModalName.ERROR, error.message);
+        }
+      }}
+    >
+      {({ values, errors, setFieldValue, isSubmitting }) => {
+        const handleInputChange = (text: string, name: string) => {
+          setFieldValue(name, text);
+        };
 
-          try {
-            await handleSubmit(values);
-            modal.hide();
-          } catch (err) {
-            const error = err as Error;
-            openErrorModal(error.message);
-          }
-        }}
-      >
-        {({ values, errors, setFieldValue, isSubmitting }) => {
-          const handleInputChange = (text: string, name: string) => {
-            setFieldValue(name, text);
-          };
+        const browseFolders = async () => {
+          const response = await window.fs.openDialog({ properties: ["openDirectory"] });
+          if (response.canceled) return;
 
-          const browseFolders = async () => {
-            const response = await window.fs.openDialog({ properties: ["openDirectory"] });
-            if (response.canceled) return;
+          setFieldValue("projectFolder", response.filePaths[0]);
+        };
 
-            setFieldValue("projectFolder", response.filePaths[0]);
-          };
-
-          return (
-            <Form className="modal-form">
-              <ModalLayout.Content padding>
-                <h2>Create Project</h2>
-                {
-                  <ComponentGroup axis="vertical">
-                    {emptyFolderOnProjectCreation && (
-                      <Container
-                        type="warning"
-                        text="Empty folder on project creation is enabled."
-                      />
-                    )}
-                    <div>
-                      <Label text="Project Name" error={errors.projectName} />
+        return (
+          <Form className="modal-form">
+            <ModalLayout.Content padding>
+              <h2>Create Project</h2>
+              {
+                <ComponentGroup axis="vertical">
+                  {emptyFolderOnProjectCreation && (
+                    <Container type="warning" text="Empty folder on project creation is enabled." />
+                  )}
+                  <div>
+                    <Label text="Project Name" error={errors.projectName} />
+                    <TextInput
+                      name="projectName"
+                      value={values.projectName}
+                      onChange={handleInputChange}
+                      error={errors.projectName !== undefined}
+                    />
+                  </div>
+                  <div>
+                    <Label text="Project Folder" error={errors.projectFolder} />
+                    <ComponentGroup axis="horizontal">
                       <TextInput
-                        name="projectName"
-                        value={values.projectName}
+                        name="projectFolder"
+                        value={values.projectFolder}
                         onChange={handleInputChange}
-                        error={errors.projectName !== undefined}
+                        error={errors.projectFolder !== undefined}
                       />
-                    </div>
-                    <div>
-                      <Label text="Project Folder" error={errors.projectFolder} />
-                      <ComponentGroup axis="horizontal">
-                        <TextInput
-                          name="projectFolder"
-                          value={values.projectFolder}
-                          onChange={handleInputChange}
-                          error={errors.projectFolder !== undefined}
-                        />
-                        <Button text="Browse" type="primary" onClick={browseFolders} />
-                      </ComponentGroup>
-                    </div>
-                  </ComponentGroup>
-                }
-              </ModalLayout.Content>
-              <ModalLayout.Footer>
-                <Button text="Create" type="success" submit disabled={isSubmitting} />
-                <Button
-                  text="Cancel"
-                  type="transparent"
-                  onClick={modal.hide}
-                  disabled={isSubmitting}
-                />
-              </ModalLayout.Footer>
-            </Form>
-          );
-        }}
-      </Formik>
-    </modal.Component>
+                      <Button text="Browse" type="primary" onClick={browseFolders} />
+                    </ComponentGroup>
+                  </div>
+                </ComponentGroup>
+              }
+            </ModalLayout.Content>
+            <ModalLayout.Footer>
+              <Button text="Create" type="success" submit disabled={isSubmitting} />
+              <Button
+                text="Cancel"
+                type="transparent"
+                onClick={hideModal}
+                disabled={isSubmitting}
+              />
+            </ModalLayout.Footer>
+          </Form>
+        );
+      }}
+    </Formik>
   );
 };
 

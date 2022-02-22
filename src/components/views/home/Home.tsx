@@ -1,7 +1,7 @@
 import { IconPlus } from "@tabler/icons";
 import React, { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import useModal from "src/hooks/useModal";
+import { Modal } from "src/components/ui/Modal";
 import { fileExtensionWithoutDot } from "src/models/file-extension";
 import { ModalName } from "src/models/modal-name";
 import { ProjectInfo } from "src/models/project";
@@ -19,9 +19,7 @@ interface Props {
 }
 
 const Home: React.FC<Props> = ({ projects, dispatchProjects, loadProjects }) => {
-  const CreateProjectModal = useModal({ name: ModalName.CREATE_NEW_PROJECT });
-
-  const openErrorModal = ModalStore(useCallback((state) => state.openErrorModal, []));
+  const setCurrentModal = ModalStore(useCallback((state) => state.setCurrentModal, []));
   const [setTitle, setDirty] = InfoStore(
     useCallback((state) => [state.setTitle, state.setDirty], [])
   );
@@ -63,9 +61,13 @@ const Home: React.FC<Props> = ({ projects, dispatchProjects, loadProjects }) => 
       await window.project.getProjectFromBotFile(projectPath);
       navigate(`editor/${projectPath}`);
     } catch {
-      openErrorModal("Could not find file.");
+      setCurrentModal(ModalName.ERROR, "Could not find file.");
       dispatchProjects({ type: "remove", projectPath });
     }
+  };
+
+  const showCreateProjectModal = () => {
+    setCurrentModal(ModalName.CREATE_NEW_PROJECT);
   };
 
   return (
@@ -76,7 +78,7 @@ const Home: React.FC<Props> = ({ projects, dispatchProjects, loadProjects }) => 
           text="Create Project"
           type="success"
           icon={IconPlus}
-          onClick={CreateProjectModal.show}
+          onClick={showCreateProjectModal}
         />
         <Button text="Open Project" type="primary" onClick={handleOpenProject} />
       </ComponentGroup>
@@ -97,7 +99,9 @@ const Home: React.FC<Props> = ({ projects, dispatchProjects, loadProjects }) => 
           </div>
         ))}
       </div>
-      <CreateProjectModalComponent modal={CreateProjectModal} dispatchProjects={dispatchProjects} />
+      <Modal name={ModalName.CREATE_NEW_PROJECT}>
+        <CreateProjectModalComponent dispatchProjects={dispatchProjects} />
+      </Modal>
     </div>
   );
 };

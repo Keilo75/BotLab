@@ -34,14 +34,6 @@ return (
 
 Alternatively, you can use `modalStore.setCurrentModal(name: ModalName): void` to open a modal.
 
-## Special Modals
-
-**Error Modal**
-
-```js
-modalStore.openErrorModal("error text");
-```
-
 ## useModal API
 
 The `useModal` hook takes in an object of options, which are described here:
