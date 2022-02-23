@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { useMemo } from "react";
 import create from "zustand";
 
 interface ContentProps {
@@ -24,9 +25,13 @@ export interface Modal {
   large?: boolean;
 }
 
+export interface ModalData extends Record<ModalName, any> {
+  error: string;
+}
+
 export interface IModalStore {
   currentModal: Modal | undefined;
-  setCurrentModal: (name: ModalName, data?: any) => void;
+  setCurrentModal: <T extends ModalName>(name: T, data?: ModalData[T]) => void;
   hideModal: () => void;
   modals: Modal[];
   addModal: (modal: Modal) => void;
@@ -53,3 +58,8 @@ export const ModalStore = create<IModalStore>((set, get) => ({
   },
   data: undefined,
 }));
+
+export const useModalData = <T extends ModalName>(name: T): ModalData[T] => {
+  const data = useMemo(() => ModalStore.getState().data, []);
+  return data as ModalData[T];
+};

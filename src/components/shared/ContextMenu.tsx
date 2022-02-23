@@ -3,7 +3,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import useOutsideClick from "src/hooks/useOutsideClick";
 import { ContextMenuStore } from "src/stores/ContextMenuStore";
-import MenuItem from "./title-bar/MenuItem";
 
 const ContextMenu: React.FC = () => {
   const contextMenuRoot = document.getElementById("context-menu-root");
@@ -31,11 +30,11 @@ const ContextMenu: React.FC = () => {
 
   const menu = contextMenu && (
     <>
-      <ul className="context-menu menu-list" style={{ top: contextMenu.y, left: contextMenu.x }}>
+      <ul className="context-menu" style={{ top: contextMenu.y, left: contextMenu.x }}>
         {contextMenu.items.map((item) => (
           <React.Fragment key={item.name}>
             <li className={clsx("menu-item")} onClick={handleMenuItemClick} data-name={item.name}>
-              <span>{item.name}</span>
+              {item.name}
             </li>
             {item.divider && <hr />}
           </React.Fragment>
