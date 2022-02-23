@@ -29,11 +29,17 @@ import { ModalStore } from "src/stores/ModalStore";
 const store = ModalStore();
 ```
 
-| Key             | Type                                  | Description                                               |
-| --------------- | ------------------------------------- | --------------------------------------------------------- |
-| data            | any                                   | Modal data which is passed to the modal on initialization |
-| setCurrentModal | (name: ModalName, data?: any) => void | Show a modal                                              |
-| hideModal       | () => void                            | Hide the current modal                                    |
+| Key             | Type                                  | Description            |
+| --------------- | ------------------------------------- | ---------------------- |
+| setCurrentModal | (name: ModalName, data?: any) => void | Show a modal           |
+| hideModal       | () => void                            | Hide the current modal |
+
+In order to retrieve the current modal's data, use the `useModalData` hook.
+
+```js
+import { useModalData, ModalName } from "src/stores/ModalStore";
+const error = useModalData(ModalName.ERROR);
+```
 
 ## Modal Props
 

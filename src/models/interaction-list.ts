@@ -44,6 +44,23 @@ export const getDepth = (tree: InteractionNode[], id: string | number, depth = 0
   return depth;
 };
 
+export const getAllChildInteractions = (
+  interactions: Interaction[],
+  interactionID: string
+): Interaction[] => {
+  const childInteractions: Interaction[] = [];
+  const firstLevelChilds = interactions.filter((i) => i.parent === interactionID);
+
+  for (const interaction of firstLevelChilds) {
+    childInteractions.push(interaction);
+
+    if (interaction.type === "folder")
+      childInteractions.push(...getAllChildInteractions(interactions, interaction.id));
+  }
+
+  return childInteractions;
+};
+
 export const getInteractionName = (interactions: Interaction[], type: InteractionType): string => {
   const humanName = `new-${type}`;
 

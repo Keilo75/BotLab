@@ -6,7 +6,7 @@ export const getTimeSince = (lastModified: number): string => {
   const timeUnits = ["second", "minute", "hour", "day", "week", "month", "year"];
   const timeSeconds = [1, 60, 3600, 86400, 604800, 2592000, 315360000];
 
-  for (let seconds of timeSeconds) {
+  for (const seconds of timeSeconds) {
     if (secondsPassed >= seconds) {
       result.number = Math.round(secondsPassed / seconds);
       result.unit = `${timeUnits[timeSeconds.indexOf(seconds)]}${result.number > 1 ? "s" : ""}`;

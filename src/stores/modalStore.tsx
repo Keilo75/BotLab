@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { useMemo } from "react";
 import create from "zustand";
+import { Options } from "./OptionsStore";
 
 interface ContentProps {
   padding?: boolean;
@@ -18,6 +19,7 @@ export enum ModalName {
   CREATE_NEW_PROJECT = "create-new-project",
   ERROR = "error",
   ABOUT = "about",
+  CONFIRMATION = "confirmation",
 }
 
 export interface Modal {
@@ -27,6 +29,13 @@ export interface Modal {
 
 export interface ModalData extends Record<ModalName, any> {
   error: string;
+  confirmation: {
+    title: string;
+    text: string;
+    buttonText: string;
+    confirmationOption: keyof Options["editor"];
+    handleConfirm: () => void;
+  };
 }
 
 export interface IModalStore {

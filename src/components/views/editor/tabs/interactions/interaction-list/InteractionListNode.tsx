@@ -5,7 +5,8 @@ import React, { useCallback, useState } from "react";
 import Repeater from "src/components/ui/utils/Repeater";
 import useContextMenu from "src/hooks/useContextMenu";
 import { InteractionNode } from "src/models/interaction-list";
-import { ModalStore } from "src/stores/ModalStore";
+import { ModalName, ModalStore } from "src/stores/ModalStore";
+import { InteractionStore } from "src/stores/project-stores/InteractionStore";
 
 interface Props {
   node: InteractionNode;
@@ -28,7 +29,15 @@ const InteractionListNode: React.FC<Props> = ({
     {
       name: "Delete",
       action: () => {
-        //ModalStore.getState().setCurrentModal(ModalName.)
+        ModalStore.getState().setCurrentModal(ModalName.CONFIRMATION, {
+          title: "Delete interaction?",
+          text: "Do you want to delete this interaction?",
+          buttonText: "Delete",
+          confirmationOption: "confirmInteractionDeletion",
+          handleConfirm: () => {
+            InteractionStore.getState().deleteInteraction(node.id.toString());
+          },
+        });
       },
     },
   ]);

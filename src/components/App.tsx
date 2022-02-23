@@ -16,6 +16,7 @@ import { ModalName, ModalStore } from "src/stores/ModalStore";
 import { ProjectInfo } from "src/models/project";
 import Editor from "./views/editor/Editor";
 import ContextMenu from "./shared/ContextMenu";
+import ConfirmationModal from "./modals/ConfirmationModal";
 
 const App: React.FC = () => {
   const [menuAction, setMenuAction] = useState<MenuAction | undefined>(undefined);
@@ -117,6 +118,9 @@ const App: React.FC = () => {
       </Modal>
       <Modal name={ModalName.ERROR}>
         <ErrorModal />
+      </Modal>
+      <Modal name={ModalName.CONFIRMATION}>
+        <ConfirmationModal />
       </Modal>
       <ModalTemplate />
     </>
