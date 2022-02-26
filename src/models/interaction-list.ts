@@ -1,7 +1,7 @@
 import { NodeModel } from "@minoru/react-dnd-treeview";
 import { Interaction, InteractionType, InteractionTypes } from "./project";
 
-export type NodeModelInteractionData = Pick<Interaction, "type">;
+export type NodeModelInteractionData = { type: InteractionType; textBased: boolean };
 export type InteractionNode = NodeModel<NodeModelInteractionData>;
 
 export const convertInteractionsToNodeModelArray = (
@@ -9,11 +9,12 @@ export const convertInteractionsToNodeModelArray = (
 ): InteractionNode[] => {
   return interactions.map((i) => ({
     id: i.id,
-    parent: i.parent,
-    text: i.name,
-    droppable: i.type === "folder",
+    parent: i.metaData.parent,
+    text: i.metaData.name,
+    droppable: i.metaData.type === "folder",
     data: {
-      type: i.type,
+      type: i.metaData.type,
+      textBased: i.metaData.textBased,
     },
   }));
 };
@@ -27,9 +28,11 @@ export const convertNodeModelToInteractionsArray = (
     if (m.data)
       interactions.push({
         id: m.id.toString(),
-        parent: m.parent.toString(),
-        name: m.text,
-        ...m.data,
+        metaData: {
+          parent: m.parent.toString(),
+          name: m.text,
+          ...m.data,
+        },
       });
   }
 

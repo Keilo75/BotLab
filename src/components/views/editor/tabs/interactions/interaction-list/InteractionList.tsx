@@ -1,10 +1,8 @@
 import { Tree, TreeMethods } from "@minoru/react-dnd-treeview";
-import { IconFolder, IconSquareMinus } from "@tabler/icons";
+import { IconFolder } from "@tabler/icons";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import Button from "src/components/ui/inputs/Button";
 import DropdownButton from "src/components/ui/inputs/DropdownButton";
 import Label from "src/components/ui/Label";
-import ComponentGroup from "src/components/ui/utils/ComponentGroup";
 import {
   convertInteractionsToNodeModelArray,
   convertNodeModelToInteractionsArray,
@@ -41,7 +39,7 @@ const InteractionList: React.FC = () => {
 
     if (!selectedInteractionID) {
       // Select first root item
-      const selected = interactions.find((i) => i.parent === "0");
+      const selected = interactions.find((i) => i.metaData.parent === "0");
 
       if (selected) selectInteraction(selected.id);
     }
@@ -97,11 +95,7 @@ const InteractionList: React.FC = () => {
         )}
         canDrop={(tree, { dropTargetId, dragSource }) => {
           // Do not drag context menus
-          if (
-            dragSource?.data?.type === "message-context-menu" ||
-            dragSource?.data?.type === "user-context-menu"
-          )
-            return false;
+          if (!dragSource?.data?.textBased) return false;
 
           const depth = getDepth(tree, dropTargetId);
 

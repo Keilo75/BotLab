@@ -31,9 +31,13 @@ const InteractionListNode: React.FC<Props> = ({
         if (!node.data) return;
 
         ModalStore.getState().setCurrentModal(ModalName.RENAME_INTERACTION, {
-          name: node.text,
-          type: node.data?.type,
           id: node.id.toString(),
+          metaData: {
+            name: node.text,
+            parent: node.parent.toString(),
+            type: node.data.type,
+            textBased: node.data.textBased,
+          },
         });
       },
     },

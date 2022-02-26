@@ -19,8 +19,12 @@ export const InteractionStore = create<IInteractionStore>((set, get) => ({
     const interactions = get().interactions;
     if (!interactions) return;
 
-    const name = getInteractionName(interactions, type);
-    const newInteraction = { id: uuid(), name, parent: "0", type };
+    const textBased = type === "command" || type === "folder";
+    const name = getInteractionName(interactions, type, textBased);
+    const newInteraction: Interaction = {
+      id: uuid(),
+      metaData: { name, parent: "0", type, textBased },
+    };
 
     set({
       interactions: [...interactions, newInteraction],

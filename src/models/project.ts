@@ -29,9 +29,14 @@ export const InteractionTypes: Record<InteractionType, string> = {
   "message-context-menu": "Message Context Menu",
 };
 
-export interface Interaction {
+export interface InteractionMetaData {
   type: InteractionType;
-  id: string;
   parent: string;
   name: string;
+  textBased: boolean;
+}
+
+export interface Interaction {
+  id: string;
+  metaData: InteractionMetaData;
 }

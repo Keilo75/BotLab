@@ -1,21 +1,35 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Container from "src/components/ui/Container";
 import Button from "src/components/ui/inputs/Button";
 import TextInput from "src/components/ui/inputs/TextInput";
 import Label from "src/components/ui/Label";
-import { validateInteractionName } from "src/models/interactions";
-import { InteractionTypes } from "src/models/project";
+import {
+  getAllInteractionsWithSameParent as getInteractionsWithSameParent,
+  validateInteractionName,
+} from "src/models/interactions";
 import { ModalLayout, ModalName, ModalStore, useModalData } from "src/stores/ModalStore";
+import { InteractionStore } from "src/stores/project-stores/InteractionStore";
 
 const RenameInteractionModal: React.FC = () => {
   const hideModal = ModalStore(useCallback((state) => state.hideModal, []));
   const interaction = useModalData(ModalName.RENAME_INTERACTION);
+  const sameParentInteractions = useMemo(() => {
+    const interactions = InteractionStore.getState().interactions;
+    if (!interactions) return [];
 
-  const [value, setValue] = useState(interaction.name);
+    const filteredInteractions = interactions.filter(
+      (i) => i.metaData.type === interaction.metaData.type
+    );
+    return getInteractionsWithSameParent(filteredInteractions, interaction.metaData.parent);
+  }, []);
+
+  console.log(interaction);
+
+  const [value, setValue] = useState(interaction.metaData.name);
   const [error, setError] = useState<string>();
 
   useEffect(() => {
-    const error = validateInteractionName(value, interaction.type);
+    const error = validateInteractionName(value, interaction.id, sameParentInteractions);
     setError(error);
   }, [value]);
 
@@ -29,10 +43,7 @@ const RenameInteractionModal: React.FC = () => {
     <>
       <ModalLayout.Content padding>
         <h2>Rename Interaction</h2>
-        <Container type="info" className="mb">
-          {InteractionTypes[interaction.type]} names must have 1-32 characters and be unique among
-          their type.
-        </Container>
+        <Container type="info" className="mb"></Container>
         <Label text="Interaction Name" error={error} />
         <TextInput
           name="interaction-name"
