@@ -1,13 +1,14 @@
 .context-menu {
   position: absolute;
-  background-color: black;
-  width: 250px;
+  background-color: var(--menu-color);
+  width: 200px;
   position: absolute;
   margin: 0;
   padding: var(--spacing-half);
   z-index: var(--menu-pane-z-index);
   display: flex;
   flex-direction: column;
+  font-size: var(--font-size-small);
 
   .menu-item {
     list-style: none;

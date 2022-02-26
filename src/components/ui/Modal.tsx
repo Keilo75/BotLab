@@ -28,7 +28,7 @@ const ModalTemplate: React.FC = () => {
       animate={{ opacity: animationValue }}
       transition={{ duration: 0.2 }}
     >
-      <ReactFocusLock disabled={!currentModal}>
+      <ReactFocusLock disabled={!currentModal} autoFocus={false}>
         <motion.div
           key="modal"
           className={clsx("modal", currentModal?.large && "modal-large")}

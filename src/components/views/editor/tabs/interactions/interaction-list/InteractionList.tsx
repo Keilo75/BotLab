@@ -16,14 +16,14 @@ import { InteractionStore } from "src/stores/project-stores/InteractionStore";
 import InteractionListNode from "./InteractionListNode";
 
 const InteractionList: React.FC = () => {
-  const [interactions, setInteractions, addInteraction, selectedInteraction, selectInteraction] =
+  const [interactions, setInteractions, addInteraction, selectedInteractionID, selectInteraction] =
     InteractionStore(
       useCallback(
         (state) => [
           state.interactions,
           state.setInteractions,
           state.addInteraction,
-          state.selectedInteraction,
+          state.selectedInteractionID,
           state.selectInteraction,
         ],
         []
@@ -39,16 +39,13 @@ const InteractionList: React.FC = () => {
     const newTree = convertInteractionsToNodeModelArray(interactions);
     setTreeData(newTree);
 
-    if (!selectedInteraction) {
+    if (!selectedInteractionID) {
       // Select first root item
       const selected = interactions.find((i) => i.parent === "0");
+
       if (selected) selectInteraction(selected.id);
     }
   }, [interactions]);
-
-  useEffect(() => {
-    if (selectedInteraction) treeRef.current?.open(selectedInteraction.id);
-  }, [selectedInteraction]);
 
   const handleAddInteraction = (option: string) => {
     const type = Object.keys(InteractionTypes).find(
@@ -70,11 +67,10 @@ const InteractionList: React.FC = () => {
       <div className="sidebar-head">
         <Label text="Interactions" />
         <DropdownButton
-          text="Add Interaction"
+          text="Add Command"
           options={Object.values(InteractionTypes)}
           onClick={handleAddInteraction}
           className="add-button"
-          disabled
         />
       </div>
       <hr />
@@ -95,7 +91,7 @@ const InteractionList: React.FC = () => {
             depth={depth}
             isOpen={isOpen}
             onToggle={onToggle}
-            isSelected={node.id === selectedInteraction?.id}
+            isSelected={node.id === selectedInteractionID}
             selectInteraction={selectInteraction}
           />
         )}

@@ -1,6 +1,8 @@
 import { IconChevronDown } from "@tabler/icons";
 import clsx from "clsx";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
+import useOutsideClick from "src/hooks/useOutsideClick";
+import useToggle from "src/hooks/useToggle";
 import KeyboardList from "../keyboard-list/KeyboardList";
 import Button from "./Button";
 
@@ -9,17 +11,29 @@ interface Props {
   options: string[];
   onClick?: (option: string) => void;
   className?: string;
-  disabled?: boolean;
 }
 
-const DropdownButton: React.FC<Props> = ({ text, options, className, onClick, disabled }) => {
-  const handleItemClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const option = e.currentTarget.getAttribute("data-option");
+const DropdownButton: React.FC<Props> = ({ text, options, className, onClick }) => {
+  const [visible, toggleVisible, setVisible] = useToggle(false);
 
-    if (option && onClick) {
-      onClick(option);
-      e.currentTarget.blur();
-    }
+  const remainingOptions = useMemo(() => {
+    const [f, ...remaining] = options;
+
+    return remaining;
+  }, [options]);
+
+  const handleFirstItemClick = () => {
+    const firstOption = options[0];
+    if (firstOption && onClick) onClick(firstOption);
+  };
+
+  useOutsideClick(".dropdown-button", () => setVisible(false), visible);
+
+  const handleItemClick = (e: React.MouseEvent<HTMLLIElement>) => {
+    setVisible(false);
+
+    const option = e.currentTarget.getAttribute("data-option");
+    if (option && onClick) onClick(option);
   };
 
   return (
@@ -27,27 +41,35 @@ const DropdownButton: React.FC<Props> = ({ text, options, className, onClick, di
       <Button
         type="primary"
         text={text}
-        icon={IconChevronDown}
         textAlignment="left"
-        iconAlignment="right"
+        className="default-button"
+        onClick={handleFirstItemClick}
       />
-
-      <ul className="dropdown-button-list">
-        <KeyboardList length={options.length} selectedIndex={0}>
-          {(refs) =>
-            options.map((option, index) => (
-              <button
-                key={option}
-                data-option={option}
-                onClick={handleItemClick}
-                ref={(ref) => (refs[index].current = ref)}
-              >
-                {option}
-              </button>
-            ))
-          }
-        </KeyboardList>
-      </ul>
+      <Button
+        type="primary"
+        icon={IconChevronDown}
+        square
+        className="more-button"
+        onClick={toggleVisible}
+      />
+      {visible && (
+        <ul className="dropdown-list">
+          <KeyboardList length={remainingOptions.length} selectedIndex={0}>
+            {(refs) =>
+              remainingOptions.map((option, index) => (
+                <li
+                  key={option}
+                  ref={(ref) => (refs[index].current = ref)}
+                  onClick={handleItemClick}
+                  data-option={option}
+                >
+                  {option}
+                </li>
+              ))
+            }
+          </KeyboardList>
+        </ul>
+      )}
     </div>
   );
 };

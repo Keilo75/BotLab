@@ -25,7 +25,18 @@ const InteractionListNode: React.FC<Props> = ({
   selectInteraction,
 }) => {
   const handleContextMenu = useContextMenu([
-    { name: "Rename", action: () => console.log(true) },
+    {
+      name: "Rename",
+      action: () => {
+        if (!node.data) return;
+
+        ModalStore.getState().setCurrentModal(ModalName.RENAME_INTERACTION, {
+          name: node.text,
+          type: node.data?.type,
+          id: node.id.toString(),
+        });
+      },
+    },
     {
       name: "Delete",
       action: () => {

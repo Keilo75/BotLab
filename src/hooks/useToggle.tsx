@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-type useToggleReturnValue = [boolean, () => void];
+type useToggleReturnValue = [boolean, () => void, React.Dispatch<React.SetStateAction<boolean>>];
 
 const useToggle = (initialValue: boolean): useToggleReturnValue => {
   const [value, setValue] = useState(initialValue);
@@ -9,7 +9,7 @@ const useToggle = (initialValue: boolean): useToggleReturnValue => {
     setValue((prev) => !prev);
   };
 
-  return [value, toggleValue];
+  return [value, toggleValue, setValue];
 };
 
 export default useToggle;
