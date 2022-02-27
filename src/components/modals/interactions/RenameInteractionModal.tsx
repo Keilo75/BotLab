@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import Container from "src/components/ui/Container";
 import Button from "src/components/ui/inputs/Button";
 import TextInput from "src/components/ui/inputs/TextInput";
 import Label from "src/components/ui/Label";
@@ -17,33 +16,38 @@ const RenameInteractionModal: React.FC = () => {
     const interactions = InteractionStore.getState().interactions;
     if (!interactions) return [];
 
-    const filteredInteractions = interactions.filter(
-      (i) => i.metaData.type === interaction.metaData.type
+    const filteredInteractions = interactions.filter((i) =>
+      i.textBased ? interaction.textBased : i.type === interaction.type
     );
-    return getInteractionsWithSameParent(filteredInteractions, interaction.metaData.parent);
+    return getInteractionsWithSameParent(filteredInteractions, interaction.parent);
   }, []);
 
-  console.log(interaction);
-
-  const [value, setValue] = useState(interaction.metaData.name);
+  const [value, setValue] = useState(interaction.name);
   const [error, setError] = useState<string>();
 
   useEffect(() => {
-    const error = validateInteractionName(value, interaction.id, sameParentInteractions);
+    const error = validateInteractionName(value);
+
     setError(error);
   }, [value]);
 
   const handleInputChange = (text: string) => {
-    // If type is set to command or folder, only allow lowercase
+    const newText = interaction.textBased ? text.replace(/\s+/g, "-").toLowerCase() : text;
+    setValue(newText);
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    if (error) return;
+
+    if (value !== interaction.name)
+      InteractionStore.getState().renameInteraction(interaction.id, value);
+    hideModal();
+  };
 
   return (
     <>
       <ModalLayout.Content padding>
         <h2>Rename Interaction</h2>
-        <Container type="info" className="mb"></Container>
         <Label text="Interaction Name" error={error} />
         <TextInput
           name="interaction-name"

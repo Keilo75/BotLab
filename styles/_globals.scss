@@ -134,16 +134,16 @@ p {
   flex-direction: column;
 }
 
+.no-margin {
+  margin: 0;
+}
+
 .mb {
   margin-bottom: var(--spacing);
 }
 
 .mt {
   margin-top: var(--spacing);
-}
-
-.mt-half {
-  margin-top: var(--spacing-half);
 }
 
 hr {

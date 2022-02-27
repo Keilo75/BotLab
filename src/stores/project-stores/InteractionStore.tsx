@@ -8,6 +8,7 @@ export interface IInteractionStore {
   setInteractions: (interactions: Interaction[]) => void;
   addInteraction: (type: InteractionType) => void;
   deleteInteraction: (id: string) => void;
+  renameInteraction: (interactionID: string, newName: string) => void;
   selectedInteractionID: string | undefined;
   selectInteraction: (interactionID: string) => void;
 }
@@ -23,9 +24,11 @@ export const InteractionStore = create<IInteractionStore>((set, get) => ({
     const name = getInteractionName(interactions, type, textBased);
     const newInteraction: Interaction = {
       id: uuid(),
-      metaData: { name, parent: "0", type, textBased },
+      name,
+      parent: "0",
+      type,
+      textBased,
     };
-
     set({
       interactions: [...interactions, newInteraction],
       selectedInteractionID: newInteraction.id,
@@ -44,6 +47,13 @@ export const InteractionStore = create<IInteractionStore>((set, get) => ({
     } else {
       set({ interactions: newInteractions });
     }
+  },
+  renameInteraction: (id, newName) => {
+    const interactions = get().interactions;
+    if (!interactions) return;
+
+    const newInteractions = interactions.map((i) => (i.id === id ? { ...i, name: newName } : i));
+    set({ interactions: newInteractions });
   },
   selectedInteractionID: undefined,
   selectInteraction: (id) => {

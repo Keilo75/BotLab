@@ -6,7 +6,7 @@ import Tab from "src/components/ui/tabs/Tab";
 import Tabs from "src/components/ui/tabs/Tabs";
 import { sleep } from "src/lib/sleep";
 import { MenuAction } from "src/models/menu-action";
-import { getProjectNameError } from "src/models/project";
+import { validateProjectName } from "src/models/project";
 import { InfoStore } from "src/stores/InfoStore";
 import { InteractionStore } from "src/stores/project-stores/InteractionStore";
 import { SettingsStore } from "src/stores/project-stores/SettingsStore";
@@ -79,7 +79,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
     setInfoMessage("Saving...", "loading");
     await sleep(100);
 
-    const projectNameError = getProjectNameError(settings.name);
+    const projectNameError = validateProjectName(settings.name);
     if (projectNameError)
       return setInfoMessage("Could not save. Project Name: " + projectNameError, "error");
 

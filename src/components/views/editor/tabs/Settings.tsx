@@ -7,8 +7,10 @@ import TextInput from "src/components/ui/inputs/TextInput";
 import Label from "src/components/ui/Label";
 import Link from "src/components/ui/Link";
 import ComponentGroup from "src/components/ui/utils/ComponentGroup";
+import useMountedEffect from "src/hooks/useMountedEffect";
 import useToggle from "src/hooks/useToggle";
-import { getProjectNameError, ProjectSettings } from "src/models/project";
+import { validateProjectName, ProjectSettings } from "src/models/project";
+import { InfoStore } from "src/stores/InfoStore";
 import { SettingsStore } from "src/stores/project-stores/SettingsStore";
 
 const Settings: React.FC = () => {
@@ -17,13 +19,18 @@ const Settings: React.FC = () => {
   );
   if (!settings) return null;
 
+  const setDirty = InfoStore(useCallback((state) => state.setDirty, []));
+  useMountedEffect(() => {
+    setDirty(true);
+  }, [settings]);
+
   const [tokenVisible, toggleTokenVisible] = useToggle(false);
 
   const handleSettingsChange = (state: ProjectSettings) => {
     setSettings(state);
   };
 
-  const projectNameError = useMemo(() => getProjectNameError(settings.name), [settings.name]);
+  const projectNameError = useMemo(() => validateProjectName(settings.name), [settings.name]);
 
   return (
     <>

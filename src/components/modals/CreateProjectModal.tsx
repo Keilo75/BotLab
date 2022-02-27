@@ -8,7 +8,7 @@ import { OptionsStore } from "src/stores/OptionsStore";
 import Container from "../ui/Container";
 import { ModalLayout, ModalName, ModalStore } from "src/stores/ModalStore";
 import { ProjectAction } from "src/stores/ProjectReducer";
-import { getProjectNameError } from "src/models/project";
+import { validateProjectName } from "src/models/project";
 
 interface Props {
   dispatchProjects: React.Dispatch<ProjectAction>;
@@ -39,7 +39,7 @@ const CreateProjectModal: React.FC<Props> = ({ dispatchProjects }) => {
     };
 
     // Validate project name
-    errors.projectName = getProjectNameError(projectName);
+    errors.projectName = validateProjectName(projectName);
 
     // Project folder can't be empty
     if (projectFolder.length === 0) errors.projectFolder = "Required";

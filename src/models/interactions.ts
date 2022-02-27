@@ -4,12 +4,12 @@ export const getAllChildInteractions = (
   interactionID: string
 ): Interaction[] => {
   const childInteractions: Interaction[] = [];
-  const firstLevelChilds = interactions.filter((i) => i.metaData.parent === interactionID);
+  const firstLevelChilds = interactions.filter((i) => i.parent === interactionID);
 
   for (const interaction of firstLevelChilds) {
     childInteractions.push(interaction);
 
-    if (interaction.metaData.type === "folder")
+    if (interaction.type === "folder")
       childInteractions.push(...getAllChildInteractions(interactions, interaction.id));
   }
 
@@ -20,7 +20,7 @@ export const getAllInteractionsWithSameParent = (
   interactions: Interaction[],
   parent: string
 ): Interaction[] => {
-  const sameParentInteractions = interactions.filter((i) => i.metaData.parent === parent);
+  const sameParentInteractions = interactions.filter((i) => i.parent === parent);
 
   return sameParentInteractions;
 };
@@ -33,9 +33,9 @@ export const getInteractionName = (
   const humanName = textBased ? `new-${type}` : `New ${InteractionTypes[type]}`;
 
   const filteredInteractions = interactions
-    .filter((cmd) => cmd.metaData.name.startsWith(humanName))
+    .filter((cmd) => cmd.name.startsWith(humanName))
     .map((cmd) => {
-      const numbers = cmd.metaData.name.match(/\d+/);
+      const numbers = cmd.name.match(/\d+/);
       if (numbers) return numbers[0];
 
       return "0";
@@ -51,16 +51,10 @@ export const getInteractionName = (
   return `${humanName}${textBased ? "-" : " "}${lowestNumber}`;
 };
 
-export const validateInteractionName = (
-  name: string,
-  id: string,
-  interactions: Interaction[]
-): string | undefined => {
-  console.log(/^[\w-]{1,32}/g.test(name));
+export const validateInteractionName = (name: string): string | undefined => {
+  // Reference: https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-naming
 
   if (name.length === 0) return "Required";
-  if (name.length > 32) return "May only be 32 characters long";
-  if (!name.match(/^[\w-]/g)) return "Cannot include special characters";
-
+  if (name.length > 32) return "Maximum length is 32 characters";
   return;
 };

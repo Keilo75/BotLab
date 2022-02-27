@@ -13,7 +13,7 @@ export interface ProjectSettings {
   token: string;
 }
 
-export const getProjectNameError = (name: string): string | undefined => {
+export const validateProjectName = (name: string): string | undefined => {
   if (name.length === 0) return "Required";
   if (!name.match(/^[a-zA-Z\s]*$/)) return "May only include letters and spaces";
 
@@ -29,14 +29,10 @@ export const InteractionTypes: Record<InteractionType, string> = {
   "message-context-menu": "Message Context Menu",
 };
 
-export interface InteractionMetaData {
+export interface Interaction {
+  id: string;
   type: InteractionType;
   parent: string;
   name: string;
   textBased: boolean;
-}
-
-export interface Interaction {
-  id: string;
-  metaData: InteractionMetaData;
 }

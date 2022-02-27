@@ -9,12 +9,12 @@ export const convertInteractionsToNodeModelArray = (
 ): InteractionNode[] => {
   return interactions.map((i) => ({
     id: i.id,
-    parent: i.metaData.parent,
-    text: i.metaData.name,
-    droppable: i.metaData.type === "folder",
+    parent: i.parent,
+    text: i.name,
+    droppable: i.type === "folder",
     data: {
-      type: i.metaData.type,
-      textBased: i.metaData.textBased,
+      type: i.type,
+      textBased: i.textBased,
     },
   }));
 };
@@ -28,11 +28,10 @@ export const convertNodeModelToInteractionsArray = (
     if (m.data)
       interactions.push({
         id: m.id.toString(),
-        metaData: {
-          parent: m.parent.toString(),
-          name: m.text,
-          ...m.data,
-        },
+
+        parent: m.parent.toString(),
+        name: m.text,
+        ...m.data,
       });
   }
 

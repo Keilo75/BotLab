@@ -10,9 +10,10 @@
   --button-height: 30px;
   --sidebar-width: clamp(230px, 25%, 270px);
 
+  --info-bar-z-index: 5;
   --overlay-z-index: 10;
-  --menu-pane-z-index: 20;
   --modal-z-index: 15;
+  --menu-pane-z-index: 20;
 
   --spacing: 10px;
   --spacing-double: calc(var(--spacing) * 2);

@@ -39,7 +39,7 @@ const InteractionList: React.FC = () => {
 
     if (!selectedInteractionID) {
       // Select first root item
-      const selected = interactions.find((i) => i.metaData.parent === "0");
+      const selected = interactions.find((i) => i.parent === "0");
 
       if (selected) selectInteraction(selected.id);
     }

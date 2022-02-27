@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useMemo } from "react";
-import { Interaction, InteractionMetaData, InteractionType } from "src/models/project";
+import { InteractionType } from "src/models/project";
 import create from "zustand";
 import { Options } from "./OptionsStore";
 
@@ -38,7 +38,7 @@ export interface ModalData extends Record<ModalName, any> {
     confirmationOption: keyof Options["editor"];
     handleConfirm: () => void;
   };
-  "rename-interaction": { id: string; metaData: InteractionMetaData };
+  "rename-interaction": { id: string; name: string; textBased: boolean; type: InteractionType, parent: string };
 }
 
 export interface IModalStore {
