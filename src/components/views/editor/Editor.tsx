@@ -7,28 +7,31 @@ import Tabs from "src/components/ui/tabs/Tabs";
 import { sleep } from "src/lib/sleep";
 import { MenuAction } from "src/models/menu-action";
 import { validateProjectName } from "src/models/project";
-import { InfoStore } from "src/stores/InfoStore";
-import { InteractionStore } from "src/stores/project-stores/InteractionStore";
-import { SettingsStore } from "src/stores/project-stores/SettingsStore";
+import { IInfoStore, InfoStore } from "src/stores/InfoStore";
+import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
+import { ISettingsStore, SettingsStore } from "src/stores/project-stores/SettingsStore";
 import { ProjectAction } from "src/stores/ProjectReducer";
 import Interactions from "./tabs/Interactions";
 import Settings from "./tabs/Settings";
+
+const InfoActions = (state: IInfoStore) => state.actions;
+const InteractionActions = (state: IInteractionStore) => state.actions;
+const SettingsSelector = (state: ISettingsStore) => state.setSettings;
 
 interface Props {
   menuAction: MenuAction | undefined;
   setMenuAction: React.Dispatch<React.SetStateAction<MenuAction | undefined>>;
   dispatchProjects: React.Dispatch<ProjectAction>;
 }
+
 const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }) => {
   const { projectPath } = useParams();
   const navigate = useNavigate();
-  const [setInfoMessage, setTitle, setDirty] = InfoStore(
-    useCallback((state) => [state.setInfoMessage, state.setTitle, state.setDirty], [])
-  );
+  const { setInfoMessage, setDirty, setTitle } = InfoStore(InfoActions);
   const [hasLoaded, setHasLoaded] = useState(false);
 
-  const setSettings = SettingsStore(useCallback((state) => state.setSettings, []));
-  const setInteractions = InteractionStore(useCallback((state) => state.setInteractions, []));
+  const setSettings = SettingsStore(SettingsSelector);
+  const { setInteractions } = InteractionStore(InteractionActions);
 
   // Load project
   useEffect(() => {

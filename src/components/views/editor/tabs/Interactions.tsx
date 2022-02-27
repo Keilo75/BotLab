@@ -1,20 +1,24 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import RenameInteractionModal from "src/components/modals/interactions/RenameInteractionModal";
 import { Modal } from "src/components/ui/Modal";
 import useMountedEffect from "src/hooks/useMountedEffect";
-import { InfoStore } from "src/stores/InfoStore";
+import { IInfoStore, InfoStore } from "src/stores/InfoStore";
 import { ModalName } from "src/stores/ModalStore";
-import { InteractionStore } from "src/stores/project-stores/InteractionStore";
+import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 import InteractionList from "./interactions/interaction-list/InteractionList";
 import SelectedInteraction from "./interactions/SelectedInteraction";
 
+const InteractionsSelector = (state: IInteractionStore) => state.interactions;
+const SelectedInteractionID = (state: IInteractionStore) => state.selectedInteractionID;
+const InfoActions = (state: IInfoStore) => state.actions;
+
 const Interactions: React.FC = () => {
-  const [selectedInteractionID, interactions] = InteractionStore(
-    useCallback((state) => [state.selectedInteractionID, state.interactions], [])
-  );
+  const interactions = InteractionStore(InteractionsSelector);
+  const selectedInteractionID = InteractionStore(SelectedInteractionID);
+
   if (!interactions) return null;
 
-  const setDirty = InfoStore(useCallback((state) => state.setDirty, []));
+  const { setDirty } = InfoStore(InfoActions);
   useMountedEffect(() => {
     setDirty(true);
   }, [interactions]);

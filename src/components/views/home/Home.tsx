@@ -1,15 +1,18 @@
 import { IconPlus } from "@tabler/icons";
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "src/components/ui/Modal";
 import { fileExtensionWithoutDot } from "src/models/file-extension";
 import { ProjectInfo } from "src/models/project";
-import { InfoStore } from "src/stores/InfoStore";
-import { ModalName, ModalStore } from "src/stores/ModalStore";
+import { IInfoStore, InfoStore } from "src/stores/InfoStore";
+import { IModalStore, ModalName, ModalStore } from "src/stores/ModalStore";
 import { ProjectAction } from "src/stores/ProjectReducer";
 import CreateProjectModalComponent from "../../modals/CreateProjectModal";
 import Button from "../../ui/inputs/Button";
 import ComponentGroup from "../../ui/utils/ComponentGroup";
+
+const InfoActions = (state: IInfoStore) => state.actions;
+const ModalActions = (state: IModalStore) => state.actions;
 
 interface Props {
   projects: ProjectInfo[];
@@ -18,10 +21,9 @@ interface Props {
 }
 
 const Home: React.FC<Props> = ({ projects, dispatchProjects, loadProjects }) => {
-  const setCurrentModal = ModalStore(useCallback((state) => state.setCurrentModal, []));
-  const [setTitle, setDirty] = InfoStore(
-    useCallback((state) => [state.setTitle, state.setDirty], [])
-  );
+  const { setCurrentModal } = ModalStore(ModalActions);
+  const { setTitle, setDirty } = InfoStore(InfoActions);
+
   const navigate = useNavigate();
 
   useEffect(() => {

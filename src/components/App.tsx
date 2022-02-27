@@ -12,11 +12,13 @@ import OptionsModal from "./modals/OptionsModal";
 import { OptionsStore } from "src/stores/OptionsStore";
 import ErrorModal from "./modals/ErrorModal";
 import { projectReducer } from "src/stores/ProjectReducer";
-import { ModalName, ModalStore } from "src/stores/ModalStore";
+import { IModalStore, ModalName, ModalStore } from "src/stores/ModalStore";
 import { ProjectInfo } from "src/models/project";
 import Editor from "./views/editor/Editor";
 import ContextMenu from "./shared/ContextMenu";
 import ConfirmationModal from "./modals/ConfirmationModal";
+
+const ModalActions = (state: IModalStore) => state.actions;
 
 const App: React.FC = () => {
   const [menuAction, setMenuAction] = useState<MenuAction | undefined>(undefined);
@@ -26,7 +28,7 @@ const App: React.FC = () => {
   );
 
   const [projects, dispatchProjects] = useReducer(projectReducer, []);
-  const setCurrentModal = ModalStore(useCallback((state) => state.setCurrentModal, []));
+  const { setCurrentModal } = ModalStore(ModalActions);
 
   const loadProjects = useCallback(async () => {
     const projectPaths = window.store.getProjects();

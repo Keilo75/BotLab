@@ -10,8 +10,10 @@ import ComponentGroup from "src/components/ui/utils/ComponentGroup";
 import useMountedEffect from "src/hooks/useMountedEffect";
 import useToggle from "src/hooks/useToggle";
 import { validateProjectName, ProjectSettings } from "src/models/project";
-import { InfoStore } from "src/stores/InfoStore";
+import { IInfoStore, InfoStore } from "src/stores/InfoStore";
 import { SettingsStore } from "src/stores/project-stores/SettingsStore";
+
+const InfoStoreActions = (state: IInfoStore) => state.actions;
 
 const Settings: React.FC = () => {
   const [settings, setSettings] = SettingsStore(
@@ -19,7 +21,7 @@ const Settings: React.FC = () => {
   );
   if (!settings) return null;
 
-  const setDirty = InfoStore(useCallback((state) => state.setDirty, []));
+  const { setDirty } = InfoStore(InfoStoreActions);
   useMountedEffect(() => {
     setDirty(true);
   }, [settings]);

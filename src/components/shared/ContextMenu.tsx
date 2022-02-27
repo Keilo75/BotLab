@@ -2,16 +2,17 @@ import clsx from "clsx";
 import React from "react";
 import ReactDOM from "react-dom";
 import useOutsideClick from "src/hooks/useOutsideClick";
-import { ContextMenuStore } from "src/stores/ContextMenuStore";
+import { ContextMenuStore, IContextMenuStore } from "src/stores/ContextMenuStore";
+
+const ContextMenuSelector = (state: IContextMenuStore) => state.contextMenu;
+const SetContextMenu = (state: IContextMenuStore) => state.setContextMenu;
 
 const ContextMenu: React.FC = () => {
   const contextMenuRoot = document.getElementById("context-menu-root");
   if (!contextMenuRoot) return null;
 
-  const [contextMenu, setContextMenu] = ContextMenuStore((state) => [
-    state.contextMenu,
-    state.setContextMenu,
-  ]);
+  const contextMenu = ContextMenuStore(ContextMenuSelector);
+  const setContextMenu = ContextMenuStore(SetContextMenu);
 
   useOutsideClick(".context-menu", () => setContextMenu(undefined));
 

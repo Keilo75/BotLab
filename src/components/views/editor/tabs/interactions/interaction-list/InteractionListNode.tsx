@@ -5,8 +5,11 @@ import React, { useCallback, useState } from "react";
 import Repeater from "src/components/ui/utils/Repeater";
 import useContextMenu from "src/hooks/useContextMenu";
 import { InteractionNode } from "src/models/interaction-list";
-import { ModalName, ModalStore } from "src/stores/ModalStore";
-import { InteractionStore } from "src/stores/project-stores/InteractionStore";
+import { IModalStore, ModalName, ModalStore } from "src/stores/ModalStore";
+import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
+
+const ModalActions = (state: IModalStore) => state.actions;
+const InteractionActions = (state: IInteractionStore) => state.actions;
 
 interface Props {
   node: InteractionNode;
@@ -16,6 +19,7 @@ interface Props {
   isSelected: boolean;
   selectInteraction: (id: string) => void;
 }
+
 const InteractionListNode: React.FC<Props> = ({
   node,
   depth,
@@ -24,13 +28,16 @@ const InteractionListNode: React.FC<Props> = ({
   isSelected,
   selectInteraction,
 }) => {
+  const { setCurrentModal } = ModalStore(ModalActions);
+  const { deleteInteraction } = InteractionStore(InteractionActions);
+
   const handleContextMenu = useContextMenu([
     {
       name: "Rename",
       action: () => {
         if (!node.data) return;
 
-        ModalStore.getState().setCurrentModal(ModalName.RENAME_INTERACTION, {
+        setCurrentModal(ModalName.RENAME_INTERACTION, {
           id: node.id.toString(),
           name: node.text,
           parent: node.parent.toString(),
@@ -42,13 +49,13 @@ const InteractionListNode: React.FC<Props> = ({
     {
       name: "Delete",
       action: () => {
-        ModalStore.getState().setCurrentModal(ModalName.CONFIRMATION, {
+        setCurrentModal(ModalName.CONFIRMATION, {
           title: "Delete interaction?",
           text: "Do you want to delete this interaction?",
           buttonText: "Delete",
           confirmationOption: "confirmInteractionDeletion",
           handleConfirm: () => {
-            InteractionStore.getState().deleteInteraction(node.id.toString());
+            deleteInteraction(node.id.toString());
           },
         });
       },

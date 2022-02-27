@@ -38,37 +38,48 @@ export interface ModalData extends Record<ModalName, any> {
     confirmationOption: keyof Options["editor"];
     handleConfirm: () => void;
   };
-  "rename-interaction": { id: string; name: string; textBased: boolean; type: InteractionType, parent: string };
+  "rename-interaction": {
+    id: string;
+    name: string;
+    textBased: boolean;
+    type: InteractionType;
+    parent: string;
+  };
 }
 
 export interface IModalStore {
   currentModal: Modal | undefined;
-  setCurrentModal: <T extends ModalName>(name: T, data?: ModalData[T]) => void;
-  hideModal: () => void;
   modals: Modal[];
-  addModal: (modal: Modal) => void;
-  removeModal: (name: ModalName) => void;
   data: any;
+  actions: {
+    setCurrentModal: <T extends ModalName>(name: T, data?: ModalData[T]) => void;
+    hideModal: () => void;
+
+    addModal: (modal: Modal) => void;
+    removeModal: (name: ModalName) => void;
+  };
 }
 
 export const ModalStore = create<IModalStore>((set, get) => ({
   currentModal: undefined,
-  setCurrentModal: (name, data) => {
-    const modal = get().modals.find((modal) => modal.name === name);
-    if (modal) set({ currentModal: modal, data });
-    else throw new Error("Cannot find modal " + name);
-  },
-  hideModal: () => {
-    set({ currentModal: undefined, data: undefined });
-  },
   modals: [],
-  addModal: (modal) => {
-    set({ modals: [...get().modals, modal] });
-  },
-  removeModal: (name) => {
-    set({ modals: get().modals.filter((modal) => modal.name !== name) });
-  },
   data: undefined,
+  actions: {
+    setCurrentModal: (name, data) => {
+      const modal = get().modals.find((modal) => modal.name === name);
+      if (modal) set({ currentModal: modal, data });
+      else throw new Error("Cannot find modal " + name);
+    },
+    hideModal: () => {
+      set({ currentModal: undefined, data: undefined });
+    },
+    addModal: (modal) => {
+      set({ modals: [...get().modals, modal] });
+    },
+    removeModal: (name) => {
+      set({ modals: get().modals.filter((modal) => modal.name !== name) });
+    },
+  },
 }));
 
 export const useModalData = <T extends ModalName>(name: T): ModalData[T] => {

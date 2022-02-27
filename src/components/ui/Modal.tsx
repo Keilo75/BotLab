@@ -1,17 +1,19 @@
 import { motion } from "framer-motion";
 import React, { MouseEventHandler, useCallback, useEffect, useMemo, useState } from "react";
-import { ModalStore, Modal as ModalProps } from "src/stores/ModalStore";
+import { ModalStore, Modal as ModalProps, IModalStore } from "src/stores/ModalStore";
 import ReactDOM from "react-dom";
 import clsx from "clsx";
 import ReactFocusLock from "react-focus-lock";
+
+const CurrentModal = (state: IModalStore) => state.currentModal;
+const ModalActions = (state: IModalStore) => state.actions;
 
 const ModalTemplate: React.FC = () => {
   const modalRoot = document.getElementById("modal-root");
   if (!modalRoot) return null;
 
-  const [currentModal, hideModal] = ModalStore(
-    useCallback((state) => [state.currentModal, state.hideModal], [])
-  );
+  const currentModal = ModalStore(CurrentModal);
+  const { hideModal } = ModalStore(ModalActions);
 
   const handleModalClick: MouseEventHandler = (e) => {
     e.stopPropagation();
@@ -59,9 +61,9 @@ export const Modal: React.FC<ModalProps> = (props) => {
   const modalTemplate = document.getElementById("modal");
   const [visible, setVisible] = useState(false);
 
-  const [currentModal, addModal, removeModal] = ModalStore(
-    useCallback((state) => [state.currentModal, state.addModal, state.removeModal], [])
-  );
+  const currentModal = ModalStore(CurrentModal);
+  const { addModal, removeModal } = ModalStore(ModalActions);
+
   useEffect(() => {
     const { children, ...modalProps } = props;
     addModal(modalProps);

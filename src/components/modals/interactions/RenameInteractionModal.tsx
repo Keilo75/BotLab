@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "src/components/ui/inputs/Button";
 import TextInput from "src/components/ui/inputs/TextInput";
 import Label from "src/components/ui/Label";
@@ -6,21 +6,23 @@ import {
   getAllInteractionsWithSameParent as getInteractionsWithSameParent,
   validateInteractionName,
 } from "src/models/interactions";
-import { ModalLayout, ModalName, ModalStore, useModalData } from "src/stores/ModalStore";
-import { InteractionStore } from "src/stores/project-stores/InteractionStore";
+import {
+  IModalStore,
+  ModalLayout,
+  ModalName,
+  ModalStore,
+  useModalData,
+} from "src/stores/ModalStore";
+import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
+
+const ModalActions = (state: IModalStore) => state.actions;
+const InteractionActions = (state: IInteractionStore) => state.actions;
 
 const RenameInteractionModal: React.FC = () => {
-  const hideModal = ModalStore(useCallback((state) => state.hideModal, []));
-  const interaction = useModalData(ModalName.RENAME_INTERACTION);
-  const sameParentInteractions = useMemo(() => {
-    const interactions = InteractionStore.getState().interactions;
-    if (!interactions) return [];
+  const { hideModal } = ModalStore(ModalActions);
+  const { renameInteraction } = InteractionStore(InteractionActions);
 
-    const filteredInteractions = interactions.filter((i) =>
-      i.textBased ? interaction.textBased : i.type === interaction.type
-    );
-    return getInteractionsWithSameParent(filteredInteractions, interaction.parent);
-  }, []);
+  const interaction = useModalData(ModalName.RENAME_INTERACTION);
 
   const [value, setValue] = useState(interaction.name);
   const [error, setError] = useState<string>();
@@ -39,8 +41,7 @@ const RenameInteractionModal: React.FC = () => {
   const handleSubmit = () => {
     if (error) return;
 
-    if (value !== interaction.name)
-      InteractionStore.getState().renameInteraction(interaction.id, value);
+    if (value !== interaction.name) renameInteraction(interaction.id, value);
     hideModal();
   };
 

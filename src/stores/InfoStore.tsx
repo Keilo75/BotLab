@@ -7,12 +7,14 @@ export interface IInfoStore {
     text: string | undefined;
     type: InfoBarType | undefined;
   };
-  setInfoMessage: (text: string, type: InfoBarType) => void;
-  clearInfoMessage: () => void;
   title: string;
   dirty: boolean;
-  setTitle: (title: string, hideAppName?: boolean) => void;
-  setDirty: (dirty: boolean) => void;
+  actions: {
+    setInfoMessage: (text: string, type: InfoBarType) => void;
+    clearInfoMessage: () => void;
+    setTitle: (title: string, hideAppName?: boolean) => void;
+    setDirty: (dirty: boolean) => void;
+  };
 }
 
 export const InfoStore = create<IInfoStore>((set) => ({
@@ -20,10 +22,12 @@ export const InfoStore = create<IInfoStore>((set) => ({
     text: undefined,
     type: undefined,
   },
-  setInfoMessage: (text, type) => set({ infoMessage: { text, type } }),
-  clearInfoMessage: () => set({ infoMessage: { text: undefined, type: undefined } }),
   title: "",
-  setTitle: (title, showAppName) => set({ title: `${title} ${!showAppName ? "- BotLab" : ""}` }),
   dirty: false,
-  setDirty: (dirty) => set({ dirty }),
+  actions: {
+    setInfoMessage: (text, type) => set({ infoMessage: { text, type } }),
+    clearInfoMessage: () => set({ infoMessage: { text: undefined, type: undefined } }),
+    setTitle: (title, showAppName) => set({ title: `${title} ${!showAppName ? "- BotLab" : ""}` }),
+    setDirty: (dirty) => set({ dirty }),
+  },
 }));

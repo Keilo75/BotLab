@@ -1,6 +1,6 @@
 import { Tree, TreeMethods } from "@minoru/react-dnd-treeview";
 import { IconFolder } from "@tabler/icons";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DropdownButton from "src/components/ui/inputs/DropdownButton";
 import Label from "src/components/ui/Label";
 import {
@@ -10,23 +10,18 @@ import {
   InteractionNode,
 } from "src/models/interaction-list";
 import { InteractionType, InteractionTypes } from "src/models/project";
-import { InteractionStore } from "src/stores/project-stores/InteractionStore";
+import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 import InteractionListNode from "./InteractionListNode";
 
+const Interactions = (state: IInteractionStore) => state.interactions;
+const SelectedInteractionID = (state: IInteractionStore) => state.selectedInteractionID;
+const InteractionActions = (state: IInteractionStore) => state.actions;
+
 const InteractionList: React.FC = () => {
-  const [interactions, setInteractions, addInteraction, selectedInteractionID, selectInteraction] =
-    InteractionStore(
-      useCallback(
-        (state) => [
-          state.interactions,
-          state.setInteractions,
-          state.addInteraction,
-          state.selectedInteractionID,
-          state.selectInteraction,
-        ],
-        []
-      )
-    );
+  const interactions = InteractionStore(Interactions);
+  const selectedInteractionID = InteractionStore(SelectedInteractionID);
+  const { addInteraction, setInteractions, selectInteraction } =
+    InteractionStore(InteractionActions);
 
   if (!interactions) return null;
 

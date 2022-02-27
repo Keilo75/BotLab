@@ -1,9 +1,18 @@
 import React, { useCallback } from "react";
-import { ModalLayout, ModalName, ModalStore, useModalData } from "src/stores/ModalStore";
+import {
+  IModalStore,
+  ModalLayout,
+  ModalName,
+  ModalStore,
+  useModalData,
+} from "src/stores/ModalStore";
 import Button from "../ui/inputs/Button";
 
+const ModalActions = (state: IModalStore) => state.actions;
+
 const ErrorModal: React.FC = () => {
-  const hideModal = ModalStore(useCallback((state) => state.hideModal, []));
+  const { hideModal } = ModalStore(ModalActions);
+
   const error = useModalData(ModalName.ERROR);
 
   return (

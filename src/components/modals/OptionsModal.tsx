@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { ModalLayout, ModalStore } from "src/stores/ModalStore";
+import { IModalStore, ModalLayout, ModalStore } from "src/stores/ModalStore";
 import { OptionsStore } from "src/stores/OptionsStore";
 import Button from "../ui/inputs/Button";
 import InputGroup from "../ui/inputs/InputGroup";
@@ -9,8 +9,10 @@ import Label from "../ui/Label";
 import Tab from "../ui/tabs/Tab";
 import Tabs from "../ui/tabs/Tabs";
 
+const ModalActions = (state: IModalStore) => state.actions;
+
 const OptionsModal: React.FC = () => {
-  const hideModal = ModalStore(useCallback((state) => state.hideModal, []));
+  const { hideModal } = ModalStore(ModalActions);
 
   const options = OptionsStore();
   if (!options.options) return null;

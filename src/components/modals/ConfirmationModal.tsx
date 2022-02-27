@@ -1,10 +1,18 @@
 import React, { useCallback, useEffect } from "react";
-import { ModalLayout, ModalName, ModalStore, useModalData } from "src/stores/ModalStore";
+import {
+  IModalStore,
+  ModalLayout,
+  ModalName,
+  ModalStore,
+  useModalData,
+} from "src/stores/ModalStore";
 import { OptionsStore } from "src/stores/OptionsStore";
 import Button from "../ui/inputs/Button";
 
+const ModalActions = (state: IModalStore) => state.actions;
+
 const ConfirmationModal: React.FC = () => {
-  const hideModal = ModalStore(useCallback((state) => state.hideModal, []));
+  const { hideModal } = ModalStore(ModalActions);
   const confirmData = useModalData(ModalName.CONFIRMATION);
 
   useEffect(() => {
