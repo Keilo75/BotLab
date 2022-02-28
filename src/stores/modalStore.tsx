@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { InteractionType } from "src/models/interactions";
 import create from "zustand";
 import { Options } from "./OptionsStore";
@@ -8,11 +8,15 @@ interface ContentProps {
   padding?: boolean;
 }
 
+const ModalContent: React.FC<ContentProps> = ({ children, padding }) => (
+  <div className={clsx("modal-content", padding && "modal-content-padding")}>{children}</div>
+);
+
+const ModalFooter: React.FC = ({ children }) => <div className="modal-footer">{children}</div>;
+
 export const ModalLayout: { Content: React.FC<ContentProps>; Footer: React.FC } = {
-  Content: ({ children, padding }) => (
-    <div className={clsx("modal-content", padding && "modal-content-padding")}>{children}</div>
-  ),
-  Footer: ({ children }) => <div className="modal-footer">{children}</div>,
+  Content: ModalContent,
+  Footer: ModalFooter,
 };
 
 export enum ModalName {
@@ -81,7 +85,7 @@ export const ModalStore = create<IModalStore>((set, get) => ({
   },
 }));
 
-export const useModalData = <T extends ModalName>(name: T): ModalData[T] => {
+export const useModalData = <T extends ModalName>(): ModalData[T] => {
   const data = useMemo(() => ModalStore.getState().data, []);
   return data as ModalData[T];
 };

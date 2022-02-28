@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer, OpenDialogOptions, OpenDialogReturnValue } from "electron";
-import fs from "fs-extra";
+import { readdirSync, writeFileSync, writeJSONSync, readJSONSync, emptyDir } from "fs-extra";
 
 import path from "path";
 import Store from "electron-store";
@@ -22,7 +22,7 @@ const fsBridge = {
   },
 
   async isDirectoryEmpty(dir: string): Promise<boolean> {
-    const files = fs.readdirSync(dir);
+    const files = readdirSync(dir);
 
     return files.length === 0;
   },
@@ -43,12 +43,12 @@ const projectBridge = {
   },
 
   async getProjectFromBotFile(projectPath: string): Promise<Project> {
-    const config: Project = fs.readJSONSync(projectPath, "utf8");
+    const config: Project = readJSONSync(projectPath, "utf8");
     return config;
   },
 
   async saveProject(project: Project, projectPath: string): Promise<void> {
-    fs.writeJSONSync(projectPath, project, { spaces: "\t" });
+    writeJSONSync(projectPath, project, { spaces: "\t" });
   },
 };
 
@@ -78,7 +78,7 @@ const storeBridge = {
 
 const templateBridge = {
   async emptyFolder(dest: string): Promise<void> {
-    await fs.emptyDir(dest);
+    await emptyDir(dest);
   },
 
   async copyTemplate(dest: string, name: string): Promise<string> {
@@ -87,7 +87,7 @@ const templateBridge = {
     const botPath = path.join(dest, `${name}.${fileExtensionWithoutDot}`);
     const botFile = config.botFile;
     botFile.settings.name = name;
-    fs.writeFileSync(botPath, JSON.stringify(botFile));
+    writeFileSync(botPath, JSON.stringify(botFile));
 
     return botPath;
   },

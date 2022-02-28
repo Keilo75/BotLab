@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   IModalStore,
   ModalLayout,
@@ -13,7 +13,7 @@ const ModalActions = (state: IModalStore) => state.actions;
 
 const ConfirmationModal: React.FC = () => {
   const { hideModal } = ModalStore(ModalActions);
-  const confirmData = useModalData(ModalName.CONFIRMATION);
+  const confirmData = useModalData<ModalName.CONFIRMATION>();
 
   useEffect(() => {
     const shouldConfirm = getOption("editor", confirmData.confirmationOption);

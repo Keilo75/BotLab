@@ -20,7 +20,7 @@ const RenameInteractionModal: React.FC = () => {
   const { hideModal } = ModalStore(ModalActions);
   const { renameInteraction } = InteractionStore(InteractionActions);
 
-  const interaction = useModalData(ModalName.RENAME_INTERACTION);
+  const interaction = useModalData<ModalName.RENAME_INTERACTION>();
 
   const [value, setValue] = useState(interaction.name);
   const [error, setError] = useState<string>();

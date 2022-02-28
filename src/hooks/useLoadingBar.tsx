@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import Label from "src/components/ui/Label";
 
 export interface useLoadingBarReturnValue {
   Component: React.FC;

@@ -59,7 +59,7 @@ const App: React.FC = () => {
     if (!options) return;
 
     // Change theme
-    document.body.classList.toggle("theme-dark", options.general.theme == 0);
+    document.body.classList.toggle("theme-dark", options.general.theme === 0);
 
     window.store.setOptions(options);
   }, [options]);

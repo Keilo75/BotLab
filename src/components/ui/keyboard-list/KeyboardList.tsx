@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { createRef, useCallback, useEffect, useMemo, useState } from "react";
 
 type Ref = HTMLElement | null;
 
@@ -20,7 +20,7 @@ const KeyboardList: React.FC<Props> = ({ length, children, selectedIndex, axis =
     () =>
       Array(length)
         .fill(0)
-        .map((_) => React.createRef<Ref>()),
+        .map(() => createRef<Ref>()),
     [length]
   ) as React.MutableRefObject<Ref>[];
 
@@ -38,22 +38,22 @@ const KeyboardList: React.FC<Props> = ({ length, children, selectedIndex, axis =
 
       switch (e.key) {
         case "ArrowDown": {
-          if (axis == "vertical") setNextIndex();
+          if (axis === "vertical") setNextIndex();
           break;
         }
 
         case "ArrowUp": {
-          if (axis == "vertical") setPreviousIndex();
+          if (axis === "vertical") setPreviousIndex();
           break;
         }
 
         case "ArrowRight": {
-          if (axis == "horizontal") setNextIndex();
+          if (axis === "horizontal") setNextIndex();
           break;
         }
 
         case "ArrowLeft": {
-          if (axis == "horizontal") setPreviousIndex();
+          if (axis === "horizontal") setPreviousIndex();
           break;
         }
 

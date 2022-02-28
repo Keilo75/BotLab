@@ -11,9 +11,9 @@ interface Props {
 const Container: React.FC<Props> = ({ type, text, className, children }) => {
   return (
     <div className={clsx("container", "info-container", `info-container-${type}`, className)}>
-      {type == "warning" && <IconAlertCircle />}
-      {type == "info" && <IconInfoCircle />}
-      <div>{children ? children : text}</div>
+      {type === "warning" && <IconAlertCircle />}
+      {type === "info" && <IconInfoCircle />}
+      <div>{children || text}</div>
     </div>
   );
 };

@@ -1,10 +1,10 @@
 import clsx from "clsx";
-import React, { useState } from "react";
+import React from "react";
 
 export type TooltipDirection = "top" | "bottom" | "right" | "left";
 
 interface Props {
-  children: JSX.Element;
+  children: React.ReactNode;
   content: string;
   direction?: TooltipDirection;
 }

@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import React, { useState } from "react";
-import Button from "../inputs/Button";
 import KeyboardList from "../keyboard-list/KeyboardList";
 import Label from "../Label";
 
@@ -37,7 +36,7 @@ const Tabs: React.FC<Props> = ({ children, name, defaultTab, axis = "vertical" }
                     data-button-index={index}
                     className={clsx(
                       "button button-transparent",
-                      selected == index && "button-selected",
+                      selected === index && "button-selected",
                       axis === "vertical" && "button-text-left"
                     )}
                     ref={(ref) => (refs[index].current = ref)}

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import AppLogo from "assets/icon/icon.svg";
 import Minimize from "assets/images/minimize.svg";
 import Maximize from "assets/images/maximize.svg";

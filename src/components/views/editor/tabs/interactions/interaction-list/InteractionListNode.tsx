@@ -1,7 +1,7 @@
 import { useDragOver } from "@minoru/react-dnd-treeview";
 import { IconFolder, IconMail, IconUser } from "@tabler/icons";
 import clsx from "clsx";
-import React, { useCallback, useState } from "react";
+import React from "react";
 import Repeater from "src/components/ui/utils/Repeater";
 import useContextMenu from "src/hooks/useContextMenu";
 import { InteractionNode } from "src/models/interaction-list";

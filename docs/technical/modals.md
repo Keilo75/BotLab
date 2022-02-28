@@ -38,7 +38,7 @@ In order to retrieve the current modal's data, use the `useModalData` hook.
 
 ```js
 import { useModalData, ModalName } from "src/stores/ModalStore";
-const error = useModalData(ModalName.ERROR);
+const error = useModalData<ModalName.Error>();
 ```
 
 ## Modal Props

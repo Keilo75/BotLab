@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import React, { MouseEventHandler, useCallback, useEffect, useMemo, useState } from "react";
+import React, { MouseEventHandler, useEffect, useState } from "react";
 import { ModalStore, Modal as ModalProps, IModalStore } from "src/stores/ModalStore";
-import ReactDOM from "react-dom";
+import { createPortal } from "react-dom";
 import clsx from "clsx";
 import ReactFocusLock from "react-focus-lock";
 
@@ -52,7 +52,7 @@ const ModalTemplate: React.FC = () => {
     </motion.div>
   );
 
-  return ReactDOM.createPortal(component, modalRoot);
+  return createPortal(component, modalRoot);
 };
 
 export default ModalTemplate;
@@ -65,6 +65,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
   const { addModal, removeModal } = ModalStore(ModalActions);
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { children, ...modalProps } = props;
     addModal(modalProps);
 
@@ -79,5 +80,5 @@ export const Modal: React.FC<ModalProps> = (props) => {
 
   if (!visible || !modalTemplate) return null;
 
-  return ReactDOM.createPortal(props.children, modalTemplate);
+  return createPortal(props.children, modalTemplate);
 };

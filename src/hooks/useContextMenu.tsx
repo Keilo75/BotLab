@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { ContextMenu, ContextMenuStore, IContextMenuStore } from "src/stores/ContextMenuStore";
 
 const SetContextMenu = (state: IContextMenuStore) => state.setContextMenu;

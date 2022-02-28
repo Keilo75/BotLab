@@ -23,7 +23,7 @@ export interface IOptionsStore {
   };
 }
 
-export const OptionsStore = create<IOptionsStore>((set, get) => {
+export const OptionsStore = create<IOptionsStore>((set) => {
   const setCategory = <T extends keyof Options>(category: T, value: Options[T]) => {
     set((state) => {
       if (state.options) return { options: { ...state.options, [category]: value } };

@@ -1,6 +1,6 @@
 import { IconChevronDown } from "@tabler/icons";
 import clsx from "clsx";
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import useOutsideClick from "src/hooks/useOutsideClick";
 import useToggle from "src/hooks/useToggle";
 import KeyboardList from "../keyboard-list/KeyboardList";
@@ -17,7 +17,7 @@ const DropdownButton: React.FC<Props> = ({ text, options, className, onClick }) 
   const [visible, toggleVisible, setVisible] = useToggle(false);
 
   const remainingOptions = useMemo(() => {
-    const [f, ...remaining] = options;
+    const [, ...remaining] = options;
 
     return remaining;
   }, [options]);

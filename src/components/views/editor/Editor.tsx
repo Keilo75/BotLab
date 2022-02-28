@@ -1,5 +1,5 @@
 import { IconMessages, IconSettings, IconTerminal2 } from "@tabler/icons";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import InfoBar from "src/components/shared/InfoBar";
 import Tab from "src/components/ui/tabs/Tab";

@@ -1,7 +1,12 @@
-import { Interaction, InteractionType, isTextBased } from "src/models/interactions";
+import {
+  Interaction,
+  InteractionType,
+  isTextBased,
+  getAllChildInteractions,
+  getInteractionName,
+} from "src/models/interactions";
 import create from "zustand";
 import { v4 as uuid } from "uuid";
-import { getAllChildInteractions, getInteractionName } from "src/models/interactions";
 
 export interface IInteractionStore {
   interactions: Interaction[] | undefined;
@@ -13,6 +18,7 @@ export interface IInteractionStore {
     deleteInteraction: (id: string) => void;
     renameInteraction: (interactionID: string, newName: string) => void;
     selectInteraction: (interactionID: string) => void;
+    updateSelectedInteraction: <T extends keyof Interaction>(key: T, value: Interaction[T]) => void;
   };
 }
 
@@ -71,6 +77,16 @@ export const InteractionStore = create<IInteractionStore>((set, get) => ({
     },
     selectInteraction: (id) => {
       set({ selectedInteractionID: id });
+    },
+    updateSelectedInteraction: (key, value) => {
+      const interactions = get().interactions;
+      const selectedInteractionID = get().selectedInteractionID;
+      if (!interactions || !selectedInteractionID) return;
+
+      const newInteractions = interactions.map((i) =>
+        i.id === selectedInteractionID ? { ...i, [key]: value } : i
+      );
+      set({ interactions: newInteractions });
     },
   },
 }));

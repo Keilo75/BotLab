@@ -1,5 +1,4 @@
-import clsx from "clsx";
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import Container from "src/components/ui/Container";
 import Button from "src/components/ui/inputs/Button";
 import InputGroup from "src/components/ui/inputs/InputGroup";

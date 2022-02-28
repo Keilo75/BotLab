@@ -15,7 +15,7 @@ interface Props {
 }
 
 const MenuPane: React.FC<Props> = ({ pane, selectedPane, setSelectedPane, handleItemClick }) => {
-  const isSelected = pane.name == selectedPane;
+  const isSelected = pane.name === selectedPane;
 
   const handleMenuPaneClick = () => {
     if (selectedPane !== undefined) return setSelectedPane(undefined);

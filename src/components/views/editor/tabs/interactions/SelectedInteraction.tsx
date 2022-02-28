@@ -3,12 +3,20 @@ import TextInput from "src/components/ui/inputs/TextInput";
 import Label from "src/components/ui/Label";
 import ComponentGroup from "src/components/ui/utils/ComponentGroup";
 import { Interaction, InteractionTypes } from "src/models/interactions";
+import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 
+const InteractionActions = (state: IInteractionStore) => state.actions;
 interface Props {
   interaction: Interaction;
 }
 
 const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
+  const { updateSelectedInteraction } = InteractionStore(InteractionActions);
+
+  const handleDescriptionChange = (value: string) => {
+    updateSelectedInteraction("description", value);
+  };
+
   return (
     <>
       <h2 className="no-margin">{interaction.name}</h2>
@@ -20,7 +28,7 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
             <TextInput
               name="description"
               value={interaction.description}
-              onChange={(value) => null}
+              onChange={handleDescriptionChange}
             />
           </div>
         )}

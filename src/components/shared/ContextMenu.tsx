@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import React from "react";
-import ReactDOM from "react-dom";
+import { createPortal } from "react-dom";
 import useOutsideClick from "src/hooks/useOutsideClick";
 import { ContextMenuStore, IContextMenuStore } from "src/stores/ContextMenuStore";
 
@@ -44,7 +44,7 @@ const ContextMenu: React.FC = () => {
     </>
   );
 
-  return ReactDOM.createPortal(menu, contextMenuRoot);
+  return createPortal(menu, contextMenuRoot);
 };
 
 export default ContextMenu;

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import {
   IModalStore,
   ModalLayout,
@@ -13,7 +13,7 @@ const ModalActions = (state: IModalStore) => state.actions;
 const ErrorModal: React.FC = () => {
   const { hideModal } = ModalStore(ModalActions);
 
-  const error = useModalData(ModalName.ERROR);
+  const error = useModalData<ModalName.ERROR>();
 
   return (
     <>

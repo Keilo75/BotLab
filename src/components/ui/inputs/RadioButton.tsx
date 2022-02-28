@@ -33,7 +33,7 @@ const RadioButton: React.FC<Props> = ({
           options.map((option, index) => (
             <div
               key={option}
-              className={clsx("radio-button", selectedIndex == index && "radio-button-selected")}
+              className={clsx("radio-button", selectedIndex === index && "radio-button-selected")}
               ref={(ref) => (refs[index].current = ref)}
               data-radio-option-index={index}
               onClick={handleRadioButtonClick}
