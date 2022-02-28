@@ -14,7 +14,7 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
       <h2 className="no-margin">{interaction.name}</h2>
       <span className="text">{InteractionTypes[interaction.type]}</span>
       <ComponentGroup axis="vertical" className="mt">
-        {interaction.description && (
+        {interaction.description !== undefined && (
           <div>
             <Label text="Description" />
             <TextInput

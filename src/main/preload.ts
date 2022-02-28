@@ -48,7 +48,7 @@ const projectBridge = {
   },
 
   async saveProject(project: Project, projectPath: string): Promise<void> {
-    fs.writeJSONSync(projectPath, project);
+    fs.writeJSONSync(projectPath, project, { spaces: "\t" });
   },
 };
 

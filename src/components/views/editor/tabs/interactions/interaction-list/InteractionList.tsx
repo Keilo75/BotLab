@@ -5,8 +5,8 @@ import DropdownButton from "src/components/ui/inputs/DropdownButton";
 import Label from "src/components/ui/Label";
 import {
   convertInteractionsToNodeModelArray,
-  convertNodeModelToInteractionsArray,
   getDepth,
+  getParentsFromNodeModel,
   InteractionNode,
 } from "src/models/interaction-list";
 import { InteractionType, InteractionTypes, isTextBased } from "src/models/interactions";
@@ -20,8 +20,7 @@ const InteractionActions = (state: IInteractionStore) => state.actions;
 const InteractionList: React.FC = () => {
   const interactions = InteractionStore(Interactions);
   const selectedInteractionID = InteractionStore(SelectedInteractionID);
-  const { addInteraction, setInteractions, selectInteraction } =
-    InteractionStore(InteractionActions);
+  const { addInteraction, updateParents, selectInteraction } = InteractionStore(InteractionActions);
 
   if (!interactions) return null;
 
@@ -49,8 +48,8 @@ const InteractionList: React.FC = () => {
   };
 
   const handleDrop = (newTree: InteractionNode[]) => {
-    const newInteractions = convertNodeModelToInteractionsArray(newTree);
-    setInteractions(newInteractions);
+    const newParents = getParentsFromNodeModel(newTree);
+    updateParents(newParents);
   };
 
   if (!treeData) return null;

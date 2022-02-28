@@ -12,29 +12,18 @@ export const convertInteractionsToNodeModelArray = (
     parent: i.parent,
     text: i.name,
     droppable: i.type === "folder",
-    data: {
-      type: i.type,
-    },
+    data: { type: i.type },
   }));
 };
 
-export const convertNodeModelToInteractionsArray = (
-  nodeModels: InteractionNode[]
-): Interaction[] => {
-  const interactions: Interaction[] = [];
+export const getParentsFromNodeModel = (nodeModels: InteractionNode[]): Record<string, string> => {
+  const directory: Record<string, string> = {};
 
   for (const m of nodeModels) {
-    if (m.data)
-      interactions.push({
-        id: m.id.toString(),
-
-        parent: m.parent.toString(),
-        name: m.text,
-        ...m.data,
-      });
+    directory[m.id.toString()] = m.parent.toString();
   }
 
-  return interactions;
+  return directory;
 };
 
 export const getDepth = (tree: InteractionNode[], id: string | number, depth = 0): number => {
