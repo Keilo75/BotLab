@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { IModalStore, ModalLayout, ModalStore } from "src/stores/ModalStore";
-import { OptionsStore } from "src/stores/OptionsStore";
+import { defaultOptions, IOptionsStore, OptionsStore } from "src/stores/OptionsStore";
 import Button from "../ui/inputs/Button";
 import InputGroup from "../ui/inputs/InputGroup";
 import RadioButton from "../ui/inputs/RadioButton";
@@ -8,21 +8,29 @@ import ToggleSwitch from "../ui/inputs/ToggleSwitch";
 import Label from "../ui/Label";
 import Tab from "../ui/tabs/Tab";
 import Tabs from "../ui/tabs/Tabs";
+import ComponentGroup from "../ui/utils/ComponentGroup";
 
 const ModalActions = (state: IModalStore) => state.actions;
+const Options = (state: IOptionsStore) => state.options;
+const OptionsActions = (state: IOptionsStore) => state.actions;
 
 const OptionsModal: React.FC = () => {
   const { hideModal } = ModalStore(ModalActions);
 
-  const options = OptionsStore();
-  if (!options.options) return null;
+  const options = OptionsStore(Options);
+  const optionsActions = OptionsStore(OptionsActions);
+  if (!options) return null;
+
+  const resetOptions = () => {
+    optionsActions.setOptions(defaultOptions);
+  };
 
   return (
     <>
       <ModalLayout.Content>
         <Tabs name="Options" defaultTab={0}>
           <Tab name="General">
-            <InputGroup state={options.options.general} onChange={options.setGeneral}>
+            <InputGroup state={options.general} onChange={optionsActions.setGeneral}>
               {(state, setState) => (
                 <>
                   <Label text="Theme" />
@@ -37,7 +45,7 @@ const OptionsModal: React.FC = () => {
             </InputGroup>
           </Tab>
           <Tab name="Editor">
-            <InputGroup state={options.options.editor} onChange={options.setEditor}>
+            <InputGroup state={options.editor} onChange={optionsActions.setEditor}>
               {(state, setState) => (
                 <>
                   <Label text="Ask for confirmation when" />
@@ -51,18 +59,24 @@ const OptionsModal: React.FC = () => {
               )}
             </InputGroup>
           </Tab>
-          <Tab name="Experimental">
-            <InputGroup state={options.options.experimental} onChange={options.setExperimental}>
+          <Tab name="Developer">
+            <InputGroup state={options.developer} onChange={optionsActions.setDeveloper}>
               {(state, setState) => (
-                <>
-                  <Label text="Dangerous" />
-                  <ToggleSwitch
-                    name="emptyFolderOnProjectCreation"
-                    label="Empty folder on project creation"
-                    checked={state.emptyFolderOnProjectCreation}
-                    onChange={setState}
-                  />
-                </>
+                <ComponentGroup axis="vertical">
+                  <div>
+                    <Label text="Dangerous" />
+                    <ToggleSwitch
+                      name="emptyFolderOnProjectCreation"
+                      label="Empty folder on project creation"
+                      checked={state.emptyFolderOnProjectCreation}
+                      onChange={setState}
+                    />
+                  </div>
+                  <div>
+                    <Label text="Reset Options" />
+                    <Button type="primary" text="Reset settings" onClick={resetOptions} />
+                  </div>
+                </ComponentGroup>
               )}
             </InputGroup>
           </Tab>

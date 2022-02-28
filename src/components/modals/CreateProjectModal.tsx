@@ -25,7 +25,7 @@ type Errors = Record<keyof InitialValues, string | undefined>;
 const CreateProjectModal: React.FC<Props> = ({ dispatchProjects }) => {
   const { hideModal, setCurrentModal } = ModalStore(ModalActions);
 
-  const emptyFolderOnProjectCreation = getOption("experimental", "emptyFolderOnProjectCreation");
+  const emptyFolderOnProjectCreation = getOption("developer", "emptyFolderOnProjectCreation");
 
   const validate = async ({
     projectName,

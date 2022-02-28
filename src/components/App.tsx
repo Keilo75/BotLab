@@ -9,7 +9,7 @@ import Home from "./views/home/Home";
 import ModalTemplate, { Modal } from "./ui/Modal";
 import { MenuAction } from "src/models/menu-action";
 import OptionsModal from "./modals/OptionsModal";
-import { OptionsStore } from "src/stores/OptionsStore";
+import { IOptionsStore, OptionsStore } from "src/stores/OptionsStore";
 import ErrorModal from "./modals/ErrorModal";
 import { projectReducer } from "src/stores/ProjectReducer";
 import { IModalStore, ModalName, ModalStore } from "src/stores/ModalStore";
@@ -19,13 +19,14 @@ import ContextMenu from "./shared/ContextMenu";
 import ConfirmationModal from "./modals/ConfirmationModal";
 
 const ModalActions = (state: IModalStore) => state.actions;
+const Options = (state: IOptionsStore) => state.options;
+const OptionsActions = (state: IOptionsStore) => state.actions;
 
 const App: React.FC = () => {
   const [menuAction, setMenuAction] = useState<MenuAction | undefined>(undefined);
 
-  const [options, setOptions] = OptionsStore(
-    useCallback((state) => [state.options, state.setOptions], [])
-  );
+  const options = OptionsStore(Options);
+  const optionsActions = OptionsStore(OptionsActions);
 
   const [projects, dispatchProjects] = useReducer(projectReducer, []);
   const { setCurrentModal } = ModalStore(ModalActions);
@@ -47,7 +48,7 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    setOptions(window.store.getOptions());
+    optionsActions.setOptions(window.store.getOptions());
   }, []);
 
   useEffect(() => {

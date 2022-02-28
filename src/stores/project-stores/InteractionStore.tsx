@@ -33,6 +33,8 @@ export const InteractionStore = create<IInteractionStore>((set, get) => ({
         type,
       };
 
+      if (textBased) newInteraction.description = "hu";
+
       set({
         interactions: [...interactions, newInteraction],
         selectedInteractionID: newInteraction.id,
