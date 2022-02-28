@@ -1,6 +1,5 @@
-import { contextBridge, ipcRenderer } from "electron";
+import { contextBridge, ipcRenderer, OpenDialogOptions, OpenDialogReturnValue } from "electron";
 import fs from "fs-extra";
-import { fork, exec } from "child_process";
 
 import path from "path";
 import Store from "electron-store";
@@ -11,14 +10,6 @@ import { defaultOptions, Options } from "src/stores/OptionsStore";
 import { Project } from "src/models/project";
 import { fileExtensionWithoutDot } from "src/models/file-extension";
 
-let appPaths = {
-  userData: "",
-};
-
-(async () => {
-  appPaths = await ipcRenderer.invoke(IPCChannel.GET_APP_PATHS);
-})();
-
 const ipcBridge = {
   handleTitleBarAction(action: MenuAction) {
     ipcRenderer.send(IPCChannel.MENU_ACTION, action);
@@ -26,7 +17,7 @@ const ipcBridge = {
 };
 
 const fsBridge = {
-  async openDialog(options: Electron.OpenDialogOptions): Promise<Electron.OpenDialogReturnValue> {
+  async openDialog(options: OpenDialogOptions): Promise<OpenDialogReturnValue> {
     return await ipcRenderer.invoke(IPCChannel.OPEN_DIALOG, options);
   },
 
@@ -100,8 +91,6 @@ const templateBridge = {
 
     return botPath;
   },
-
-  async installDependencies(dest: string): Promise<void> {},
 };
 
 contextBridge.exposeInMainWorld("ipc", ipcBridge);

@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useMemo } from "react";
-import { InteractionType } from "src/models/project";
+import { InteractionType } from "src/models/interactions";
 import create from "zustand";
 import { Options } from "./OptionsStore";
 
@@ -41,7 +41,6 @@ export interface ModalData extends Record<ModalName, any> {
   "rename-interaction": {
     id: string;
     name: string;
-    textBased: boolean;
     type: InteractionType;
     parent: string;
   };

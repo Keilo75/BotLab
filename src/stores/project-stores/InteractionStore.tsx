@@ -1,5 +1,5 @@
-import { Interaction, InteractionType } from "src/models/project";
-import create, { EqualityChecker } from "zustand";
+import { Interaction, InteractionType, isTextBased } from "src/models/interactions";
+import create from "zustand";
 import { v4 as uuid } from "uuid";
 import { getAllChildInteractions, getInteractionName } from "src/models/interactions";
 
@@ -24,15 +24,15 @@ export const InteractionStore = create<IInteractionStore>((set, get) => ({
       const interactions = get().interactions;
       if (!interactions) return;
 
-      const textBased = type === "command" || type === "folder";
+      const textBased = isTextBased(type);
       const name = getInteractionName(interactions, type, textBased);
       const newInteraction: Interaction = {
         id: uuid(),
         name,
         parent: "0",
         type,
-        textBased,
       };
+
       set({
         interactions: [...interactions, newInteraction],
         selectedInteractionID: newInteraction.id,

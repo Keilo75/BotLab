@@ -14,6 +14,7 @@ export type Options = typeof defaultOptions;
 
 export interface IOptionsStore {
   options: Options | undefined;
+
   setOptions(value: Options): void;
   setGeneral: (value: Options["general"]) => void;
   setEditor: (value: Options["editor"]) => void;
@@ -37,3 +38,12 @@ export const OptionsStore = create<IOptionsStore>((set, get) => {
     setExperimental: (value) => setCategory("experimental", value),
   };
 });
+
+export const getOption = <C extends keyof Options, O extends keyof Options[C]>(
+  category: C,
+  option: O
+): Options[C][O] => {
+  const options = OptionsStore.getState().options as Options;
+
+  return options[category][option];
+};

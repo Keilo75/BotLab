@@ -4,11 +4,11 @@ import Button from "../ui/inputs/Button";
 import TextInput from "../ui/inputs/TextInput";
 import Label from "../ui/Label";
 import ComponentGroup from "../ui/utils/ComponentGroup";
-import { OptionsStore } from "src/stores/OptionsStore";
+import { getOption } from "src/stores/OptionsStore";
 import Container from "../ui/Container";
 import { IModalStore, ModalLayout, ModalName, ModalStore } from "src/stores/ModalStore";
 import { ProjectAction } from "src/stores/ProjectReducer";
-import { validateProjectName } from "src/models/project";
+import { validateProjectName } from "src/lib/validater";
 
 const ModalActions = (state: IModalStore) => state.actions;
 interface Props {
@@ -23,10 +23,9 @@ type InitialValues = typeof initialValues;
 type Errors = Record<keyof InitialValues, string | undefined>;
 
 const CreateProjectModal: React.FC<Props> = ({ dispatchProjects }) => {
-  const emptyFolderOnProjectCreation = OptionsStore(
-    useCallback((state) => state.options?.experimental.emptyFolderOnProjectCreation, [])
-  );
   const { hideModal, setCurrentModal } = ModalStore(ModalActions);
+
+  const emptyFolderOnProjectCreation = getOption("experimental", "emptyFolderOnProjectCreation");
 
   const validate = async ({
     projectName,

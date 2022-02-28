@@ -9,7 +9,8 @@ import Link from "src/components/ui/Link";
 import ComponentGroup from "src/components/ui/utils/ComponentGroup";
 import useMountedEffect from "src/hooks/useMountedEffect";
 import useToggle from "src/hooks/useToggle";
-import { validateProjectName, ProjectSettings } from "src/models/project";
+import { validateProjectName } from "src/lib/validater";
+import { ProjectSettings } from "src/models/project";
 import { IInfoStore, InfoStore } from "src/stores/InfoStore";
 import { SettingsStore } from "src/stores/project-stores/SettingsStore";
 

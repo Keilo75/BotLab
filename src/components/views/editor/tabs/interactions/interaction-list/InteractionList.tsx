@@ -9,7 +9,7 @@ import {
   getDepth,
   InteractionNode,
 } from "src/models/interaction-list";
-import { InteractionType, InteractionTypes } from "src/models/project";
+import { InteractionType, InteractionTypes, isTextBased } from "src/models/interactions";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 import InteractionListNode from "./InteractionListNode";
 
@@ -90,7 +90,7 @@ const InteractionList: React.FC = () => {
         )}
         canDrop={(tree, { dropTargetId, dragSource }) => {
           // Do not drag context menus
-          if (!dragSource?.data?.textBased) return false;
+          if (dragSource?.data && !isTextBased(dragSource?.data?.type)) return false;
 
           const depth = getDepth(tree, dropTargetId);
 

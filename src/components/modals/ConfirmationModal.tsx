@@ -6,7 +6,7 @@ import {
   ModalStore,
   useModalData,
 } from "src/stores/ModalStore";
-import { OptionsStore } from "src/stores/OptionsStore";
+import { getOption } from "src/stores/OptionsStore";
 import Button from "../ui/inputs/Button";
 
 const ModalActions = (state: IModalStore) => state.actions;
@@ -16,7 +16,7 @@ const ConfirmationModal: React.FC = () => {
   const confirmData = useModalData(ModalName.CONFIRMATION);
 
   useEffect(() => {
-    const shouldConfirm = OptionsStore.getState().options?.editor[confirmData.confirmationOption];
+    const shouldConfirm = getOption("editor", confirmData.confirmationOption);
 
     if (shouldConfirm === false) {
       handleConfirm();

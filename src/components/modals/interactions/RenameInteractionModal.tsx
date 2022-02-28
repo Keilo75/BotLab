@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import Button from "src/components/ui/inputs/Button";
 import TextInput from "src/components/ui/inputs/TextInput";
 import Label from "src/components/ui/Label";
-import {
-  getAllInteractionsWithSameParent as getInteractionsWithSameParent,
-  validateInteractionName,
-} from "src/models/interactions";
+import { validateInteractionName } from "src/lib/validater";
+import { isTextBased } from "src/models/interactions";
 import {
   IModalStore,
   ModalLayout,
@@ -34,7 +32,7 @@ const RenameInteractionModal: React.FC = () => {
   }, [value]);
 
   const handleInputChange = (text: string) => {
-    const newText = interaction.textBased ? text.replace(/\s+/g, "-").toLowerCase() : text;
+    const newText = isTextBased(interaction.type) ? text.replace(/\s+/g, "-").toLowerCase() : text;
     setValue(newText);
   };
 

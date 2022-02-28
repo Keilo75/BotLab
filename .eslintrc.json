@@ -5,7 +5,13 @@
     "node": true,
     "jest/globals": true
   },
-  "extends": ["standard", "prettier"],
+  "extends": [
+    "standard",
+    "prettier",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
@@ -16,6 +22,13 @@
   },
   "plugins": ["react", "prettier", "@typescript-eslint", "jest"],
   "rules": {
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }

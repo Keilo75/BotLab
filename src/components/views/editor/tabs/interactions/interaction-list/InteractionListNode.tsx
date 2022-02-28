@@ -42,7 +42,6 @@ const InteractionListNode: React.FC<Props> = ({
           name: node.text,
           parent: node.parent.toString(),
           type: node.data.type,
-          textBased: node.data.textBased,
         });
       },
     },

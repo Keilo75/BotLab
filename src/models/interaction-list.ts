@@ -1,7 +1,7 @@
 import { NodeModel } from "@minoru/react-dnd-treeview";
-import { Interaction, InteractionType, InteractionTypes } from "./project";
+import { Interaction, InteractionType } from "./interactions";
 
-export type NodeModelInteractionData = { type: InteractionType; textBased: boolean };
+export type NodeModelInteractionData = { type: InteractionType };
 export type InteractionNode = NodeModel<NodeModelInteractionData>;
 
 export const convertInteractionsToNodeModelArray = (
@@ -14,7 +14,6 @@ export const convertInteractionsToNodeModelArray = (
     droppable: i.type === "folder",
     data: {
       type: i.type,
-      textBased: i.textBased,
     },
   }));
 };

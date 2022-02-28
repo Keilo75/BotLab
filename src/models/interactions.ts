@@ -1,4 +1,24 @@
-import { Interaction, InteractionType, InteractionTypes } from "./project";
+export type InteractionType = "command" | "folder" | "user-context-menu" | "message-context-menu";
+
+export const InteractionTypes: Record<InteractionType, string> = {
+  command: "Command",
+  folder: "Folder",
+  "user-context-menu": "User Context Menu",
+  "message-context-menu": "Message Context Menu",
+};
+
+export interface Interaction {
+  id: string;
+  parent: string;
+  name: string;
+  type: InteractionType;
+  description?: string;
+}
+
+export const isTextBased = (type: InteractionType): type is "command" | "folder" => {
+  return type === "folder" || type === "command";
+};
+
 export const getAllChildInteractions = (
   interactions: Interaction[],
   interactionID: string
@@ -49,12 +69,4 @@ export const getInteractionName = (
   }
 
   return `${humanName}${textBased ? "-" : " "}${lowestNumber}`;
-};
-
-export const validateInteractionName = (name: string): string | undefined => {
-  // Reference: https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-naming
-
-  if (name.length === 0) return "Required";
-  if (name.length > 32) return "Maximum length is 32 characters";
-  return;
 };
