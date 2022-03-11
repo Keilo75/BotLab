@@ -36,6 +36,10 @@ const DropdownButton: React.FC<Props> = ({ text, options, className, onClick }) 
     if (option && onClick) onClick(option);
   };
 
+  const handleBlur = () => {
+    setVisible(false);
+  };
+
   return (
     <div className={clsx("dropdown-button", className)}>
       <Button
@@ -54,7 +58,7 @@ const DropdownButton: React.FC<Props> = ({ text, options, className, onClick }) 
       />
       {visible && (
         <ul className="dropdown-list">
-          <KeyboardList length={remainingOptions.length} selectedIndex={0}>
+          <KeyboardList length={remainingOptions.length} selectedIndex={0} onBlur={handleBlur}>
             {(refs) =>
               remainingOptions.map((option, index) => (
                 <li

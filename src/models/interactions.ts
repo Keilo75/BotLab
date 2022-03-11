@@ -1,5 +1,4 @@
 export type InteractionType = "command" | "folder" | "user-context-menu" | "message-context-menu";
-
 export const InteractionTypes: Record<InteractionType, string> = {
   command: "Command",
   folder: "Folder",
@@ -13,7 +12,19 @@ export interface Interaction {
   name: string;
   type: InteractionType;
   description?: string;
+  permission: InteractionPermission;
 }
+
+export interface InteractionPermission {
+  disabledByDefault: boolean;
+  exceptions: InteractionPermissionException[];
+}
+
+export type InteractionPermissionExceptionType = "role" | "user";
+export type InteractionPermissionException = {
+  type: InteractionPermissionExceptionType;
+  id: string;
+};
 
 export const isTextBased = (type: InteractionType): type is "command" | "folder" => {
   return type === "folder" || type === "command";

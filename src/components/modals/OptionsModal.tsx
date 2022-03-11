@@ -74,7 +74,7 @@ const OptionsModal: React.FC = () => {
                   </div>
                   <div>
                     <Label text="Reset Options" />
-                    <Button type="primary" text="Reset settings" onClick={resetOptions} />
+                    <Button type="primary" text="Reset Options" onClick={resetOptions} />
                   </div>
                 </ComponentGroup>
               )}

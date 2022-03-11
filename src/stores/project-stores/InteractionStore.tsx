@@ -45,6 +45,10 @@ export const InteractionStore = create<IInteractionStore>((set, get) => ({
         name,
         parent: "0",
         type,
+        permission: {
+          disabledByDefault: false,
+          exceptions: [],
+        },
       };
 
       if (textBased) newInteraction.description = "";

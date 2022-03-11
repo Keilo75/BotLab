@@ -7,9 +7,16 @@ interface Props {
   children: (refs: React.MutableRefObject<Ref>[]) => React.ReactElement[];
   selectedIndex: number;
   axis?: "vertical" | "horizontal";
+  onBlur?: () => void;
 }
 
-const KeyboardList: React.FC<Props> = ({ length, children, selectedIndex, axis = "vertical" }) => {
+const KeyboardList: React.FC<Props> = ({
+  length,
+  children,
+  selectedIndex,
+  axis = "vertical",
+  onBlur,
+}) => {
   const [focused, setFocused] = useState(selectedIndex);
 
   useEffect(() => {
@@ -70,7 +77,12 @@ const KeyboardList: React.FC<Props> = ({ length, children, selectedIndex, axis =
         case "Enter":
         case "Space": {
           refs[focused].current?.click();
+          break;
         }
+
+        case "Tab":
+          if (onBlur) onBlur();
+          break;
       }
 
       if (newIndex !== undefined) {
