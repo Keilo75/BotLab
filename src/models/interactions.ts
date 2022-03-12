@@ -12,7 +12,7 @@ export interface Interaction {
   name: string;
   type: InteractionType;
   description?: string;
-  permission: InteractionPermission;
+  permissions: InteractionPermission;
 }
 
 export interface InteractionPermission {

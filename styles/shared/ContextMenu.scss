@@ -4,7 +4,7 @@
   width: 200px;
   position: absolute;
   margin: 0;
-  padding: var(--spacing-half);
+  padding: var(--spacing-half) 0;
   z-index: var(--menu-pane-z-index);
   display: flex;
   flex-direction: column;
@@ -12,12 +12,21 @@
 
   .menu-item {
     list-style: none;
+    margin: 0 var(--spacing-half);
     padding: 0 var(--spacing);
-    width: 100%;
+    width: calc(100% - var(--spacing));
     height: 26px;
     display: flex;
     align-items: center;
     cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+
+    svg {
+      cursor: pointer;
+    }
   }
 
   .menu-item:hover {

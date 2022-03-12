@@ -2,8 +2,9 @@ import React from "react";
 import TextInput from "src/components/ui/inputs/TextInput";
 import Label from "src/components/ui/Label";
 import ComponentGroup from "src/components/ui/utils/ComponentGroup";
-import { Interaction, InteractionTypes } from "src/models/interactions";
+import { Interaction, InteractionPermission, InteractionTypes } from "src/models/interactions";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
+import InteractionPermissions from "./interaction-permissions/InteractionPermissions";
 
 const InteractionActions = (state: IInteractionStore) => state.actions;
 interface Props {
@@ -15,6 +16,10 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
 
   const handleDescriptionChange = (value: string) => {
     updateSelectedInteraction("description", value);
+  };
+
+  const handlePermissionChange = (permissions: InteractionPermission) => {
+    updateSelectedInteraction("permissions", permissions);
   };
 
   return (
@@ -32,6 +37,13 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
             />
           </div>
         )}
+        <div>
+          <Label text="Permissions" />
+          <InteractionPermissions
+            permissions={interaction.permissions}
+            handlePermissionChange={handlePermissionChange}
+          />
+        </div>
       </ComponentGroup>
     </>
   );

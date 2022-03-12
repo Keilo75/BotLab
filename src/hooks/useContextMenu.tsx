@@ -3,7 +3,14 @@ import { ContextMenu, ContextMenuStore, IContextMenuStore } from "src/stores/Con
 
 const SetContextMenu = (state: IContextMenuStore) => state.setContextMenu;
 
-const useContextMenu = (items: ContextMenu["items"]): ((e: React.MouseEvent) => void) => {
+export interface useContextMenuUptions {
+  width?: number;
+}
+
+const useContextMenu = (
+  items: ContextMenu["items"],
+  options?: useContextMenuUptions
+): ((e: React.MouseEvent) => void) => {
   const setContextMenu = ContextMenuStore(SetContextMenu);
 
   const handleContextMenu = (e: React.MouseEvent) => {
@@ -12,6 +19,7 @@ const useContextMenu = (items: ContextMenu["items"]): ((e: React.MouseEvent) => 
       x: e.clientX,
       y: e.clientY,
       items,
+      width: options?.width ?? 200,
     });
   };
 

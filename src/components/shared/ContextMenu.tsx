@@ -31,7 +31,10 @@ const ContextMenu: React.FC = () => {
 
   const menu = contextMenu && (
     <>
-      <ul className="context-menu" style={{ top: contextMenu.y, left: contextMenu.x }}>
+      <ul
+        className="context-menu"
+        style={{ top: contextMenu.y, left: contextMenu.x, width: contextMenu.width }}
+      >
         {contextMenu.items.map((item) => (
           <React.Fragment key={item.name}>
             <li className={clsx("menu-item")} onClick={handleMenuItemClick} data-name={item.name}>

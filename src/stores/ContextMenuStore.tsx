@@ -10,6 +10,7 @@ export interface ContextMenu {
   items: ContextMenuItemProps[];
   x: number;
   y: number;
+  width: number;
 }
 
 export interface IContextMenuStore {

@@ -53,6 +53,7 @@ const TitleBar: React.FC<Props> = ({ handleMenuItemClick }) => {
       {
         name: "Project",
         children: [
+          { name: "Run Bot", action: MenuAction.RUN, editorOnly: true },
           { name: "Open in explorer", action: MenuAction.OPEN_IN_EXPLORER, editorOnly: true },
         ],
       },

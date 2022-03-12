@@ -56,7 +56,9 @@ return (
 | options       | string[]                             | no       | The available options                  |
 | axis          | "horizontal" \| "vertical"           | yes      | Defaults to `vertical`                 |
 
-## Toggle Switch
+## Toggle Switch or Checkbox
+
+These two inputs behave exactly the same way.
 
 ```jsx
 const [checked, setChecked] = useState(false);
