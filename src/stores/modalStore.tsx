@@ -26,6 +26,7 @@ export enum ModalName {
   ABOUT = "about",
   CONFIRMATION = "confirmation",
   RENAME_INTERACTION = "rename-interaction",
+  EDIT_PERMISSIONS = "edit-permissions",
 }
 
 export interface Modal {

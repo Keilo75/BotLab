@@ -45,7 +45,7 @@ export const InteractionStore = create<IInteractionStore>((set, get) => ({
         name,
         parent: "0",
         type,
-        permission: {
+        permissions: {
           disabledByDefault: false,
           exceptions: [],
         },

@@ -115,3 +115,11 @@
     padding: var(--spacing-double) 100px;
   }
 }
+
+.interaction {
+  .interaction-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+}

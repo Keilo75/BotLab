@@ -1,18 +1,24 @@
 import React from "react";
+import EditPermissionsModal from "src/components/modals/interactions/EditPermissionsModal";
+import Button from "src/components/ui/inputs/Button";
 import TextInput from "src/components/ui/inputs/TextInput";
 import Label from "src/components/ui/Label";
+import { Modal } from "src/components/ui/Modal";
 import ComponentGroup from "src/components/ui/utils/ComponentGroup";
 import { Interaction, InteractionPermission, InteractionTypes } from "src/models/interactions";
+import { IModalStore, ModalName, ModalStore } from "src/stores/ModalStore";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
-import InteractionPermissions from "./interaction-permissions/InteractionPermissions";
 
 const InteractionActions = (state: IInteractionStore) => state.actions;
+const ModalActions = (state: IModalStore) => state.actions;
+
 interface Props {
   interaction: Interaction;
 }
 
 const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
   const { updateSelectedInteraction } = InteractionStore(InteractionActions);
+  const { setCurrentModal } = ModalStore(ModalActions);
 
   const handleDescriptionChange = (value: string) => {
     updateSelectedInteraction("description", value);
@@ -22,11 +28,27 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
     updateSelectedInteraction("permissions", permissions);
   };
 
+  const openPermissionsModal = () => {
+    setCurrentModal(ModalName.EDIT_PERMISSIONS);
+  };
+
   return (
     <>
-      <h2 className="no-margin">{interaction.name}</h2>
-      <span className="text">{InteractionTypes[interaction.type]}</span>
-      <ComponentGroup axis="vertical" className="mt">
+      <ComponentGroup axis="vertical">
+        <div className="interaction-header">
+          <div>
+            <h2 className="no-margin">{interaction.name}</h2>
+            <span className="text">{InteractionTypes[interaction.type]}</span>
+          </div>
+          <ComponentGroup axis="horizontal">
+            <Button type="primary" text="Edit Permissions" onClick={openPermissionsModal} />
+            <Button
+              type="primary"
+              text="Edit Parameters"
+              disabled={interaction.type !== "command"}
+            />
+          </ComponentGroup>
+        </div>
         {interaction.description !== undefined && (
           <div>
             <Label text="Description" />
@@ -37,14 +59,10 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
             />
           </div>
         )}
-        <div>
-          <Label text="Permissions" />
-          <InteractionPermissions
-            permissions={interaction.permissions}
-            handlePermissionChange={handlePermissionChange}
-          />
-        </div>
       </ComponentGroup>
+      <Modal name={ModalName.EDIT_PERMISSIONS}>
+        <EditPermissionsModal />
+      </Modal>
     </>
   );
 };
