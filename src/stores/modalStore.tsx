@@ -1,8 +1,7 @@
 import clsx from "clsx";
 import React, { useMemo } from "react";
-import { InteractionType } from "src/models/interactions";
 import create from "zustand";
-import { Options } from "./OptionsStore";
+import { ModalName, ModalData } from "../models/modals";
 
 interface ContentProps {
   padding?: boolean;
@@ -19,36 +18,9 @@ export const ModalLayout: { Content: React.FC<ContentProps>; Footer: React.FC } 
   Footer: ModalFooter,
 };
 
-export enum ModalName {
-  OPTIONS = "options",
-  CREATE_NEW_PROJECT = "create-new-project",
-  ERROR = "error",
-  ABOUT = "about",
-  CONFIRMATION = "confirmation",
-  RENAME_INTERACTION = "rename-interaction",
-  EDIT_PERMISSIONS = "edit-permissions",
-}
-
 export interface Modal {
   name: ModalName;
   large?: boolean;
-}
-
-export interface ModalData extends Record<ModalName, any> {
-  error: string;
-  confirmation: {
-    title: string;
-    text: string;
-    buttonText: string;
-    confirmationOption: keyof Options["editor"];
-    handleConfirm: () => void;
-  };
-  "rename-interaction": {
-    id: string;
-    name: string;
-    type: InteractionType;
-    parent: string;
-  };
 }
 
 export interface IModalStore {

@@ -3,7 +3,7 @@ import RenameInteractionModal from "src/components/modals/interactions/RenameInt
 import { Modal } from "src/components/ui/Modal";
 import useMountedEffect from "src/hooks/useMountedEffect";
 import { IInfoStore, InfoStore } from "src/stores/InfoStore";
-import { ModalName } from "src/stores/ModalStore";
+import { ModalName } from "src/models/modals";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 import InteractionList from "./interactions/interaction-list/InteractionList";
 import SelectedInteraction from "./interactions/SelectedInteraction";

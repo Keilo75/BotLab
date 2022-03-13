@@ -4,13 +4,8 @@ import TextInput from "src/components/ui/inputs/TextInput";
 import Label from "src/components/ui/Label";
 import { validateInteractionName } from "src/lib/validater";
 import { isTextBased } from "src/models/interactions";
-import {
-  IModalStore,
-  ModalLayout,
-  ModalName,
-  ModalStore,
-  useModalData,
-} from "src/stores/ModalStore";
+import { IModalStore, ModalLayout, ModalStore, useModalData } from "src/stores/ModalStore";
+import { ModalName } from "src/models/modals";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 
 const ModalActions = (state: IModalStore) => state.actions;

@@ -5,7 +5,8 @@ import React from "react";
 import Repeater from "src/components/ui/utils/Repeater";
 import useContextMenu from "src/hooks/useContextMenu";
 import { InteractionNode } from "src/models/interaction-list";
-import { IModalStore, ModalName, ModalStore } from "src/stores/ModalStore";
+import { IModalStore, ModalStore } from "src/stores/ModalStore";
+import { ModalName } from "src/models/modals";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 
 const ModalActions = (state: IModalStore) => state.actions;

@@ -6,7 +6,8 @@ import Label from "../ui/Label";
 import ComponentGroup from "../ui/utils/ComponentGroup";
 import { getOption } from "src/stores/OptionsStore";
 import Container from "../ui/Container";
-import { IModalStore, ModalLayout, ModalName, ModalStore } from "src/stores/ModalStore";
+import { IModalStore, ModalLayout, ModalStore } from "src/stores/ModalStore";
+import { ModalName } from "src/models/modals";
 import { ProjectAction } from "src/stores/ProjectReducer";
 import { validateProjectName } from "src/lib/validater";
 

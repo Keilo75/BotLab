@@ -6,7 +6,8 @@ import Label from "src/components/ui/Label";
 import { Modal } from "src/components/ui/Modal";
 import ComponentGroup from "src/components/ui/utils/ComponentGroup";
 import { Interaction, InteractionPermission, InteractionTypes } from "src/models/interactions";
-import { IModalStore, ModalName, ModalStore } from "src/stores/ModalStore";
+import { IModalStore, ModalStore } from "src/stores/ModalStore";
+import { ModalName } from "src/models/modals";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 
 const InteractionActions = (state: IInteractionStore) => state.actions;

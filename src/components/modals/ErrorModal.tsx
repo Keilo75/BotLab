@@ -1,11 +1,6 @@
 import React from "react";
-import {
-  IModalStore,
-  ModalLayout,
-  ModalName,
-  ModalStore,
-  useModalData,
-} from "src/stores/ModalStore";
+import { IModalStore, ModalLayout, ModalStore, useModalData } from "src/stores/ModalStore";
+import { ModalName } from "src/models/modals";
 import Button from "../ui/inputs/Button";
 
 const ModalActions = (state: IModalStore) => state.actions;
