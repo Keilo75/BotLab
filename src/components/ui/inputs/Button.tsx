@@ -13,6 +13,7 @@ interface Props {
   disabled?: boolean;
   square?: boolean;
   className?: string;
+  tooltip?: string;
 }
 
 const Button: React.FC<Props> = ({
@@ -26,6 +27,7 @@ const Button: React.FC<Props> = ({
   disabled,
   square,
   className,
+  tooltip,
 }) => {
   return (
     <button
@@ -37,6 +39,7 @@ const Button: React.FC<Props> = ({
         square && "button-square",
         className
       )}
+      data-tip={tooltip}
       onClick={onClick}
       type={submit ? "submit" : "button"}
       disabled={disabled}

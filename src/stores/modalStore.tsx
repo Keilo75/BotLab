@@ -21,6 +21,7 @@ export const ModalLayout: { Content: React.FC<ContentProps>; Footer: React.FC } 
 export interface Modal {
   name: ModalName;
   large?: boolean;
+  default?: boolean;
 }
 
 export interface IModalStore {

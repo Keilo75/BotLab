@@ -34,7 +34,7 @@ return <TextInput name="text-input" value={value} onChange={(value) => setValue(
 | className | string                              | yes      | Additional class names           |
 | error     | boolean                             | yes      | Wheter the input contains errors |
 
-## RadioButton
+## Radio Button
 
 ```jsx
 const [selected, setSelected] = useState(0);

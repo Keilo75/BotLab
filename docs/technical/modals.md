@@ -43,7 +43,8 @@ const error = useModalData<ModalName.Error>();
 
 ## Modal Props
 
-| Prop  | Type      | Optional | Description                                    |
-| ----- | --------- | -------- | ---------------------------------------------- |
-| name  | ModalName | no       | The name of modal                              |
-| large | boolean   | yes      | Wheter the modal is large. Defaults to `false` |
+| Prop    | Type      | Optional | Description                                                     |
+| ------- | --------- | -------- | --------------------------------------------------------------- |
+| name    | ModalName | no       | The name of the modal                                           |
+| large   | boolean   | yes      | Wheter the modal is large. Defaults to `false`                  |
+| default | boolean   | yes      | Wheter the modal should open by default. Useful for developing. |

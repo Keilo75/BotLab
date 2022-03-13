@@ -25,12 +25,8 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
     updateSelectedInteraction("description", value);
   };
 
-  const handlePermissionChange = (permissions: InteractionPermission) => {
-    updateSelectedInteraction("permissions", permissions);
-  };
-
   const openPermissionsModal = () => {
-    setCurrentModal(ModalName.EDIT_PERMISSIONS);
+    setCurrentModal(ModalName.EDIT_PERMISSIONS, {});
   };
 
   return (
@@ -42,7 +38,12 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
             <span className="text">{InteractionTypes[interaction.type]}</span>
           </div>
           <ComponentGroup axis="horizontal">
-            <Button type="primary" text="Edit Permissions" onClick={openPermissionsModal} />
+            <Button
+              type="primary"
+              text="Edit Permissions"
+              onClick={openPermissionsModal}
+              tooltip="hi"
+            />
             <Button
               type="primary"
               text="Edit Parameters"

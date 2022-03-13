@@ -26,4 +26,5 @@ export interface ModalData extends Record<ModalName, any> {
     type: InteractionType;
     parent: string;
   };
+  "edit-permissions": {};
 }

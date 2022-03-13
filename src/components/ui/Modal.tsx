@@ -62,12 +62,16 @@ export const Modal: React.FC<ModalProps> = (props) => {
   const [visible, setVisible] = useState(false);
 
   const currentModal = ModalStore(CurrentModal);
-  const { addModal, removeModal } = ModalStore(ModalActions);
+  const { addModal, removeModal, setCurrentModal } = ModalStore(ModalActions);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { children, ...modalProps } = props;
     addModal(modalProps);
+
+    if (props.default) {
+      setCurrentModal(props.name);
+    }
 
     return () => {
       removeModal(props.name);
