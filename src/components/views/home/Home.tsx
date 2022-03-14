@@ -1,4 +1,3 @@
-import { IconPlus } from "@tabler/icons";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "src/components/ui/Modal";
@@ -9,8 +8,8 @@ import { IModalStore, ModalStore } from "src/stores/ModalStore";
 import { ModalName } from "src/models/modals";
 import { ProjectAction } from "src/stores/ProjectReducer";
 import CreateProjectModalComponent from "../../modals/CreateProjectModal";
-import Button from "../../ui/inputs/Button";
-import ComponentGroup from "../../ui/utils/ComponentGroup";
+import { Button, Divider, Group, Title, Anchor, Text } from "@mantine/core";
+import { Plus } from "tabler-icons-react";
 
 const InfoActions = (state: IInfoStore) => state.actions;
 const ModalActions = (state: IModalStore) => state.actions;
@@ -44,18 +43,13 @@ const Home: React.FC<Props> = ({ projects, dispatchProjects, loadProjects }) => 
     openProject(projectPath);
   };
 
-  const handleProjectClick = (e: React.MouseEvent | React.KeyboardEvent) => {
+  const handleProjectClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+
     const projectPath = e.currentTarget.getAttribute("data-path");
     if (!projectPath) return;
 
-    if (e.type === "click") {
-      openProject(projectPath);
-    }
-
-    if (e.type === "keydown") {
-      const key = (e as React.KeyboardEvent).key;
-      if (key === "Enter" || key === " ") openProject(projectPath);
-    }
+    openProject(projectPath);
   };
 
   const openProject = async (projectPath: string) => {
@@ -74,31 +68,25 @@ const Home: React.FC<Props> = ({ projects, dispatchProjects, loadProjects }) => 
 
   return (
     <div className="main-content">
-      <h2>Projects</h2>
-      <ComponentGroup axis="horizontal" className="mb">
-        <Button
-          text="Create Project"
-          type="success"
-          icon={IconPlus}
-          onClick={showCreateProjectModal}
-        />
-        <Button text="Open Project" type="primary" onClick={handleOpenProject} />
-      </ComponentGroup>
-      <hr />
+      <Title order={2}>Projects</Title>
+      <Group mt="xs">
+        <Button leftIcon={<Plus />} onClick={showCreateProjectModal}>
+          Create Project
+        </Button>
+
+        <Button onClick={handleOpenProject} color="teal">
+          Open Project
+        </Button>
+      </Group>
+      <Divider m="xs" />
       <div className="project-list mt">
         {projects.slice(0, 10).map((project, index) => (
-          <div key={index}>
-            <span
-              className="link"
-              data-path={project.path}
-              onClick={handleProjectClick}
-              onKeyDown={handleProjectClick}
-              tabIndex={0}
-            >
+          <Group key={index} spacing="xs">
+            <Anchor href="#" onClick={handleProjectClick} data-path={project.path}>
               {project.name}
-            </span>
-            <span className="project-path"> {project.path}</span>
-          </div>
+            </Anchor>
+            <Text>{project.path}</Text>
+          </Group>
         ))}
       </div>
       <Modal name={ModalName.CREATE_NEW_PROJECT}>

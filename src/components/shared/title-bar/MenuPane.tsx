@@ -1,3 +1,4 @@
+import { Paper, Text } from "@mantine/core";
 import React from "react";
 import { MenuAction } from "src/models/menu-action";
 import MenuItem, { MenuItemProps } from "./MenuItem";
@@ -33,20 +34,26 @@ const MenuPane: React.FC<Props> = ({ pane, selectedPane, setSelectedPane, handle
 
   return (
     <div className="menu-pane" onMouseEnter={handleMenuPaneHover}>
-      <button
+      <div
         className="menu-button"
         onClick={handleMenuPaneClick}
         tabIndex={-1}
         data-menu-pane={pane.name}
       >
-        {pane.name}
-      </button>
+        <Text>{pane.name}</Text>
+      </div>
       {isSelected && (
-        <ul className="menu-list">
+        <Paper
+          className="menu-list"
+          sx={(theme) => ({
+            background: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[1],
+            borderRadius: 0,
+          })}
+        >
           {pane.children.map((item) => (
             <MenuItem key={item.name} item={item} handleMenuItemClick={handleMenuItemClick} />
           ))}
-        </ul>
+        </Paper>
       )}
     </div>
   );

@@ -16,6 +16,8 @@
   "license": "MIT",
   "dependencies": {
     "@discordjs/builders": "^0.7.0",
+    "@mantine/core": "^4.0.4",
+    "@mantine/hooks": "^4.0.4",
     "@minoru/react-dnd-treeview": "^1.6.1",
     "@tabler/icons": "^1.53.0",
     "clsx": "^1.1.1",
@@ -32,6 +34,7 @@
     "react-hot-loader": "4.13.0",
     "react-hotkeys": "^2.0.0",
     "react-router-dom": "^6.2.1",
+    "tabler-icons-react": "^1.37.0",
     "uuid": "^8.3.2",
     "zustand": "^3.6.9"
   },

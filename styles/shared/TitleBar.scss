@@ -1,96 +1,9 @@
 .title-bar {
-  width: 100%;
-  height: var(--title-bar-height);
   -webkit-app-region: drag;
-  background-color: var(--title-bar-color);
-  display: flex;
-  position: relative;
+  height: 30px;
 
-  .app-logo {
-    height: 100%;
-    width: var(--title-bar-height);
-    padding: 2px;
-    margin: 0 var(--spacing-half);
-
-    img {
-      margin: 0;
-      width: 24px;
-      height: 24p;
-    }
-  }
-
-  .menus {
-    display: flex;
-    font-size: var(--font-size-small);
-
-    .menu-pane {
-      height: 100%;
-      -webkit-app-region: no-drag;
-      position: relative;
-
-      .menu-list {
-        width: 250px;
-        background-color: var(--background-color);
-        position: absolute;
-        top: var(--title-bar-height);
-        margin: 0;
-        padding: var(--spacing-third) 0;
-        z-index: var(--menu-pane-z-index);
-
-        .menu-item {
-          list-style: none;
-          margin: 0;
-          padding: 0 var(--spacing-double);
-          width: 100%;
-          height: 26px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-
-          .accelerator {
-            color: var(--text-secondary-color);
-          }
-        }
-
-        .menu-item:hover:not(.menu-item-disabled) {
-          background-color: var(--primary-color);
-
-          span {
-            color: white;
-          }
-        }
-
-        .menu-item-disabled {
-          opacity: 0.3;
-        }
-      }
-    }
-
-    .menu-button {
-      height: 100%;
-      background-color: transparent;
-      border: none;
-      outline: none;
-      padding: 0 10px;
-    }
-
-    .menu-button:hover {
-      background-color: var(--overlay-white-2);
-    }
-  }
-
-  .title-text {
-    position: absolute;
-    height: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-  }
-
-  .window-control {
+  .window-control-btns {
     -webkit-app-region: no-drag;
-    margin-left: auto;
 
     .window-control-btn {
       width: 50px;
@@ -106,11 +19,74 @@
     }
 
     .window-control-btn:hover {
-      background-color: var(--overlay-white-2);
+      background-color: var(--hover-overlay-2);
     }
 
     .window-control-btn:last-child:hover {
       background-color: #ff0000;
+    }
+  }
+
+  .title-bar-left {
+    height: 31px;
+  }
+
+  .menus {
+    height: 100%;
+    -webkit-app-region: no-drag;
+
+    .menu-pane {
+      height: 100%;
+
+      .menu-button {
+        height: 100%;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        padding: 0 10px;
+        cursor: default;
+        display: grid;
+        place-items: center;
+        user-select: none;
+      }
+
+      .menu-button:hover {
+        background-color: var(--hover-overlay-2);
+      }
+
+      .menu-list {
+        width: 250px;
+        position: absolute;
+        top: var(--title-bar-height);
+        margin: 0;
+        padding: var(--spacing-third) 0;
+        z-index: var(--menu-pane-z-index);
+
+        .menu-item {
+          list-style: none;
+          margin: 0;
+          padding: 0 var(--spacing-double);
+          width: 100%;
+          height: 26px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          cursor: default;
+
+          .accelerator {
+            color: var(--text-secondary-color);
+          }
+        }
+
+        .menu-item:hover:not(.menu-item-disabled) {
+          color: white;
+          background-color: var(--hover-overlay-2);
+        }
+
+        .menu-item-disabled {
+          opacity: 0.3;
+        }
+      }
     }
   }
 }

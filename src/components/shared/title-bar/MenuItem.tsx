@@ -1,7 +1,9 @@
+import { Divider, Text } from "@mantine/core";
 import clsx from "clsx";
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { MenuAction } from "src/models/menu-action";
+
 export interface MenuItemProps {
   name: string;
   action: MenuAction;
@@ -27,10 +29,10 @@ const MenuItem: React.FC<Props> = ({ item, handleMenuItemClick }) => {
   return (
     <>
       <li className={clsx("menu-item", disabled && "menu-item-disabled")} onClick={handleClick}>
-        <span>{item.name}</span>
-        <span className="accelerator">{item.accelerator}</span>
+        <Text>{item.name}</Text>
+        {item.accelerator && <Text color="dimmed">{item.accelerator}</Text>}
       </li>
-      {item.divider && <hr />}
+      {item.divider && <Divider m="xs" />}
     </>
   );
 };

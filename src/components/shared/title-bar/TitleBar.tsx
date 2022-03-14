@@ -8,6 +8,7 @@ import { MenuAction } from "src/models/menu-action";
 import { GlobalHotKeys, KeyMap } from "react-hotkeys";
 import { MenuItemProps } from "./MenuItem";
 import { IInfoStore, InfoStore } from "src/stores/InfoStore";
+import { Group, Header, Image, Text } from "@mantine/core";
 
 const Title = (state: IInfoStore) => state.title;
 const Dirty = (state: IInfoStore) => state.dirty;
@@ -145,53 +146,54 @@ const TitleBar: React.FC<Props> = ({ handleMenuItemClick }) => {
 
   return (
     <>
-      <div className="title-bar">
-        <div className="app-logo">
-          <img src={AppLogo} className="app-logo" />
-        </div>
-        <div className="menus">
-          {menu.map((pane) => (
-            <MenuPane
-              key={pane.name}
-              pane={pane}
-              selectedPane={selectedPane}
-              setSelectedPane={setSelectedPane}
-              handleItemClick={handleMenuItemClick}
-            />
-          ))}
-        </div>
-        <div className="title-text">
-          {dirty && "●"}
-          {title}
-        </div>
-
-        <div className="window-control">
-          <button
-            className="window-control-btn"
-            tabIndex={-1}
-            onClick={handleWindowControlClick}
-            data-btn-action="minimize"
-          >
-            <img src={Minimize} />
-          </button>
-          <button
-            className="window-control-btn"
-            tabIndex={-1}
-            onClick={handleWindowControlClick}
-            data-btn-action="maximize"
-          >
-            <img src={Maximize} />
-          </button>
-          <button
-            className="window-control-btn"
-            tabIndex={-1}
-            onClick={handleWindowControlClick}
-            data-btn-action="close"
-          >
-            <img src={Close} />
-          </button>
-        </div>
-      </div>
+      <Header height={30} className="title-bar">
+        <Group sx={{ height: "100%" }} position="apart">
+          <Group sx={{ height: "100%" }} className="title-bar-left" align="center" spacing={0}>
+            <Image src={AppLogo} height={20} fit="contain" mx="xs" />
+            <Group className="menus" spacing={0}>
+              {menu.map((pane) => (
+                <MenuPane
+                  key={pane.name}
+                  pane={pane}
+                  selectedPane={selectedPane}
+                  setSelectedPane={setSelectedPane}
+                  handleItemClick={handleMenuItemClick}
+                />
+              ))}
+            </Group>
+          </Group>
+          <Text>
+            {dirty && "●"}
+            {title}
+          </Text>
+          <Group className="window-control-btns" spacing={0}>
+            <button
+              className="window-control-btn"
+              tabIndex={-1}
+              onClick={handleWindowControlClick}
+              data-btn-action="minimize"
+            >
+              <img src={Minimize} />
+            </button>
+            <button
+              className="window-control-btn"
+              tabIndex={-1}
+              onClick={handleWindowControlClick}
+              data-btn-action="maximize"
+            >
+              <img src={Maximize} />
+            </button>
+            <button
+              className="window-control-btn"
+              tabIndex={-1}
+              onClick={handleWindowControlClick}
+              data-btn-action="close"
+            >
+              <img src={Close} />
+            </button>
+          </Group>
+        </Group>
+      </Header>
       {selectedPane && <div className="overlay" onClick={handleOverlayClick} />}
       <GlobalHotKeys {...shortcuts} />
     </>

@@ -18,6 +18,7 @@ import { ProjectInfo } from "src/models/project";
 import Editor from "./views/editor/Editor";
 import ContextMenu from "./shared/ContextMenu";
 import ConfirmationModal from "./modals/ConfirmationModal";
+import { MantineProvider } from "@mantine/core";
 
 const ModalActions = (state: IModalStore) => state.actions;
 const Options = (state: IOptionsStore) => state.options;
@@ -60,7 +61,6 @@ const App: React.FC = () => {
     if (!options) return;
 
     // Change theme
-    document.body.classList.toggle("theme-dark", options.general.theme === 0);
 
     window.store.setOptions(options);
   }, [options]);
@@ -88,7 +88,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <>
+    <MantineProvider theme={{ colorScheme: "dark" }} withGlobalStyles>
       <HashRouter>
         <TitleBar handleMenuItemClick={handleMenuItemClick} />
         <main>
@@ -127,7 +127,7 @@ const App: React.FC = () => {
         <ConfirmationModal />
       </Modal>
       <ModalTemplate />
-    </>
+    </MantineProvider>
   );
 };
 
