@@ -19,6 +19,8 @@ import Editor from "./views/editor/Editor";
 import ContextMenu from "./shared/ContextMenu";
 import ConfirmationModal from "./modals/ConfirmationModal";
 import { MantineProvider } from "@mantine/core";
+import { NotificationsProvider } from "@mantine/notifications";
+import { ModalsProvider } from "@mantine/modals";
 
 const ModalActions = (state: IModalStore) => state.actions;
 const Options = (state: IOptionsStore) => state.options;
@@ -89,44 +91,48 @@ const App: React.FC = () => {
 
   return (
     <MantineProvider theme={{ colorScheme: "dark" }} withGlobalStyles>
-      <HashRouter>
-        <TitleBar handleMenuItemClick={handleMenuItemClick} />
-        <main>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Home
-                  projects={projects}
-                  dispatchProjects={dispatchProjects}
-                  loadProjects={loadProjects}
+      <ModalsProvider>
+        <NotificationsProvider>
+          <HashRouter>
+            <TitleBar handleMenuItemClick={handleMenuItemClick} />
+            <main>
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <Home
+                      projects={projects}
+                      dispatchProjects={dispatchProjects}
+                      loadProjects={loadProjects}
+                    />
+                  }
                 />
-              }
-            />
-            <Route
-              path="editor/:projectPath"
-              element={
-                <Editor
-                  menuAction={menuAction}
-                  setMenuAction={setMenuAction}
-                  dispatchProjects={dispatchProjects}
+                <Route
+                  path="editor/:projectPath"
+                  element={
+                    <Editor
+                      menuAction={menuAction}
+                      setMenuAction={setMenuAction}
+                      dispatchProjects={dispatchProjects}
+                    />
+                  }
                 />
-              }
-            />
-          </Routes>
-        </main>
-      </HashRouter>
-      <ContextMenu />
-      <Modal name={ModalName.OPTIONS} large>
-        <OptionsModal />
-      </Modal>
-      <Modal name={ModalName.ERROR}>
-        <ErrorModal />
-      </Modal>
-      <Modal name={ModalName.CONFIRMATION}>
-        <ConfirmationModal />
-      </Modal>
-      <ModalTemplate />
+              </Routes>
+            </main>
+          </HashRouter>
+          <ContextMenu />
+          <Modal name={ModalName.OPTIONS} large>
+            <OptionsModal />
+          </Modal>
+          <Modal name={ModalName.ERROR}>
+            <ErrorModal />
+          </Modal>
+          <Modal name={ModalName.CONFIRMATION}>
+            <ConfirmationModal />
+          </Modal>
+          <ModalTemplate />
+        </NotificationsProvider>
+      </ModalsProvider>
     </MantineProvider>
   );
 };

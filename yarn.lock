@@ -1181,6 +1181,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7":
+  version "7.17.7"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.17.7.tgz#a5f3328dc41ff39d803f311cfe17703418cf9825"
+  integrity sha512-L6rvG9GDxaLgFjg41K+5Yv9OMrU98sWe+Ykmc6FDJW/+vYZMhdOMKkISgzptMaERHvS2Y2lw9MDRm2gHhlQQoA==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/runtime@^7.7.6":
   version "7.16.7"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.7.tgz#03ff99f64106588c9c403c6ecb8c3bafbbdff1fa"
@@ -1956,10 +1963,28 @@
     react-popper "^2.2.5"
     react-textarea-autosize "^8.3.2"
 
+"@mantine/form@^4.0.4":
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/@mantine/form/-/form-4.0.4.tgz#e4806664ed80edddb732532d5f8c8a36b4534706"
+  integrity sha512-G8D/2T4gkdEUW6eDjuGFdr02g9btdMbYbOUAg/5ymmD6Ist4O+vDVAK+A5UBgF8jcz4pp5Y/93MgNXFK2zoDLg==
+
 "@mantine/hooks@^4.0.4":
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-4.0.4.tgz#6c70c6e01fad8c94d700df2f0942713184c63b09"
   integrity sha512-gSbdoKDxxNVQpssTL25n7VUK/U6PQdWOilP041ygZ7k2sPt6PD4FzLLwbKtB0Be6MUiyvW3zAOKh3y2/NjZ40w==
+
+"@mantine/modals@^4.0.4":
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/@mantine/modals/-/modals-4.0.4.tgz#cdf5b2d7b326f8e500ba303636aa75bf34c2bf4e"
+  integrity sha512-/jwXa3AKj/Jz5AykdfvS3vqHvUR83H3UgTh4XiByXcTLA9UcjxYXcs1/zhpuwWMYjtfgJn3VrrP6ax2F6Kyhbg==
+
+"@mantine/notifications@^4.0.4":
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-4.0.4.tgz#6e9644ac1556d38ffebed73728b2afa862a2dc5f"
+  integrity sha512-B9gC0bHFbUcUZLB/Muv6vLVAocN44o7zXvqGmu5epVIBQ036Up+jqqqoxm7vmD8REqM/sJ4Q4zfPjeDIFBpX0g==
+  dependencies:
+    clsx "^1.1.1"
+    react-transition-group "^4.4.2"
 
 "@mantine/styles@4.0.4":
   version "4.0.4"
@@ -4503,6 +4528,14 @@ dom-converter@^0.2:
   integrity sha512-gd3ypIPfOMr9h5jIKq8E3sHOTCjeirnl0WK5ZdS1AW0Odt0b1PaWaHdJ4Qk4klv+YB9aJBS7mESXjFoDQPu6DA==
   dependencies:
     utila "~0.4"
+
+dom-helpers@^5.0.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-5.2.1.tgz#d9400536b2bf8225ad98fe052e029451ac40e902"
+  integrity sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==
+  dependencies:
+    "@babel/runtime" "^7.8.7"
+    csstype "^3.0.2"
 
 dom-serializer@0:
   version "0.2.2"
@@ -9358,6 +9391,16 @@ react-textarea-autosize@^8.3.2:
     "@babel/runtime" "^7.10.2"
     use-composed-ref "^1.0.0"
     use-latest "^1.0.0"
+
+react-transition-group@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.2.tgz#8b59a56f09ced7b55cbd53c36768b922890d5470"
+  integrity sha512-/RNYfRAMlZwDSr6z4zNKV6xu53/e2BuaBbGhbyYIXTrmgu/bGHzmqOs7mJSJBHy9Ud+ApHx3QjrkKSp1pxvlFg==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    dom-helpers "^5.0.1"
+    loose-envify "^1.4.0"
+    prop-types "^15.6.2"
 
 react@17.0.2:
   version "17.0.2"

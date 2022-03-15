@@ -1,18 +1,16 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Modal } from "src/components/ui/Modal";
 import { fileExtensionWithoutDot } from "src/models/file-extension";
 import { ProjectInfo } from "src/models/project";
 import { IInfoStore, InfoStore } from "src/stores/InfoStore";
-import { IModalStore, ModalStore } from "src/stores/ModalStore";
-import { ModalName } from "src/models/modals";
 import { ProjectAction } from "src/stores/ProjectReducer";
 import CreateProjectModalComponent from "../../modals/CreateProjectModal";
-import { Button, Divider, Group, Title, Anchor, Text } from "@mantine/core";
+import { Button, Divider, Group, Title, Anchor, Text, Modal } from "@mantine/core";
 import { Plus } from "tabler-icons-react";
+import { useNotifications } from "@mantine/notifications";
+import useModal from "src/hooks/useModal";
 
 const InfoActions = (state: IInfoStore) => state.actions;
-const ModalActions = (state: IModalStore) => state.actions;
 
 interface Props {
   projects: ProjectInfo[];
@@ -21,10 +19,12 @@ interface Props {
 }
 
 const Home: React.FC<Props> = ({ projects, dispatchProjects, loadProjects }) => {
-  const { setCurrentModal } = ModalStore(ModalActions);
   const { setTitle, setDirty } = InfoStore(InfoActions);
 
+  const CreateProjectModal = useModal();
+
   const navigate = useNavigate();
+  const notifications = useNotifications();
 
   useEffect(() => {
     loadProjects();
@@ -57,20 +57,21 @@ const Home: React.FC<Props> = ({ projects, dispatchProjects, loadProjects }) => 
       await window.project.getProjectFromBotFile(projectPath);
       navigate(`editor/${projectPath}`);
     } catch {
-      setCurrentModal(ModalName.ERROR, "Could not find file.");
+      notifications.showNotification({
+        title: "Could not find file.",
+        message: "The given path does not exist.",
+        color: "red",
+      });
+
       dispatchProjects({ type: "remove", projectPath });
     }
-  };
-
-  const showCreateProjectModal = () => {
-    setCurrentModal(ModalName.CREATE_NEW_PROJECT);
   };
 
   return (
     <div className="main-content">
       <Title order={2}>Projects</Title>
       <Group mt="xs">
-        <Button leftIcon={<Plus />} onClick={showCreateProjectModal}>
+        <Button leftIcon={<Plus />} onClick={CreateProjectModal.show}>
           Create Project
         </Button>
 
@@ -89,8 +90,16 @@ const Home: React.FC<Props> = ({ projects, dispatchProjects, loadProjects }) => 
           </Group>
         ))}
       </div>
-      <Modal name={ModalName.CREATE_NEW_PROJECT}>
-        <CreateProjectModalComponent dispatchProjects={dispatchProjects} />
+      <Modal
+        opened={CreateProjectModal.opened}
+        onClose={CreateProjectModal.close}
+        centered
+        title="Create Project"
+      >
+        <CreateProjectModalComponent
+          dispatchProjects={dispatchProjects}
+          close={CreateProjectModal.close}
+        />
       </Modal>
     </div>
   );
