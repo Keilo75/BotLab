@@ -17,6 +17,8 @@ import { NotificationsProvider } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
 import useModal from "src/hooks/useModal";
 import OptionsModalComponent from "./modals/OptionsModal";
+import RenameInteractionModalComponent from "./modals/interactions/RenameInteractionModal";
+import { ModalName } from "src/models/modals";
 
 const Options = (state: IOptionsStore) => state.options;
 const OptionsActions = (state: IOptionsStore) => state.actions;
@@ -87,7 +89,7 @@ const App: React.FC = () => {
 
   return (
     <MantineProvider theme={{ colorScheme: options?.["general.theme"] }} withGlobalStyles>
-      <ModalsProvider>
+      <ModalsProvider modals={{ [ModalName.RENAME_INTERACTION]: RenameInteractionModalComponent }}>
         <NotificationsProvider>
           <HashRouter>
             <TitleBar handleMenuItemClick={handleMenuItemClick} />

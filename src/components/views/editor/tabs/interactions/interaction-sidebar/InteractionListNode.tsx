@@ -9,6 +9,7 @@ import { Folder, Mail, User } from "tabler-icons-react";
 import { useModals } from "@mantine/modals";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 import { getOption } from "src/stores/OptionsStore";
+import { ModalName } from "src/models/modals";
 
 const InteractionActions = (state: IInteractionStore) => state.actions;
 
@@ -36,7 +37,11 @@ const InteractionListNode: React.FC<Props> = ({
     {
       name: "Rename",
       action: () => {
-        console.log("hi");
+        modals.openContextModal(ModalName.RENAME_INTERACTION, {
+          innerProps: { name: node.text, type: node.data?.type, id: node.id },
+          centered: true,
+          title: "Rename interaction",
+        });
       },
     },
     {

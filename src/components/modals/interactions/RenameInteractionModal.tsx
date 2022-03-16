@@ -1,66 +1,59 @@
 import React, { useEffect, useState } from "react";
-import Button from "src/components/ui/inputs/Button";
-import TextInput from "src/components/ui/inputs/TextInput";
-import Label from "src/components/ui/Label";
+import { Button, Group, TextInput } from "@mantine/core";
+import { ContextModalProps } from "@mantine/modals";
+import { InteractionType, isTextBased } from "src/models/interactions";
 import { validateInteractionName } from "src/lib/validater";
-import { isTextBased } from "src/models/interactions";
-import { IModalStore, ModalLayout, ModalStore, useModalData } from "src/stores/ModalStore";
-import { ModalName } from "src/models/modals";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 
-const ModalActions = (state: IModalStore) => state.actions;
 const InteractionActions = (state: IInteractionStore) => state.actions;
 
-const RenameInteractionModal: React.FC = () => {
-  const { hideModal } = ModalStore(ModalActions);
+type Props = {
+  name: string;
+  type: InteractionType;
+  id: string;
+};
+
+const RenameInteractionModalComponent: React.FC<ContextModalProps<Props>> = ({
+  context,
+  id,
+  innerProps,
+}) => {
   const { renameInteraction } = InteractionStore(InteractionActions);
-
-  const interaction = useModalData<ModalName.RENAME_INTERACTION>();
-
-  const [value, setValue] = useState(interaction.name);
+  const [value, setValue] = useState(innerProps.name);
   const [error, setError] = useState<string>();
 
-  useEffect(() => {
-    const error = validateInteractionName(value);
-
-    setError(error);
-  }, [value]);
-
-  const handleInputChange = (text: string) => {
-    const newText = isTextBased(interaction.type) ? text.replace(/\s+/g, "-").toLowerCase() : text;
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.currentTarget.value;
+    const newText = isTextBased(innerProps.type) ? text.replace(/\s+/g, "-").toLowerCase() : text;
     setValue(newText);
   };
 
-  const handleSubmit = () => {
-    if (error) return;
+  useEffect(() => {
+    const error = validateInteractionName(value);
+    setError(error);
+  }, [value]);
 
-    if (value !== interaction.name) renameInteraction(interaction.id, value);
-    hideModal();
+  const handleSubmit = () => {
+    if (value !== innerProps.name) renameInteraction(innerProps.id, value);
+    context.closeModal(id);
   };
 
   return (
     <>
-      <ModalLayout.Content padding>
-        <h2>Rename Interaction</h2>
-        <Label text="Interaction Name" error={error} />
-        <TextInput
-          name="interaction-name"
-          value={value}
-          onChange={handleInputChange}
-          error={error !== undefined}
-        />
-      </ModalLayout.Content>
-      <ModalLayout.Footer>
-        <Button
-          text="Rename"
-          type="primary"
-          onClick={handleSubmit}
-          disabled={error !== undefined}
-        />
-        <Button text="Cancel" type="transparent" onClick={hideModal} />
-      </ModalLayout.Footer>
+      <TextInput
+        name="interaction-name"
+        label="Interaction Name"
+        value={value}
+        onChange={handleInputChange}
+        error={error}
+      />
+      <Group position="right" mt="md">
+        <Button type="submit" disabled={error !== undefined} onClick={handleSubmit}>
+          Rename
+        </Button>
+      </Group>
     </>
   );
 };
 
-export default RenameInteractionModal;
+export default RenameInteractionModalComponent;

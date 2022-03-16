@@ -8,4 +8,5 @@ export const validateInteractionName = (name: string): string | undefined => {
 
   if (name.length === 0) return "Required";
   if (name.length > 32) return "Maximum length is 32 characters";
+  if (!/^[\w-]{1,32}$/.test(name)) return "Cannot contain special characters";
 };
