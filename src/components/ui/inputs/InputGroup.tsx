@@ -1,21 +1,22 @@
+import { useForm } from "@mantine/form";
+import { UseFormReturnType } from "@mantine/form/lib/use-form";
+import { useDidUpdate } from "@mantine/hooks";
 import React from "react";
 
 interface Props<T> {
   state: T;
   onChange(value: T): void;
-  children(
-    state: T,
-    setState: <N extends keyof T>(value: T[N], name: N) => void
-  ): React.ReactElement;
+  children(form: UseFormReturnType<T>): React.ReactElement;
 }
 
 const InputGroup = <T extends object>({ state, onChange, children }: Props<T>) => {
-  const handleStateChange = <N extends keyof T>(value: T[N], name: N) => {
-    const newState = { ...state, [name]: value };
-    onChange(newState);
-  };
+  const form = useForm({ initialValues: state });
 
-  return <>{children(state, handleStateChange)}</>;
+  useDidUpdate(() => {
+    onChange(form.values);
+  }, [form.values]);
+
+  return <>{children(form)}</>;
 };
 
 export default InputGroup;

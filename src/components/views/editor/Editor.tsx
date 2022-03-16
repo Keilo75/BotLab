@@ -1,5 +1,4 @@
 import { Group, Tabs } from "@mantine/core";
-import { IconMessages, IconSettings, IconTerminal2 } from "@tabler/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import InfoBar from "src/components/shared/InfoBar";
@@ -10,8 +9,8 @@ import { IInfoStore, InfoStore } from "src/stores/InfoStore";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 import { ISettingsStore, SettingsStore } from "src/stores/project-stores/SettingsStore";
 import { ProjectAction } from "src/stores/ProjectReducer";
-import Interactions from "./tabs/Interactions";
-import Settings from "./tabs/Settings";
+import { Messages, Terminal2, Settings } from "tabler-icons-react";
+import SettingsTab from "./tabs/SettingsTab";
 
 const InfoActions = (state: IInfoStore) => state.actions;
 const InteractionActions = (state: IInteractionStore) => state.actions;
@@ -100,10 +99,12 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
 
   return (
     <Group direction="column" grow position="apart" className="editor">
-      <Tabs position="center">
-        <Tabs.Tab label="Interactions"></Tabs.Tab>
-        <Tabs.Tab label="Settings"></Tabs.Tab>
-        <Tabs.Tab label="Dashboard"></Tabs.Tab>
+      <Tabs position="center" active={1}>
+        <Tabs.Tab label="Interactions" icon={<Messages size={14} />}></Tabs.Tab>
+        <Tabs.Tab label="Settings" icon={<Settings size={14} />}>
+          <SettingsTab />
+        </Tabs.Tab>
+        <Tabs.Tab label="Dashboard" icon={<Terminal2 size={14} />}></Tabs.Tab>
       </Tabs>
 
       <InfoBar />

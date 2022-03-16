@@ -1,6 +1,7 @@
 .title-bar {
   -webkit-app-region: drag;
   height: 30px;
+  user-select: none;
 
   .window-control-btns {
     -webkit-app-region: no-drag;

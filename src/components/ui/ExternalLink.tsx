@@ -1,12 +1,12 @@
+import { Anchor } from "@mantine/core";
 import React from "react";
 import useKeyboardClick from "src/hooks/useKeyboardClick";
 
 interface Props {
   href: string;
-  text: string;
 }
 
-const Link: React.FC<Props> = ({ href, text }) => {
+const ExternalLink: React.FC<Props> = ({ href, children }) => {
   const handleLinkClick = (anchor: HTMLAnchorElement) => {
     window.fs.openLinkInBrowser(anchor.href);
   };
@@ -14,10 +14,10 @@ const Link: React.FC<Props> = ({ href, text }) => {
   const keyboardClickEvents = useKeyboardClick(handleLinkClick, { preventDefault: true });
 
   return (
-    <a className="link" href={href} {...keyboardClickEvents}>
-      {text}
-    </a>
+    <Anchor href={href} {...keyboardClickEvents}>
+      {children}
+    </Anchor>
   );
 };
 
-export default Link;
+export default ExternalLink;
