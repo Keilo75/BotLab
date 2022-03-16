@@ -125,7 +125,10 @@ const InteractionSidebar: React.FC = () => {
           </div>
         )}
         placeholderRender={(node, { depth }) => (
-          <div className="placeholder" style={{ left: depth * 20 }} />
+          <Box
+            className="placeholder"
+            sx={(theme) => ({ left: depth * 20, backgroundColor: theme.colors.blue[8] })}
+          />
         )}
         sort={false}
       />
