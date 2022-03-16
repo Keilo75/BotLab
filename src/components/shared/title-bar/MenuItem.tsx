@@ -1,8 +1,8 @@
 import { Divider, Text } from "@mantine/core";
 import clsx from "clsx";
 import React from "react";
-import { useLocation } from "react-router-dom";
 import { MenuAction } from "src/models/menu-action";
+import { ContextMenuItemProps } from "src/stores/ContextMenuStore";
 
 export interface MenuItemProps {
   name: string;
@@ -13,24 +13,37 @@ export interface MenuItemProps {
   divider?: boolean;
 }
 
-interface Props {
-  item: MenuItemProps;
-  handleMenuItemClick(action: MenuAction): void;
-}
+type Props =
+  | {
+      scope: "title-bar";
+      item: MenuItemProps;
+      handleMenuItemClick: (action: MenuAction) => void;
+    }
+  | {
+      scope: "context-menu";
+      item: ContextMenuItemProps;
+      handleMenuItemClick: (name: string) => void;
+    };
 
-const MenuItem: React.FC<Props> = ({ item, handleMenuItemClick }) => {
-  const location = useLocation();
-  const disabled = item.disabled || (item.editorOnly && !location.pathname.includes("editor"));
+const MenuItem: React.FC<Props> = ({ scope, item, handleMenuItemClick }) => {
+  const disabled =
+    item.disabled ||
+    (scope === "title-bar" && item.editorOnly && !window.location.href.includes("editor"));
 
   const handleClick = () => {
-    if (!disabled) handleMenuItemClick(item.action);
+    if (!disabled) {
+      if (scope === "title-bar") handleMenuItemClick(item.action);
+      else handleMenuItemClick(item.name);
+    }
   };
 
   return (
     <>
       <li className={clsx("menu-item", disabled && "menu-item-disabled")} onClick={handleClick}>
         <Text>{item.name}</Text>
-        {item.accelerator && <Text color="dimmed">{item.accelerator}</Text>}
+        {scope === "title-bar" && item.accelerator && (
+          <Text color="dimmed">{item.accelerator}</Text>
+        )}
       </li>
       {item.divider && <Divider m="xs" />}
     </>

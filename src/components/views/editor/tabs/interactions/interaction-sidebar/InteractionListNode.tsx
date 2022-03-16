@@ -4,14 +4,8 @@ import React from "react";
 import Repeater from "src/components/ui/utils/Repeater";
 import useContextMenu from "src/hooks/useContextMenu";
 import { InteractionNode } from "src/models/interaction-list";
-import { IModalStore, ModalStore } from "src/stores/ModalStore";
-import { ModalName } from "src/models/modals";
-import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 import { Box, Text } from "@mantine/core";
 import { Folder, Mail, User } from "tabler-icons-react";
-
-const ModalActions = (state: IModalStore) => state.actions;
-const InteractionActions = (state: IInteractionStore) => state.actions;
 
 interface Props {
   node: InteractionNode;
@@ -30,35 +24,17 @@ const InteractionListNode: React.FC<Props> = ({
   isSelected,
   selectInteraction,
 }) => {
-  const { setCurrentModal } = ModalStore(ModalActions);
-  const { deleteInteraction } = InteractionStore(InteractionActions);
-
   const handleContextMenu = useContextMenu([
     {
       name: "Rename",
       action: () => {
-        if (!node.data) return;
-
-        setCurrentModal(ModalName.RENAME_INTERACTION, {
-          id: node.id.toString(),
-          name: node.text,
-          parent: node.parent.toString(),
-          type: node.data.type,
-        });
+        console.log("hi");
       },
     },
     {
       name: "Delete",
       action: () => {
-        setCurrentModal(ModalName.CONFIRMATION, {
-          title: "Delete interaction?",
-          text: "Do you want to delete this interaction?",
-          buttonText: "Delete",
-          confirmationOption: "confirmInteractionDeletion",
-          handleConfirm: () => {
-            deleteInteraction(node.id.toString());
-          },
-        });
+        console.log("hi");
       },
     },
   ]);

@@ -1,10 +1,9 @@
 import { MenuItemProps } from "src/components/shared/title-bar/MenuItem";
 import create from "zustand";
 
-export type ContextMenuItemProps = Omit<
-  MenuItemProps,
-  "action" | "accelerator" | "disabled" | "editorOnly"
-> & { action: () => void };
+export type ContextMenuItemProps = Omit<MenuItemProps, "action" | "accelerator" | "editorOnly"> & {
+  action: () => void;
+};
 
 export interface ContextMenu {
   items: ContextMenuItemProps[];

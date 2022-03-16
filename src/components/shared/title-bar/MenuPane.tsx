@@ -1,8 +1,9 @@
-import { Paper, Text } from "@mantine/core";
+import { Text } from "@mantine/core";
 import React from "react";
-import useBackgroundColor from "src/hooks/useBackgroundColor";
+
 import { MenuAction } from "src/models/menu-action";
 import MenuItem, { MenuItemProps } from "./MenuItem";
+import MenuList from "./MenuList";
 
 export interface MenuPaneProps {
   name: string;
@@ -44,17 +45,16 @@ const MenuPane: React.FC<Props> = ({ pane, selectedPane, setSelectedPane, handle
         <Text>{pane.name}</Text>
       </div>
       {isSelected && (
-        <Paper
-          className="menu-list"
-          sx={(theme) => ({
-            background: useBackgroundColor(theme),
-            borderRadius: 0,
-          })}
-        >
+        <MenuList>
           {pane.children.map((item) => (
-            <MenuItem key={item.name} item={item} handleMenuItemClick={handleMenuItemClick} />
+            <MenuItem
+              scope="title-bar"
+              key={item.name}
+              item={item}
+              handleMenuItemClick={handleMenuItemClick}
+            />
           ))}
-        </Paper>
+        </MenuList>
       )}
     </div>
   );
