@@ -6,6 +6,11 @@ import useContextMenu from "src/hooks/useContextMenu";
 import { InteractionNode } from "src/models/interaction-list";
 import { Box, Text } from "@mantine/core";
 import { Folder, Mail, User } from "tabler-icons-react";
+import { useModals } from "@mantine/modals";
+import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
+import { getOption } from "src/stores/OptionsStore";
+
+const InteractionActions = (state: IInteractionStore) => state.actions;
 
 interface Props {
   node: InteractionNode;
@@ -24,6 +29,9 @@ const InteractionListNode: React.FC<Props> = ({
   isSelected,
   selectInteraction,
 }) => {
+  const { deleteInteraction } = InteractionStore(InteractionActions);
+  const modals = useModals();
+
   const handleContextMenu = useContextMenu([
     {
       name: "Rename",
@@ -34,10 +42,23 @@ const InteractionListNode: React.FC<Props> = ({
     {
       name: "Delete",
       action: () => {
-        console.log("hi");
+        if (getOption("editor.confirmInteractionDeletion"))
+          modals.openConfirmModal({
+            title: "Delete interaction?",
+            centered: true,
+            children: <Text size="sm">Do you want to delete this interaction?</Text>,
+            labels: { confirm: "Delete", cancel: "Cancel" },
+            confirmProps: { color: "red" },
+            onConfirm: handleDelete,
+          });
+        else handleDelete();
       },
     },
   ]);
+
+  const handleDelete = () => {
+    deleteInteraction(node.id.toString());
+  };
 
   const handleToggle = (e: React.MouseEvent) => {
     if (!node.data) return;
