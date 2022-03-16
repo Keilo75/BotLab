@@ -26,8 +26,8 @@ const OptionsModalComponent: React.FC<Props> = ({ close }) => {
   };
 
   return (
-    <Group direction="column" className="options-modal" grow>
-      <Tabs orientation="vertical">
+    <Group direction="column" grow>
+      <Tabs orientation="vertical" className="options-tabs" tabPadding="xl">
         <Tabs.Tab label="General">
           <RadioGroup label="Theme" {...form.getInputProps("general.theme")} orientation="vertical">
             <Radio value="dark" label="Dark" />

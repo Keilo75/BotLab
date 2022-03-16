@@ -1,6 +1,8 @@
-import { IconCheck, IconX } from "@tabler/icons";
+import { Paper } from "@mantine/core";
 import React, { useEffect } from "react";
+import useBackgroundColor from "src/hooks/useBackgroundColor";
 import { IInfoStore, InfoStore } from "src/stores/InfoStore";
+import { Check, X } from "tabler-icons-react";
 
 const InfoMessage = (state: IInfoStore) => state.infoMessage;
 const InfoActions = (state: IInfoStore) => state.actions;
@@ -14,12 +16,12 @@ const InfoBar: React.FC = () => {
   }, []);
 
   return (
-    <div className="info-bar">
-      {infoMessage.type === "success" && <IconCheck className="icon icon-success" />}
-      {infoMessage.type === "error" && <IconX className="icon icon-error" />}
+    <Paper className="info-bar" sx={(theme) => ({ background: useBackgroundColor(theme) })}>
+      {infoMessage.type === "success" && <Check className="icon icon-success" />}
+      {infoMessage.type === "error" && <X className="icon icon-error" />}
       {infoMessage.type === "loading" && <div className="icon icon-loading" />}
       {infoMessage.text}
-    </div>
+    </Paper>
   );
 };
 

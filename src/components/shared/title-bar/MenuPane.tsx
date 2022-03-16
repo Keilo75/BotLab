@@ -1,5 +1,6 @@
 import { Paper, Text } from "@mantine/core";
 import React from "react";
+import useBackgroundColor from "src/hooks/useBackgroundColor";
 import { MenuAction } from "src/models/menu-action";
 import MenuItem, { MenuItemProps } from "./MenuItem";
 
@@ -46,7 +47,7 @@ const MenuPane: React.FC<Props> = ({ pane, selectedPane, setSelectedPane, handle
         <Paper
           className="menu-list"
           sx={(theme) => ({
-            background: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[1],
+            background: useBackgroundColor(theme),
             borderRadius: 0,
           })}
         >

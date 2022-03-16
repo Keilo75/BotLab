@@ -25,8 +25,12 @@
   --spacing-third: calc(var(--spacing) / 3);
 }
 
-:root {
+body.dark-theme {
   --hover-overlay-2: rgb(255, 255, 255, 0.2);
+}
+
+:root {
+  --hover-overlay-2: rgb(0, 0, 0, 0.2);
 
   --overlay-white-1: rgba(255, 255, 255, 0.1);
   --overlay-white-2: rgba(255, 255, 255, 0.2);

@@ -48,8 +48,6 @@ const App: React.FC = () => {
 
   useEffect(() => {
     optionsActions.setOptions(window.store.getOptions());
-
-    OptionsModal.show();
   }, []);
 
   useEffect(() => {
@@ -60,6 +58,7 @@ const App: React.FC = () => {
     if (!options) return;
 
     // Change theme
+    document.body.classList.toggle("dark-theme", options["general.theme"] === "dark");
 
     window.store.setOptions(options);
   }, [options]);

@@ -1,9 +1,8 @@
+import { Group, Tabs } from "@mantine/core";
 import { IconMessages, IconSettings, IconTerminal2 } from "@tabler/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import InfoBar from "src/components/shared/InfoBar";
-import Tab from "src/components/ui/tabs/Tab";
-import Tabs from "src/components/ui/tabs/Tabs";
 import { sleep } from "src/lib/sleep";
 import { validateProjectName } from "src/lib/validater";
 import { MenuAction } from "src/models/menu-action";
@@ -100,18 +99,15 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
   if (!hasLoaded) return null;
 
   return (
-    <>
-      <Tabs name="Editor" axis="horizontal" defaultTab={0}>
-        <Tab name="Interactions" icon={IconMessages} fullscreen className="interactions">
-          <Interactions />
-        </Tab>
-        <Tab name="Settings" icon={IconSettings}>
-          <Settings />
-        </Tab>
-        <Tab name="Dashboard" icon={IconTerminal2}></Tab>
+    <Group direction="column" grow position="apart" className="editor">
+      <Tabs position="center">
+        <Tabs.Tab label="Interactions"></Tabs.Tab>
+        <Tabs.Tab label="Settings"></Tabs.Tab>
+        <Tabs.Tab label="Dashboard"></Tabs.Tab>
       </Tabs>
+
       <InfoBar />
-    </>
+    </Group>
   );
 };
 

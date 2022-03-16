@@ -61,10 +61,14 @@ body {
   height: 100%;
 
   > main {
-    height: calc(100% - 2 * var(--title-bar-height));
+    height: calc(100% - var(--title-bar-height));
 
     .main-content {
       padding: var(--spacing-double) 100px;
     }
   }
+}
+
+.options-tabs {
+  height: calc(100vh - 400px);
 }
