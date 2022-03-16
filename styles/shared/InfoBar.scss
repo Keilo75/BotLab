@@ -1,6 +1,9 @@
 .info-bar {
-  height: var(--title-bar-height);
-  width: 100%;
+  position: absolute;
+  top: calc(100vh - var(--title-bar-height));
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   padding-left: var(--spacing);
   align-items: center;

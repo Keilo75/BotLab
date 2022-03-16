@@ -1,5 +1,4 @@
 import { useDragOver } from "@minoru/react-dnd-treeview";
-import { IconFolder, IconMail, IconUser } from "@tabler/icons";
 import clsx from "clsx";
 import React from "react";
 import Repeater from "src/components/ui/utils/Repeater";
@@ -8,6 +7,8 @@ import { InteractionNode } from "src/models/interaction-list";
 import { IModalStore, ModalStore } from "src/stores/ModalStore";
 import { ModalName } from "src/models/modals";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
+import { Box, Text } from "@mantine/core";
+import { Folder, Mail, User } from "tabler-icons-react";
 
 const ModalActions = (state: IModalStore) => state.actions;
 const InteractionActions = (state: IInteractionStore) => state.actions;
@@ -74,7 +75,8 @@ const InteractionListNode: React.FC<Props> = ({
   const dragOverProps = useDragOver(node.id, isOpen, onToggle);
 
   return (
-    <div
+    <Box
+      sx={(theme) => ({ borderLeftColor: isSelected ? theme.colors.blue[8] : "transparent" })}
       className={clsx("interaction-node", isSelected && "selected-node")}
       {...dragOverProps}
       onClick={handleToggle}
@@ -83,12 +85,14 @@ const InteractionListNode: React.FC<Props> = ({
       <Repeater times={depth}>
         <span className="border" />
       </Repeater>
-      {node.data?.type === "folder" && <IconFolder />}
-      {node.data?.type === "command" && "/"}
-      {node.data?.type === "message-context-menu" && <IconMail />}
-      {node.data?.type === "user-context-menu" && <IconUser />}
-      <span className="node-text">{node.text}</span>
-    </div>
+      {node.data?.type === "folder" && <Folder />}
+      {node.data?.type === "message-context-menu" && <Mail />}
+      {node.data?.type === "user-context-menu" && <User />}
+      <Text>
+        {node.data?.type === "command" && "/"}
+        {node.text}
+      </Text>
+    </Box>
   );
 };
 

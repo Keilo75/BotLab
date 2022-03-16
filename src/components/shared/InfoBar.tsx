@@ -1,6 +1,5 @@
 import { Paper } from "@mantine/core";
 import React, { useEffect } from "react";
-import useBackgroundColor from "src/hooks/useBackgroundColor";
 import { IInfoStore, InfoStore } from "src/stores/InfoStore";
 import { Check, X } from "tabler-icons-react";
 
@@ -16,7 +15,7 @@ const InfoBar: React.FC = () => {
   }, []);
 
   return (
-    <Paper className="info-bar" sx={(theme) => ({ background: useBackgroundColor(theme) })}>
+    <Paper className="info-bar" withBorder>
       {infoMessage.type === "success" && <Check className="icon icon-success" />}
       {infoMessage.type === "error" && <X className="icon icon-error" />}
       {infoMessage.type === "loading" && <div className="icon icon-loading" />}

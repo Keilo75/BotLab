@@ -1,25 +1,23 @@
 import React, { useMemo } from "react";
-import RenameInteractionModal from "src/components/modals/interactions/RenameInteractionModal";
-import { Modal } from "src/components/ui/Modal";
-import useMountedEffect from "src/hooks/useMountedEffect";
 import { IInfoStore, InfoStore } from "src/stores/InfoStore";
-import { ModalName } from "src/models/modals";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
-import InteractionList from "./interactions/interaction-list/InteractionList";
-import SelectedInteraction from "./interactions/SelectedInteraction";
+import { useDidUpdate } from "@mantine/hooks";
+import { Group, Navbar, Paper } from "@mantine/core";
+import useBackgroundColor from "src/hooks/useBackgroundColor";
+import InteractionSidebar from "./interactions/interaction-sidebar/InteractionSidebar";
 
 const InteractionsSelector = (state: IInteractionStore) => state.interactions;
 const SelectedInteractionID = (state: IInteractionStore) => state.selectedInteractionID;
 const InfoActions = (state: IInfoStore) => state.actions;
 
-const Interactions: React.FC = () => {
+const InteractionsTab: React.FC = () => {
   const interactions = InteractionStore(InteractionsSelector);
   const selectedInteractionID = InteractionStore(SelectedInteractionID);
 
   if (!interactions) return null;
 
   const { setDirty } = InfoStore(InfoActions);
-  useMountedEffect(() => {
+  useDidUpdate(() => {
     setDirty(true);
   }, [interactions]);
 
@@ -29,18 +27,17 @@ const Interactions: React.FC = () => {
   );
 
   return (
-    <>
-      <div className="sidebar">
-        <InteractionList />
-      </div>
-      <div className="tab-content interaction">
-        {selectedInteraction && <SelectedInteraction interaction={selectedInteraction} />}
-      </div>
-      <Modal name={ModalName.RENAME_INTERACTION}>
-        <RenameInteractionModal />
-      </Modal>
-    </>
+    <div className="interactions">
+      <Paper
+        className="sidebar"
+        withBorder
+        sx={(theme) => ({ backgroundColor: useBackgroundColor(theme) })}
+      >
+        <InteractionSidebar />
+      </Paper>
+      <div className="selected-interaction"></div>
+    </div>
   );
 };
 
-export default Interactions;
+export default InteractionsTab;

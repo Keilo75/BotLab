@@ -1,4 +1,4 @@
-import { Group, Tabs } from "@mantine/core";
+import { Tabs } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import InfoBar from "src/components/shared/InfoBar";
@@ -10,6 +10,7 @@ import { IInteractionStore, InteractionStore } from "src/stores/project-stores/I
 import { ISettingsStore, SettingsStore } from "src/stores/project-stores/SettingsStore";
 import { ProjectAction } from "src/stores/ProjectReducer";
 import { Messages, Terminal2, Settings } from "tabler-icons-react";
+import InteractionsTab from "./tabs/InteractionsTab";
 import SettingsTab from "./tabs/SettingsTab";
 
 const InfoActions = (state: IInfoStore) => state.actions;
@@ -98,9 +99,11 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
   if (!hasLoaded) return null;
 
   return (
-    <Group direction="column" grow position="apart" className="editor">
-      <Tabs position="center" active={1}>
-        <Tabs.Tab label="Interactions" icon={<Messages size={14} />}></Tabs.Tab>
+    <>
+      <Tabs position="center" className="editor-tabs" tabPadding={0}>
+        <Tabs.Tab label="Interactions" icon={<Messages size={14} />}>
+          <InteractionsTab />
+        </Tabs.Tab>
         <Tabs.Tab label="Settings" icon={<Settings size={14} />}>
           <SettingsTab />
         </Tabs.Tab>
@@ -108,7 +111,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
       </Tabs>
 
       <InfoBar />
-    </Group>
+    </>
   );
 };
 

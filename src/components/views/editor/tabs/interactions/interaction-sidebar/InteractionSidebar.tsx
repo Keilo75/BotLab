@@ -1,8 +1,7 @@
+import { ActionIcon, Box, Button, Divider, Group, Menu } from "@mantine/core";
 import { Tree, TreeMethods } from "@minoru/react-dnd-treeview";
 import { IconFolder } from "@tabler/icons";
 import React, { useEffect, useRef, useState } from "react";
-import DropdownButton from "src/components/ui/inputs/DropdownButton";
-import Label from "src/components/ui/Label";
 import {
   convertInteractionsToNodeModelArray,
   getDepth,
@@ -11,13 +10,14 @@ import {
 } from "src/models/interaction-list";
 import { InteractionType, InteractionTypes, isTextBased } from "src/models/interactions";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
+import { ChevronDown } from "tabler-icons-react";
 import InteractionListNode from "./InteractionListNode";
 
 const Interactions = (state: IInteractionStore) => state.interactions;
 const SelectedInteractionID = (state: IInteractionStore) => state.selectedInteractionID;
 const InteractionActions = (state: IInteractionStore) => state.actions;
 
-const InteractionList: React.FC = () => {
+const InteractionSidebar: React.FC = () => {
   const interactions = InteractionStore(Interactions);
   const selectedInteractionID = InteractionStore(SelectedInteractionID);
   const { addInteraction, updateParents, selectInteraction } = InteractionStore(InteractionActions);
@@ -39,11 +39,8 @@ const InteractionList: React.FC = () => {
     }
   }, [interactions]);
 
-  const handleAddInteraction = (option: string) => {
-    const type = Object.keys(InteractionTypes).find(
-      (key) => InteractionTypes[key as InteractionType] === option
-    ) as InteractionType;
-
+  const handleAddInteraction = (e: React.MouseEvent) => {
+    const type = e.currentTarget.getAttribute("data-type") as InteractionType;
     addInteraction(type);
   };
 
@@ -54,18 +51,36 @@ const InteractionList: React.FC = () => {
 
   if (!treeData) return null;
 
+  const [commandType, ...remainingInteractionTypes] = Object.keys(
+    InteractionTypes
+  ) as InteractionType[];
+
   return (
     <>
-      <div className="sidebar-head">
-        <Label text="Interactions" />
-        <DropdownButton
-          text="Add Command"
-          options={Object.values(InteractionTypes)}
-          onClick={handleAddInteraction}
-          className="add-button"
-        />
-      </div>
-      <hr />
+      <Box p="md">
+        <Group spacing="xs" className="sidebar-head">
+          <Button className="default-btn" data-type={commandType} onClick={handleAddInteraction}>
+            Add {InteractionTypes[commandType]}
+          </Button>
+          <Menu
+            control={
+              <ActionIcon variant="filled" size={36}>
+                <ChevronDown size={16} />
+              </ActionIcon>
+            }
+            transition="pop"
+            placement="start"
+            size="lg"
+          >
+            {remainingInteractionTypes.map((type, index) => (
+              <Menu.Item key={index} data-type={type} onClick={handleAddInteraction}>
+                Add {InteractionTypes[type]}
+              </Menu.Item>
+            ))}
+          </Menu>
+        </Group>
+      </Box>
+      <Divider mb="md" />
       <Tree
         tree={treeData}
         rootId={"0"}
@@ -118,4 +133,4 @@ const InteractionList: React.FC = () => {
   );
 };
 
-export default InteractionList;
+export default InteractionSidebar;

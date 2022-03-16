@@ -29,7 +29,7 @@ const SettingsTab: React.FC = () => {
   const projectNameError = useMemo(() => validateProjectName(settings.name), [settings.name]);
 
   return (
-    <Group className="main-content in-editor" direction="column" grow>
+    <Group className="main-content in-editor" direction="column" grow mt="md">
       <Text>
         Use this page to register your bots settings. If you have not done so yet, create a new Bot
         Account in the{" "}

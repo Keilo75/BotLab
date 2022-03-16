@@ -1,56 +1,18 @@
-.placeholder-container {
-  position: relative;
-
-  .placeholder {
-    height: 2px;
-    position: absolute;
-    background-color: var(--focus-color);
-    right: 0;
-    transform: translateY(-50%);
-  }
-}
-
-.interaction-drag-preview {
-  width: max-content;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 var(--spacing);
-  background-color: black;
-  border-radius: var(--border-radius);
-  color: #fff;
-  pointer-events: none;
-  gap: var(--spacing-third);
-
-  svg {
-    width: 20px;
-    height: 20px;
-  }
-}
-
 .interactions {
-  flex-grow: 1;
+  height: 100%;
+  width: 100%;
   display: flex;
-  overflow: hidden;
 
   .sidebar {
+    height: 100%;
     width: var(--sidebar-width);
-    background-color: var(--container-color);
-    box-shadow: inset 0px 8px 18px -5px var(--title-bar-color);
     display: flex;
     flex-direction: column;
-    flex-shrink: 0;
 
     .sidebar-head {
-      padding: var(--spacing);
-
-      .add-button {
-        width: 100%;
+      .default-btn {
+        flex-grow: 1;
       }
-    }
-
-    > hr {
-      margin-bottom: var(--spacing);
     }
 
     .interaction-tree {
@@ -60,8 +22,9 @@
       flex-grow: 1;
 
       .interaction-node {
-        border-left: 5px solid transparent;
-        padding-left: var(--spacing);
+        border-left-width: 5px;
+        border-left-style: solid;
+        padding-left: 10px;
         height: 22px;
         display: flex;
         align-items: center;
@@ -69,35 +32,24 @@
 
         .border {
           height: 100%;
-          border-left: 2px solid var(--overlay-white-2);
+          border-left: 2px solid var(--hover-overlay-2);
           margin-left: 4px;
-          margin-right: var(--spacing);
-          cursor: pointer;
+          margin-right: 10px;
         }
 
         svg {
           width: 16px;
-          margin-right: var(--spacing-third);
+          margin-right: 3px;
           height: 16px;
           flex-shrink: 0;
-          cursor: pointer;
-        }
-
-        .node-text {
-          flex-grow: 1;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          cursor: pointer;
         }
 
         &:hover {
-          background-color: var(--overlay-black-3);
+          background-color: var(--hover-overlay-05);
         }
 
         &.selected-node {
-          border-left: 5px solid var(--primary-color);
-          background-color: var(--overlay-white-1);
+          background-color: var(--hover-overlay-1);
         }
       }
 
@@ -106,20 +58,15 @@
       }
 
       .drop-target {
-        background-color: var(--overlay-white-1);
+        background-color: var(--hover-overlay-1);
       }
     }
   }
 
-  .interaction.interaction {
-    padding: var(--spacing-double) 100px;
-  }
-}
+  .selected-interaction {
+    height: 100%;
+    flex-grow: 1;
 
-.interaction {
-  .interaction-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+    overflow-y: auto;
   }
 }
