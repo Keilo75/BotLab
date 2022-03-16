@@ -26,6 +26,15 @@ export const getParentsFromNodeModel = (nodeModels: InteractionNode[]): Record<s
   return directory;
 };
 
+export const getParents = (tree: Interaction[], id: string): Array<string> => {
+  const target = tree.find((node) => node.id === id);
+  if (!target || target.parent === "0") return [];
+
+  const parent = tree.find((cmd) => cmd.id === target.parent) as Interaction;
+
+  return [parent.id.toString(), ...getParents(tree, parent.id.toString())];
+};
+
 export const getDepth = (tree: InteractionNode[], id: string | number, depth = 0): number => {
   const target = tree.find((node) => node.id === id);
 

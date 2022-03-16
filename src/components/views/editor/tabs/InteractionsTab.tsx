@@ -2,9 +2,10 @@ import React, { useMemo } from "react";
 import { IInfoStore, InfoStore } from "src/stores/InfoStore";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 import { useDidUpdate } from "@mantine/hooks";
-import { Group, Navbar, Paper } from "@mantine/core";
+import { Paper } from "@mantine/core";
 import useBackgroundColor from "src/hooks/useBackgroundColor";
 import InteractionSidebar from "./interactions/interaction-sidebar/InteractionSidebar";
+import SelectedInteraction from "./interactions/SelectedInteraction";
 
 const InteractionsSelector = (state: IInteractionStore) => state.interactions;
 const SelectedInteractionID = (state: IInteractionStore) => state.selectedInteractionID;
@@ -13,8 +14,6 @@ const InfoActions = (state: IInfoStore) => state.actions;
 const InteractionsTab: React.FC = () => {
   const interactions = InteractionStore(InteractionsSelector);
   const selectedInteractionID = InteractionStore(SelectedInteractionID);
-
-  if (!interactions) return null;
 
   const { setDirty } = InfoStore(InfoActions);
   useDidUpdate(() => {
@@ -35,7 +34,11 @@ const InteractionsTab: React.FC = () => {
       >
         <InteractionSidebar />
       </Paper>
-      <div className="selected-interaction"></div>
+      {selectedInteraction && (
+        <div className="selected-interaction main-content">
+          <SelectedInteraction interaction={selectedInteraction} />
+        </div>
+      )}
     </div>
   );
 };

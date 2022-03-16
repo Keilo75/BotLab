@@ -49,8 +49,6 @@ const InteractionSidebar: React.FC = () => {
     updateParents(newParents);
   };
 
-  if (!treeData) return null;
-
   const [commandType, ...remainingInteractionTypes] = Object.keys(
     InteractionTypes
   ) as InteractionType[];
@@ -82,10 +80,10 @@ const InteractionSidebar: React.FC = () => {
       </Box>
       <Divider mb="md" />
       <Tree
-        tree={treeData}
+        ref={treeRef}
+        tree={treeData || []}
         rootId={"0"}
         onDrop={handleDrop}
-        ref={treeRef}
         classes={{
           container: "interaction-tree",
           draggingSource: "dragging-node",
