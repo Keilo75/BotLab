@@ -6,23 +6,18 @@ import "styles/_ui.scss";
 import TitleBar from "./shared/title-bar/TitleBar";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import Home from "./views/home/Home";
-import ModalTemplate, { Modal } from "./ui/Modal";
 import { MenuAction } from "src/models/menu-action";
-import OptionsModal from "./modals/OptionsModal";
 import { IOptionsStore, OptionsStore } from "src/stores/OptionsStore";
-import ErrorModal from "./modals/ErrorModal";
 import { projectReducer } from "src/stores/ProjectReducer";
-import { IModalStore, ModalStore } from "src/stores/ModalStore";
-import { ModalName } from "src/models/modals";
 import { ProjectInfo } from "src/models/project";
 import Editor from "./views/editor/Editor";
 import ContextMenu from "./shared/ContextMenu";
-import ConfirmationModal from "./modals/ConfirmationModal";
-import { MantineProvider } from "@mantine/core";
+import { MantineProvider, Modal } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
+import useModal from "src/hooks/useModal";
+import OptionsModalComponent from "./modals/OptionsModal";
 
-const ModalActions = (state: IModalStore) => state.actions;
 const Options = (state: IOptionsStore) => state.options;
 const OptionsActions = (state: IOptionsStore) => state.actions;
 
@@ -31,9 +26,9 @@ const App: React.FC = () => {
 
   const options = OptionsStore(Options);
   const optionsActions = OptionsStore(OptionsActions);
+  const OptionsModal = useModal();
 
   const [projects, dispatchProjects] = useReducer(projectReducer, []);
-  const { setCurrentModal } = ModalStore(ModalActions);
 
   const loadProjects = useCallback(async () => {
     const projectPaths = window.store.getProjects();
@@ -53,6 +48,8 @@ const App: React.FC = () => {
 
   useEffect(() => {
     optionsActions.setOptions(window.store.getOptions());
+
+    OptionsModal.show();
   }, []);
 
   useEffect(() => {
@@ -80,7 +77,7 @@ const App: React.FC = () => {
 
     switch (action) {
       case MenuAction.OPTIONS:
-        setCurrentModal(ModalName.OPTIONS);
+        OptionsModal.show();
         break;
 
       case MenuAction.RELOAD:
@@ -90,7 +87,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <MantineProvider theme={{ colorScheme: "dark" }} withGlobalStyles>
+    <MantineProvider theme={{ colorScheme: options?.["general.theme"] }} withGlobalStyles>
       <ModalsProvider>
         <NotificationsProvider>
           <HashRouter>
@@ -121,16 +118,16 @@ const App: React.FC = () => {
             </main>
           </HashRouter>
           <ContextMenu />
-          <Modal name={ModalName.OPTIONS} large>
-            <OptionsModal />
+
+          <Modal
+            opened={OptionsModal.opened}
+            onClose={OptionsModal.close}
+            centered
+            title="Options"
+            size="calc(100vw - 30px)"
+          >
+            <OptionsModalComponent close={OptionsModal.close} />
           </Modal>
-          <Modal name={ModalName.ERROR}>
-            <ErrorModal />
-          </Modal>
-          <Modal name={ModalName.CONFIRMATION}>
-            <ConfirmationModal />
-          </Modal>
-          <ModalTemplate />
         </NotificationsProvider>
       </ModalsProvider>
     </MantineProvider>

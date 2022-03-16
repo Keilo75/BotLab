@@ -23,7 +23,7 @@ const CreateProjectModal: React.FC<Props> = ({ dispatchProjects, close }) => {
   const [loading, setLoading] = useState(false);
   const notifications = useNotifications();
 
-  const emptyFolderOnProjectCreation = getOption("developer", "emptyFolderOnProjectCreation");
+  const emptyFolderOnProjectCreation = getOption("developer.emptyFolderOnProjectCreation");
 
   const form = useForm({
     initialValues,
@@ -81,6 +81,13 @@ const CreateProjectModal: React.FC<Props> = ({ dispatchProjects, close }) => {
     setLoading(false);
   };
 
+  const handleBrowseFolder = async () => {
+    const response = await window.fs.openDialog({ properties: ["openDirectory"] });
+    if (response.canceled) return;
+
+    form.setFieldValue("folder", response.filePaths[0]);
+  };
+
   return (
     <form
       onSubmit={form.onSubmit(async (values) => {
@@ -115,7 +122,7 @@ const CreateProjectModal: React.FC<Props> = ({ dispatchProjects, close }) => {
         {...form.getInputProps("folder")}
         rightSection={
           <Tooltip label="Browse folder" withArrow transition="scale">
-            <ActionIcon variant="transparent">
+            <ActionIcon variant="transparent" onClick={handleBrowseFolder}>
               <Folder />
             </ActionIcon>
           </Tooltip>
