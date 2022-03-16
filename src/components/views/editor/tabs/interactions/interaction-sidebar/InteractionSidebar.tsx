@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   convertInteractionsToNodeModelArray,
   getDepth,
+  getParents,
   getParentsFromNodeModel,
   InteractionNode,
 } from "src/models/interaction-list";
@@ -84,6 +85,7 @@ const InteractionSidebar: React.FC = () => {
         tree={treeData || []}
         rootId={"0"}
         onDrop={handleDrop}
+        initialOpen={getParents(interactions, selectedInteractionID || "0")}
         classes={{
           container: "interaction-tree",
           draggingSource: "dragging-node",

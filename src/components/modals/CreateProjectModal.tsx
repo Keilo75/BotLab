@@ -121,7 +121,7 @@ const CreateProjectModal: React.FC<Props> = ({ dispatchProjects, close }) => {
         label="Project Folder"
         {...form.getInputProps("folder")}
         rightSection={
-          <Tooltip label="Browse folder" withArrow transition="scale">
+          <Tooltip label="Browse folder" withArrow transition="pop">
             <ActionIcon variant="transparent" onClick={handleBrowseFolder}>
               <Folder />
             </ActionIcon>

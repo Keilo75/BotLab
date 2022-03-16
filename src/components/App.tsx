@@ -123,7 +123,7 @@ const App: React.FC = () => {
             onClose={OptionsModal.close}
             centered
             title="Options"
-            size="calc(100vw - 30px)"
+            size="800px"
           >
             <OptionsModalComponent close={OptionsModal.close} />
           </Modal>

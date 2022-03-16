@@ -1,4 +1,4 @@
-import { Button, Group, Paper, Text, TextInput, Title } from "@mantine/core";
+import { Button, Group, Paper, Text, TextInput, Title, Tooltip } from "@mantine/core";
 import React from "react";
 import { Interaction, InteractionTypes } from "src/models/interactions";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
@@ -26,7 +26,14 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
           </div>
           <Group>
             <Button>Edit Permissions</Button>
-            <Button disabled={interaction.type !== "command"}>Edit Parameters</Button>
+            <Tooltip
+              label="This interaction type does not support parameters."
+              transition="pop"
+              withArrow
+              disabled={interaction.type === "command"}
+            >
+              <Button disabled={interaction.type !== "command"}>Edit Parameters</Button>
+            </Tooltip>
           </Group>
         </Group>
       </Paper>
