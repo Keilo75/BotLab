@@ -2,7 +2,7 @@ import { Alert, Group, PasswordInput, Text, TextInput } from "@mantine/core";
 import { useDidUpdate } from "@mantine/hooks";
 import React, { useCallback, useMemo } from "react";
 import ExternalLink from "src/components/ui/ExternalLink";
-import InputGroup from "src/components/ui/inputs/InputGroup";
+import InputGroup from "src/components/ui/input-group/InputGroup";
 import { validateProjectName } from "src/lib/validater";
 import { ProjectSettings } from "src/models/project";
 import { IInfoStore, InfoStore } from "src/stores/InfoStore";
