@@ -1,7 +1,15 @@
-import { Button, Group, Paper, Text, TextInput, Title, Tooltip } from "@mantine/core";
+import { Button, Group, Modal, Paper, Text, TextInput, Title } from "@mantine/core";
 import React from "react";
-import { Interaction, InteractionTypes } from "src/models/interactions";
+import PermissionsModalComponent from "src/components/modals/interactions/PermissionsModal";
+import useModal from "src/hooks/useModal";
+import {
+  Interaction,
+  InteractionPermission,
+  InteractionTypes,
+  isTextBased,
+} from "src/models/interactions";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
+import { ClipboardList, License } from "tabler-icons-react";
 
 const InteractionActions = (state: IInteractionStore) => state.actions;
 
@@ -10,10 +18,15 @@ interface Props {
 }
 
 const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
+  const PermissionsModal = useModal();
   const { updateSelectedInteraction } = InteractionStore(InteractionActions);
 
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateSelectedInteraction("description", e.target.value);
+  };
+
+  const handlePermissionsChange = (permissions: InteractionPermission) => {
+    updateSelectedInteraction("permissions", permissions);
   };
 
   return (
@@ -24,27 +37,42 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
             <Title order={2}>{interaction.name}</Title>
             <Text>{InteractionTypes[interaction.type]}</Text>
           </div>
-          <Group>
-            <Button>Edit Permissions</Button>
-            <Tooltip
-              label="This interaction type does not support parameters."
-              transition="pop"
-              withArrow
-              disabled={interaction.type === "command"}
-            >
-              <Button disabled={interaction.type !== "command"}>Edit Parameters</Button>
-            </Tooltip>
-          </Group>
+          {isTextBased(interaction.type) && (
+            <Group>
+              <Button onClick={PermissionsModal.show} leftIcon={<License size={16} />}>
+                Edit Permissions
+              </Button>
+              <Button
+                leftIcon={<ClipboardList size={16} />}
+                disabled={interaction.type !== "command"}
+              >
+                Edit Parameters
+              </Button>
+            </Group>
+          )}
         </Group>
       </Paper>
       {interaction.description !== undefined && (
         <TextInput
           name="description"
           label="Description"
-          required
           value={interaction.description}
           onChange={handleDescriptionChange}
+          required
         />
+      )}
+      {interaction.permissions !== undefined && (
+        <Modal
+          title="Edit permissions"
+          opened={PermissionsModal.opened}
+          onClose={PermissionsModal.close}
+        >
+          <PermissionsModalComponent
+            close={PermissionsModal.close}
+            permissions={interaction.permissions}
+            handlePermissionsChange={handlePermissionsChange}
+          />
+        </Modal>
       )}
     </Group>
   );

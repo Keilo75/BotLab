@@ -1,6 +1,5 @@
 import { ActionIcon, Box, Button, Divider, Group, Menu } from "@mantine/core";
 import { Tree, TreeMethods } from "@minoru/react-dnd-treeview";
-import { IconFolder } from "@tabler/icons";
 import React, { useEffect, useRef, useState } from "react";
 import {
   convertInteractionsToNodeModelArray,
@@ -11,7 +10,7 @@ import {
 } from "src/models/interaction-list";
 import { InteractionType, InteractionTypes, isTextBased } from "src/models/interactions";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
-import { ChevronDown } from "tabler-icons-react";
+import { ChevronDown, Folder, Plus } from "tabler-icons-react";
 import InteractionListNode from "./InteractionListNode";
 
 const Interactions = (state: IInteractionStore) => state.interactions;
@@ -58,7 +57,12 @@ const InteractionSidebar: React.FC = () => {
     <>
       <Box p="md">
         <Group spacing="xs" className="sidebar-head">
-          <Button className="default-btn" data-type={commandType} onClick={handleAddInteraction}>
+          <Button
+            className="default-btn"
+            data-type={commandType}
+            onClick={handleAddInteraction}
+            leftIcon={<Plus size={16} />}
+          >
             Add {InteractionTypes[commandType]}
           </Button>
           <Menu
@@ -120,7 +124,7 @@ const InteractionSidebar: React.FC = () => {
         }}
         dragPreviewRender={(monitorProps) => (
           <div className="interaction-drag-preview">
-            {monitorProps.item.data?.type === "folder" && <IconFolder />}
+            {monitorProps.item.data?.type === "folder" && <Folder />}
             {monitorProps.item.text}
           </div>
         )}

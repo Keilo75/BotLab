@@ -19,7 +19,7 @@ const initialValues = {
 type InitialValues = typeof initialValues;
 type Errors = Record<keyof InitialValues, string | undefined>;
 
-const CreateProjectModal: React.FC<Props> = ({ dispatchProjects, close }) => {
+const CreateProjectModalComponent: React.FC<Props> = ({ dispatchProjects, close }) => {
   const [loading, setLoading] = useState(false);
   const notifications = useNotifications();
 
@@ -137,4 +137,4 @@ const CreateProjectModal: React.FC<Props> = ({ dispatchProjects, close }) => {
   );
 };
 
-export default CreateProjectModal;
+export default CreateProjectModalComponent;

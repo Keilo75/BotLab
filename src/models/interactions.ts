@@ -12,7 +12,7 @@ export interface Interaction {
   name: string;
   type: InteractionType;
   description?: string;
-  permissions: InteractionPermission;
+  permissions?: InteractionPermission;
 }
 
 export interface InteractionPermission {
@@ -22,8 +22,9 @@ export interface InteractionPermission {
 
 export type InteractionPermissionExceptionType = "role" | "user";
 export type InteractionPermissionException = {
-  type: InteractionPermissionExceptionType;
   id: string;
+  type: InteractionPermissionExceptionType;
+  identifier: string;
 };
 
 export const isTextBased = (type: InteractionType): type is "command" | "folder" => {
