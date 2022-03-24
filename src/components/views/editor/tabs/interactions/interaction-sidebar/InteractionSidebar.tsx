@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Divider, Group, Menu } from "@mantine/core";
+import { ActionIcon, Box, Button, Divider, Group, Menu, ScrollArea } from "@mantine/core";
 import { Tree, TreeMethods } from "@minoru/react-dnd-treeview";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -84,58 +84,60 @@ const InteractionSidebar: React.FC = () => {
         </Group>
       </Box>
       <Divider mb="md" />
-      <Tree
-        ref={treeRef}
-        tree={treeData || []}
-        rootId={"0"}
-        onDrop={handleDrop}
-        initialOpen={getParents(interactions, selectedInteractionID || "0")}
-        classes={{
-          container: "interaction-tree",
-          draggingSource: "dragging-node",
-          dropTarget: "drop-target",
-          placeholder: "placeholder-container",
-        }}
-        render={(node, { depth, isOpen, onToggle }) => (
-          <InteractionListNode
-            node={node}
-            depth={depth}
-            isOpen={isOpen}
-            onToggle={onToggle}
-            isSelected={node.id === selectedInteractionID}
-            selectInteraction={selectInteraction}
-          />
-        )}
-        canDrop={(tree, { dropTargetId, dragSource }) => {
-          // Do not drag context menus
-          if (dragSource?.data && !isTextBased(dragSource?.data?.type)) return false;
+      <ScrollArea className="interaction-tree-container" type="auto">
+        <Tree
+          ref={treeRef}
+          tree={treeData || []}
+          rootId={"0"}
+          onDrop={handleDrop}
+          initialOpen={getParents(interactions, selectedInteractionID || "0")}
+          classes={{
+            container: "interaction-tree",
+            draggingSource: "dragging-node",
+            dropTarget: "drop-target",
+            placeholder: "placeholder-container",
+          }}
+          render={(node, { depth, isOpen, onToggle }) => (
+            <InteractionListNode
+              node={node}
+              depth={depth}
+              isOpen={isOpen}
+              onToggle={onToggle}
+              isSelected={node.id === selectedInteractionID}
+              selectInteraction={selectInteraction}
+            />
+          )}
+          canDrop={(tree, { dropTargetId, dragSource }) => {
+            // Do not drag context menus
+            if (dragSource?.data && !isTextBased(dragSource?.data?.type)) return false;
 
-          const depth = getDepth(tree, dropTargetId);
+            const depth = getDepth(tree, dropTargetId);
 
-          if (dragSource?.data?.type === "folder") {
-            // Allow maximum depth of 1 for folders
-            if (depth > 1) return false;
-          }
+            if (dragSource?.data?.type === "folder") {
+              // Allow maximum depth of 1 for folders
+              if (depth > 1) return false;
+            }
 
-          // Allow maximum depth of 2
-          if (depth > 2) return false;
+            // Allow maximum depth of 2
+            if (depth > 2) return false;
 
-          if (dragSource?.parent === dropTargetId) return true;
-        }}
-        dragPreviewRender={(monitorProps) => (
-          <div className="interaction-drag-preview">
-            {monitorProps.item.data?.type === "folder" && <Folder />}
-            {monitorProps.item.text}
-          </div>
-        )}
-        placeholderRender={(node, { depth }) => (
-          <Box
-            className="placeholder"
-            sx={(theme) => ({ left: depth * 20, backgroundColor: theme.colors.blue[8] })}
-          />
-        )}
-        sort={false}
-      />
+            if (dragSource?.parent === dropTargetId) return true;
+          }}
+          dragPreviewRender={(monitorProps) => (
+            <div className="interaction-drag-preview">
+              {monitorProps.item.data?.type === "folder" && <Folder />}
+              {monitorProps.item.text}
+            </div>
+          )}
+          placeholderRender={(node, { depth }) => (
+            <Box
+              className="placeholder"
+              sx={(theme) => ({ left: depth * 20, backgroundColor: theme.colors.blue[8] })}
+            />
+          )}
+          sort={false}
+        />
+      </ScrollArea>
     </>
   );
 };

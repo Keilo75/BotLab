@@ -44,50 +44,54 @@
       }
     }
 
-    .interaction-tree {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+    .interaction-tree-container {
       flex-grow: 1;
 
-      .interaction-node {
-        border-left-width: 5px;
-        border-left-style: solid;
-        padding-left: 10px;
-        height: 22px;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
+      .interaction-tree {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        height: 100%;
 
-        .border {
-          height: 100%;
-          border-left: 2px solid var(--hover-overlay-2);
-          margin-left: 4px;
-          margin-right: 10px;
+        .interaction-node {
+          border-left-width: 5px;
+          border-left-style: solid;
+          padding-left: 10px;
+          height: 22px;
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+
+          .border {
+            height: 100%;
+            border-left: 2px solid var(--hover-overlay-2);
+            margin-left: 4px;
+            margin-right: 10px;
+          }
+
+          svg {
+            width: 16px;
+            margin-right: 3px;
+            height: 16px;
+            flex-shrink: 0;
+          }
+
+          &:hover {
+            background-color: var(--hover-overlay-05);
+          }
+
+          &.selected-node {
+            background-color: var(--hover-overlay-1);
+          }
         }
 
-        svg {
-          width: 16px;
-          margin-right: 3px;
-          height: 16px;
-          flex-shrink: 0;
+        .dragging-node {
+          opacity: 0.7;
         }
 
-        &:hover {
-          background-color: var(--hover-overlay-05);
-        }
-
-        &.selected-node {
+        .drop-target {
           background-color: var(--hover-overlay-1);
         }
-      }
-
-      .dragging-node {
-        opacity: 0.7;
-      }
-
-      .drop-target {
-        background-color: var(--hover-overlay-1);
       }
     }
   }
