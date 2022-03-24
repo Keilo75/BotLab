@@ -9,6 +9,7 @@ import { Folder, Mail, User } from "tabler-icons-react";
 import { useModals } from "@mantine/modals";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 import { getOption } from "src/stores/OptionsStore";
+import InteractionTypeIcon from "./InteractionTypeIcon";
 
 const InteractionActions = (state: IInteractionStore) => state.actions;
 
@@ -86,9 +87,7 @@ const InteractionListNode: React.FC<Props> = ({
       <Repeater times={depth}>
         <span className="border" />
       </Repeater>
-      {node.data?.type === "folder" && <Folder />}
-      {node.data?.type === "message-context-menu" && <Mail />}
-      {node.data?.type === "user-context-menu" && <User />}
+      {node.data?.type && <InteractionTypeIcon type={node.data.type} />}
       <Text>
         {node.data?.type === "command" && "/"}
         {node.text}

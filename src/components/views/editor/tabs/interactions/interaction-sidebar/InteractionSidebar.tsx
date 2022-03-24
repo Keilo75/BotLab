@@ -12,6 +12,7 @@ import { InteractionType, InteractionTypes, isTextBased } from "src/models/inter
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 import { ChevronDown, Folder, Plus } from "tabler-icons-react";
 import InteractionListNode from "./InteractionListNode";
+import InteractionTypeIcon from "./InteractionTypeIcon";
 
 const Interactions = (state: IInteractionStore) => state.interactions;
 const SelectedInteractionID = (state: IInteractionStore) => state.selectedInteractionID;
@@ -76,7 +77,12 @@ const InteractionSidebar: React.FC = () => {
             size="lg"
           >
             {remainingInteractionTypes.map((type, index) => (
-              <Menu.Item key={index} data-type={type} onClick={handleAddInteraction}>
+              <Menu.Item
+                key={index}
+                data-type={type}
+                onClick={handleAddInteraction}
+                icon={<InteractionTypeIcon type={type} iconProps={{ size: 16 }} />}
+              >
                 Add {InteractionTypes[type]}
               </Menu.Item>
             ))}
