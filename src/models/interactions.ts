@@ -1,9 +1,15 @@
-export type InteractionType = "command" | "folder" | "user-context-menu" | "message-context-menu";
+export type InteractionType =
+  | "command"
+  | "folder"
+  | "user-context-menu"
+  | "message-context-menu"
+  | "event";
 export const InteractionTypes: Record<InteractionType, string> = {
   command: "Command",
   folder: "Folder",
   "user-context-menu": "User Context Menu",
   "message-context-menu": "Message Context Menu",
+  event: "Event",
 };
 
 export interface Interaction {

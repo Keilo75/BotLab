@@ -29,9 +29,9 @@ const RenameInteractionModalComponent: React.FC<ContextModalProps<Props>> = ({
   };
 
   useEffect(() => {
-    const error = validateInteractionName(value);
+    const error = validateInteractionName(value, innerProps.type);
     setError(error);
-  }, [value]);
+  }, [value, innerProps.type]);
 
   const handleSubmit = () => {
     if (value !== innerProps.name) renameInteraction(innerProps.id, value);
