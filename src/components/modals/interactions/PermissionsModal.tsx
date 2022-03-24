@@ -16,6 +16,7 @@ import {
 import { AlertCircle, Trash } from "tabler-icons-react";
 import { InteractionPermission } from "src/models/interactions";
 import { v4 as uuid } from "uuid";
+import { validateSnowflake } from "src/lib/validater";
 
 interface Props {
   close: () => void;
@@ -74,7 +75,7 @@ const PermissionsModalComponent: React.FC<Props> = ({
 
   const handleSubmit = (newPermissions: InteractionPermission) => {
     const invalidIDs = newPermissions.exceptions
-      .filter((exception) => exception.identifier === "")
+      .filter((exception) => validateSnowflake(exception.identifier) !== undefined)
       .map((exception) => exception.id);
     setInvalidIDs(invalidIDs);
 
@@ -97,7 +98,7 @@ const PermissionsModalComponent: React.FC<Props> = ({
       </Title>
       {invalidIDs.length > 0 && (
         <Alert icon={<AlertCircle />} color="red" mb="xs">
-          Some IDs are not invalid snowflakes.
+          Some IDs are not valid snowflakes.
         </Alert>
       )}
       <Card>
