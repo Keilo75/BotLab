@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { IInfoStore, InfoStore } from "src/stores/InfoStore";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 import { useDidUpdate } from "@mantine/hooks";
-import { Paper } from "@mantine/core";
+import { Paper, ScrollArea } from "@mantine/core";
 import useBackgroundColor from "src/hooks/useBackgroundColor";
 import InteractionSidebar from "./interactions/interaction-sidebar/InteractionSidebar";
 import SelectedInteraction from "./interactions/SelectedInteraction";
@@ -35,9 +35,9 @@ const InteractionsTab: React.FC = () => {
         <InteractionSidebar />
       </Paper>
       {selectedInteraction && (
-        <div className="selected-interaction main-content">
+        <ScrollArea className="selected-interaction main-content" type="auto">
           <SelectedInteraction interaction={selectedInteraction} />
-        </div>
+        </ScrollArea>
       )}
     </div>
   );

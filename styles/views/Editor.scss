@@ -1,8 +1,7 @@
 .editor-tabs {
   height: calc(100vh - 2 * var(--title-bar-height));
 
-  > [role="tabpanel"] {
+  [role="tabpanel"] {
     height: calc(100% - 40px);
-    overflow-y: auto;
   }
 }

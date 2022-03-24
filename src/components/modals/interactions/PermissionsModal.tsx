@@ -4,8 +4,10 @@ import {
   ActionIcon,
   Alert,
   Button,
+  Card,
   Checkbox,
   Group,
+  ScrollArea,
   Select,
   Text,
   TextInput,
@@ -98,15 +100,13 @@ const PermissionsModalComponent: React.FC<Props> = ({
           Some IDs are not invalid snowflakes.
         </Alert>
       )}
-      <Group
-        direction="column"
-        grow
-        sx={{ maxHeight: "200px", overflowY: "auto" }}
-        noWrap
-        spacing="xs"
-      >
-        {exceptions.length > 0 ? exceptions : <Text>No exceptions.</Text>}
-      </Group>
+      <Card>
+        <ScrollArea sx={{ height: "200px" }} type="auto">
+          <Group direction="column" grow noWrap spacing="xs">
+            {exceptions.length > 0 ? exceptions : <Text>No exceptions.</Text>}
+          </Group>
+        </ScrollArea>
+      </Card>
       <Group position="center" mt="md" spacing="xs">
         <Button onClick={addException}>Add Exception</Button>
       </Group>

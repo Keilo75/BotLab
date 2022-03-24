@@ -62,7 +62,6 @@ body {
 
   > main {
     height: calc(100% - var(--title-bar-height));
-    overflow-y: auto;
 
     .main-content {
       padding: var(--spacing-double) 100px;
@@ -76,4 +75,8 @@ body {
 
 .options-tabs {
   height: calc(100vh - 400px);
+
+  [role="tabpanel"] {
+    flex-grow: 1;
+  }
 }

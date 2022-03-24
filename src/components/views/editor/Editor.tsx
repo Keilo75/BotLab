@@ -1,4 +1,4 @@
-import { Tabs } from "@mantine/core";
+import { ScrollArea, Tabs } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import InfoBar from "src/components/shared/InfoBar";
@@ -105,7 +105,9 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
           <InteractionsTab />
         </Tabs.Tab>
         <Tabs.Tab label="Settings" icon={<Settings size={14} />}>
-          <SettingsTab />
+          <ScrollArea sx={{ height: "100%" }} type="auto">
+            <SettingsTab />
+          </ScrollArea>
         </Tabs.Tab>
         <Tabs.Tab label="Dashboard" icon={<Terminal2 size={14} />}></Tabs.Tab>
       </Tabs>
