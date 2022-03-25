@@ -14,9 +14,9 @@ import ContextMenu from "./shared/ContextMenu";
 import { MantineProvider, Modal } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
-import useModal from "src/hooks/useModal";
 import OptionsModalComponent from "./modals/OptionsModal";
 import RenameInteractionModalComponent from "./modals/interactions/RenameInteractionModal";
+import { useDisclosure } from "@mantine/hooks";
 
 const Options = (state: IOptionsStore) => state.options;
 const OptionsActions = (state: IOptionsStore) => state.actions;
@@ -26,7 +26,7 @@ const App: React.FC = () => {
 
   const options = OptionsStore(Options);
   const optionsActions = OptionsStore(OptionsActions);
-  const OptionsModal = useModal();
+  const [optionsModalOpened, optionsModalHandler] = useDisclosure(false);
 
   const [projects, dispatchProjects] = useReducer(projectReducer, []);
 
@@ -76,7 +76,7 @@ const App: React.FC = () => {
 
     switch (action) {
       case MenuAction.OPTIONS:
-        OptionsModal.show();
+        optionsModalHandler.open();
         break;
 
       case MenuAction.RELOAD:
@@ -119,13 +119,13 @@ const App: React.FC = () => {
           <ContextMenu />
 
           <Modal
-            opened={OptionsModal.opened}
-            onClose={OptionsModal.close}
+            opened={optionsModalOpened}
+            onClose={optionsModalHandler.close}
             centered
             title="Options"
             size="800px"
           >
-            <OptionsModalComponent close={OptionsModal.close} />
+            <OptionsModalComponent close={optionsModalHandler.close} />
           </Modal>
         </NotificationsProvider>
       </ModalsProvider>

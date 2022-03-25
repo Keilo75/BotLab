@@ -8,7 +8,7 @@ import CreateProjectModalComponent from "../../modals/CreateProjectModal";
 import { Button, Divider, Group, Title, Anchor, Text, Modal } from "@mantine/core";
 import { Plus } from "tabler-icons-react";
 import { useNotifications } from "@mantine/notifications";
-import useModal from "src/hooks/useModal";
+import { useDisclosure } from "@mantine/hooks";
 
 const InfoActions = (state: IInfoStore) => state.actions;
 
@@ -21,7 +21,7 @@ interface Props {
 const Home: React.FC<Props> = ({ projects, dispatchProjects, loadProjects }) => {
   const { setTitle, setDirty } = InfoStore(InfoActions);
 
-  const CreateProjectModal = useModal();
+  const [createProjectModalOpened, createProjectModalHandler] = useDisclosure(false);
 
   const navigate = useNavigate();
   const notifications = useNotifications();
@@ -71,7 +71,7 @@ const Home: React.FC<Props> = ({ projects, dispatchProjects, loadProjects }) => 
     <div className="main-content">
       <Title order={2}>Projects</Title>
       <Group mt="xs">
-        <Button leftIcon={<Plus />} onClick={CreateProjectModal.show}>
+        <Button leftIcon={<Plus />} onClick={createProjectModalHandler.open}>
           Create Project
         </Button>
 
@@ -91,14 +91,14 @@ const Home: React.FC<Props> = ({ projects, dispatchProjects, loadProjects }) => 
         ))}
       </div>
       <Modal
-        opened={CreateProjectModal.opened}
-        onClose={CreateProjectModal.close}
+        opened={createProjectModalOpened}
+        onClose={createProjectModalHandler.close}
         centered
         title="Create Project"
       >
         <CreateProjectModalComponent
           dispatchProjects={dispatchProjects}
-          close={CreateProjectModal.close}
+          close={createProjectModalHandler.close}
         />
       </Modal>
     </div>
