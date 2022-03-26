@@ -1,4 +1,5 @@
-import { ActionIcon, Box, Button, Divider, Group, Menu, ScrollArea } from "@mantine/core";
+import { ActionIcon, Box, Button, Divider, Group, Menu, ScrollArea, Text } from "@mantine/core";
+import { useModals } from "@mantine/modals";
 import { Tree, TreeMethods } from "@minoru/react-dnd-treeview";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -9,6 +10,8 @@ import {
   InteractionNode,
 } from "src/models/interaction-list";
 import { InteractionType, InteractionTypes, isTextBased } from "src/models/interactions";
+import { ContextMenu, ContextMenuStore, IContextMenuStore } from "src/stores/ContextMenuStore";
+import { getOption } from "src/stores/OptionsStore";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 import { ChevronDown, Folder, Plus } from "tabler-icons-react";
 import InteractionListNode from "./InteractionListNode";
@@ -17,11 +20,15 @@ import InteractionTypeIcon from "./InteractionTypeIcon";
 const Interactions = (state: IInteractionStore) => state.interactions;
 const SelectedInteractionID = (state: IInteractionStore) => state.selectedInteractionID;
 const InteractionActions = (state: IInteractionStore) => state.actions;
+const SetContextMenu = (state: IContextMenuStore) => state.setContextMenu;
 
 const InteractionSidebar: React.FC = () => {
   const interactions = InteractionStore(Interactions);
   const selectedInteractionID = InteractionStore(SelectedInteractionID);
-  const { addInteraction, updateParents, selectInteraction } = InteractionStore(InteractionActions);
+  const { addInteraction, updateParents, selectInteraction, deleteInteraction } =
+    InteractionStore(InteractionActions);
+  const setContextMenu = ContextMenuStore(SetContextMenu);
+  const modals = useModals();
 
   if (!interactions) return null;
 
@@ -40,7 +47,7 @@ const InteractionSidebar: React.FC = () => {
     }
   }, [interactions]);
 
-  const handleAddInteraction = (e: React.MouseEvent) => {
+  const handleNewInteraction = (e: React.MouseEvent) => {
     const type = e.currentTarget.getAttribute("data-type") as InteractionType;
     addInteraction(type);
   };
@@ -51,6 +58,60 @@ const InteractionSidebar: React.FC = () => {
       newParents,
       newTree.map((item) => item.id.toString())
     );
+  };
+
+  const handleInteractionTreeContextMenu = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+
+    const target = e.target as HTMLElement;
+    const interactionNode = target.closest(".interaction-node");
+    const targetID = interactionNode?.getAttribute("data-id");
+
+    const items: ContextMenu["items"] = [];
+
+    if (targetID) {
+      const targetInteraction = interactions.find((i) => i.id === targetID)!;
+
+      const handleDelete = () => deleteInteraction(targetID);
+
+      items.push(
+        {
+          name: "Rename",
+          action: () =>
+            modals.openContextModal("rename-interaction", {
+              innerProps: {
+                name: targetInteraction.name,
+                type: targetInteraction.type,
+                id: targetID,
+              },
+              centered: true,
+              title: "Rename interaction",
+            }),
+        },
+        {
+          name: "Delete",
+          action: () => {
+            if (getOption("editor.confirmInteractionDeletion"))
+              modals.openConfirmModal({
+                title: "Delete interaction?",
+                centered: true,
+                children: <Text size="sm">Do you want to delete this interaction?</Text>,
+                labels: { confirm: "Delete", cancel: "Cancel" },
+                confirmProps: { color: "red" },
+                onConfirm: handleDelete,
+              });
+            else handleDelete();
+          },
+          divider: true,
+        }
+      );
+    }
+
+    for (const type of Object.keys(InteractionTypes) as InteractionType[]) {
+      items.push({ name: `New ${InteractionTypes[type]}`, action: () => addInteraction(type) });
+    }
+
+    setContextMenu({ x: e.clientX, y: e.clientY, items, width: 200 });
   };
 
   const [commandType, ...remainingInteractionTypes] = Object.keys(
@@ -64,10 +125,10 @@ const InteractionSidebar: React.FC = () => {
           <Button
             className="default-btn"
             data-type={commandType}
-            onClick={handleAddInteraction}
+            onClick={handleNewInteraction}
             leftIcon={<Plus size={16} />}
           >
-            Add {InteractionTypes[commandType]}
+            New {InteractionTypes[commandType]}
           </Button>
           <Menu
             control={
@@ -83,17 +144,21 @@ const InteractionSidebar: React.FC = () => {
               <Menu.Item
                 key={index}
                 data-type={type}
-                onClick={handleAddInteraction}
+                onClick={handleNewInteraction}
                 icon={<InteractionTypeIcon type={type} iconProps={{ size: 16 }} />}
               >
-                Add {InteractionTypes[type]}
+                New {InteractionTypes[type]}
               </Menu.Item>
             ))}
           </Menu>
         </Group>
       </Box>
       <Divider mb="md" />
-      <ScrollArea className="interaction-tree-container" type="auto">
+      <ScrollArea
+        className="interaction-tree-container"
+        type="auto"
+        onContextMenu={handleInteractionTreeContextMenu}
+      >
         <Tree
           ref={treeRef}
           tree={treeData || []}

@@ -85,7 +85,7 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
       {interaction.options !== undefined && (
         <Modal
           title="Edit options"
-          opened={true}
+          opened={optionsModalOpened}
           onClose={optionsModalHandler.close}
           centered
           size="xl"
