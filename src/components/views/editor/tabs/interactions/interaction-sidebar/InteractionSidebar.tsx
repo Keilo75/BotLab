@@ -119,10 +119,10 @@ const InteractionSidebar: React.FC = () => {
             />
           )}
           canDrop={(tree, { dropTargetId, dragSource }) => {
-            // Do not drag context menus
-            if (dragSource?.data && !isTextBased(dragSource?.data?.type)) return false;
-
             const depth = getDepth(tree, dropTargetId);
+
+            // Do not drag context menus into folders
+            if (dragSource?.data && !isTextBased(dragSource?.data?.type) && depth > 0) return false;
 
             if (dragSource?.data?.type === "folder") {
               // Allow maximum depth of 1 for folders
