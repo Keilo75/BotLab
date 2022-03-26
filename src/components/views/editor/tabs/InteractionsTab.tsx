@@ -15,9 +15,9 @@ const InteractionsTab: React.FC = () => {
   const interactions = InteractionStore(InteractionsSelector);
   const selectedInteractionID = InteractionStore(SelectedInteractionID);
 
-  const { setDirty } = InfoStore(InfoActions);
+  const { setTitlebar } = InfoStore(InfoActions);
   useDidUpdate(() => {
-    setDirty(true);
+    setTitlebar({ dirty: true });
   }, [interactions]);
 
   const selectedInteraction = useMemo(

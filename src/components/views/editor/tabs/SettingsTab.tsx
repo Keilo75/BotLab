@@ -17,9 +17,9 @@ const SettingsTab: React.FC = () => {
   );
   if (!settings) return null;
 
-  const { setDirty } = InfoStore(InfoStoreActions);
+  const { setTitlebar } = InfoStore(InfoStoreActions);
   useDidUpdate(() => {
-    setDirty(true);
+    setTitlebar({ dirty: true });
   }, [settings]);
 
   const handleSettingsChange = (state: ProjectSettings) => {

@@ -26,7 +26,7 @@ interface Props {
 const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }) => {
   const { projectPath } = useParams();
   const navigate = useNavigate();
-  const { setInfoMessage, setDirty, setTitle } = InfoStore(InfoActions);
+  const { setInfoMessage, setTitlebar } = InfoStore(InfoActions);
   const [hasLoaded, setHasLoaded] = useState(false);
 
   const setSettings = SettingsStore(SettingsSelector);
@@ -44,7 +44,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
 
       setSettings(project.settings);
       setInteractions(project.interactions);
-      setTitle(project.settings.name);
+      setTitlebar({ title: project.settings.name, dirty: false });
 
       setHasLoaded(true);
     });
@@ -92,8 +92,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
     }
 
     setInfoMessage("Saved succesfully", "success");
-    setTitle(settings.name);
-    setDirty(false);
+    setTitlebar({ title: settings.name, dirty: false });
   };
 
   if (!hasLoaded) return null;

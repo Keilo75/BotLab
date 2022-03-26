@@ -2,6 +2,11 @@ import create from "zustand";
 
 export type InfoBarType = "success" | "loading" | "error";
 
+export interface TitleMessage {
+  title?: string;
+  dirty?: boolean;
+}
+
 export interface IInfoStore {
   infoMessage: {
     text: string | undefined;
@@ -12,12 +17,11 @@ export interface IInfoStore {
   actions: {
     setInfoMessage: (text: string, type: InfoBarType) => void;
     clearInfoMessage: () => void;
-    setTitle: (title: string, hideAppName?: boolean) => void;
-    setDirty: (dirty: boolean) => void;
+    setTitlebar: (message: TitleMessage, hideAppName?: boolean) => void;
   };
 }
 
-export const InfoStore = create<IInfoStore>((set) => ({
+export const InfoStore = create<IInfoStore>((set, get) => ({
   infoMessage: {
     text: undefined,
     type: undefined,
@@ -27,7 +31,16 @@ export const InfoStore = create<IInfoStore>((set) => ({
   actions: {
     setInfoMessage: (text, type) => set({ infoMessage: { text, type } }),
     clearInfoMessage: () => set({ infoMessage: { text: undefined, type: undefined } }),
-    setTitle: (title, showAppName) => set({ title: `${title} ${!showAppName ? "- BotLab" : ""}` }),
-    setDirty: (dirty) => set({ dirty }),
+    setTitlebar: (message, showAppName) => {
+      const newTitlebar = {
+        title:
+          message.title !== undefined
+            ? `${message.title} ${!showAppName ? "- BotLab" : ""}`
+            : get().title,
+        dirty: message.dirty !== undefined ? message.dirty : get().dirty,
+      };
+
+      set(newTitlebar);
+    },
   },
 }));

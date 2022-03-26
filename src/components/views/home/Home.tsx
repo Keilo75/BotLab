@@ -19,7 +19,7 @@ interface Props {
 }
 
 const Home: React.FC<Props> = ({ projects, dispatchProjects, loadProjects }) => {
-  const { setTitle, setDirty } = InfoStore(InfoActions);
+  const { setTitlebar } = InfoStore(InfoActions);
 
   const [createProjectModalOpened, createProjectModalHandler] = useDisclosure(false);
 
@@ -28,8 +28,7 @@ const Home: React.FC<Props> = ({ projects, dispatchProjects, loadProjects }) => 
 
   useEffect(() => {
     loadProjects();
-    setTitle("BotLab", true);
-    setDirty(false);
+    setTitlebar({ title: "BotLab", dirty: false }, true);
   }, []);
 
   const handleOpenProject = async () => {
