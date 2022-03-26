@@ -1,0 +1,45 @@
+.interaction-options-modal {
+  .options-content {
+    height: 500px;
+
+    .options-sidebar {
+      height: 100%;
+      width: 180px;
+
+      .options-list {
+        flex-grow: 1;
+
+        ul {
+          padding: 0;
+          margin: 0;
+
+          .options-list-item {
+            border-left-width: 5px;
+            border-left-style: solid;
+            padding-left: 10px;
+            height: 22px;
+            cursor: pointer;
+            width: 180px;
+            user-select: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            &:hover {
+              background-color: var(--hover-overlay-05);
+            }
+
+            &.selected-option {
+              background-color: var(--hover-overlay-1);
+            }
+          }
+        }
+      }
+    }
+
+    .selected-option {
+      height: 100%;
+      flex-grow: 1;
+    }
+  }
+}

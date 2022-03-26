@@ -102,7 +102,7 @@ const PermissionsModalComponent: React.FC<Props> = ({
         </Alert>
       )}
       <Card>
-        <ScrollArea sx={{ height: "200px" }} type="auto" offsetScrollbars>
+        <ScrollArea sx={{ height: 200 }} type="auto" offsetScrollbars>
           <Group direction="column" grow noWrap spacing="xs">
             {exceptions.length > 0 ? exceptions : <Text>No exceptions.</Text>}
           </Group>

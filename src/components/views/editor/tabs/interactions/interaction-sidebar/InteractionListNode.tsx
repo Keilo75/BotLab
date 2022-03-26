@@ -5,7 +5,6 @@ import Repeater from "src/components/ui/utils/Repeater";
 import useContextMenu from "src/hooks/useContextMenu";
 import { InteractionNode } from "src/models/interaction-list";
 import { Box, Text } from "@mantine/core";
-import { Folder, Mail, User } from "tabler-icons-react";
 import { useModals } from "@mantine/modals";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 import { getOption } from "src/stores/OptionsStore";

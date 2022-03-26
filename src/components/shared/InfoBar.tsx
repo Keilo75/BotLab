@@ -1,4 +1,4 @@
-import { Paper, useMantineTheme } from "@mantine/core";
+import { Card, useMantineTheme } from "@mantine/core";
 import React, { useEffect } from "react";
 import { IInfoStore, InfoStore } from "src/stores/InfoStore";
 import { Check, X } from "tabler-icons-react";
@@ -17,12 +17,12 @@ const InfoBar: React.FC = () => {
   }, []);
 
   return (
-    <Paper className="info-bar" withBorder>
+    <Card className="info-bar" p={0}>
       {infoMessage.type === "success" && <Check className="icon" color={theme.colors.green[8]} />}
       {infoMessage.type === "error" && <X className="icon" color={theme.colors.red[8]} />}
       {infoMessage.type === "loading" && <div className="icon icon-loading" />}
       {infoMessage.text}
-    </Paper>
+    </Card>
   );
 };
 
