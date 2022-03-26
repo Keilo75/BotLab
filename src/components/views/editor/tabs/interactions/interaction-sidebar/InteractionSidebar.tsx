@@ -47,7 +47,10 @@ const InteractionSidebar: React.FC = () => {
 
   const handleDrop = (newTree: InteractionNode[]) => {
     const newParents = getParentsFromNodeModel(newTree);
-    updateParents(newParents);
+    updateParents(
+      newParents,
+      newTree.map((item) => item.id.toString())
+    );
   };
 
   const [commandType, ...remainingInteractionTypes] = Object.keys(
@@ -97,6 +100,8 @@ const InteractionSidebar: React.FC = () => {
           rootId={"0"}
           onDrop={handleDrop}
           initialOpen={getParents(interactions, selectedInteractionID || "0")}
+          sort={false}
+          insertDroppableFirst={false}
           classes={{
             container: "interaction-tree",
             draggingSource: "dragging-node",
@@ -141,7 +146,6 @@ const InteractionSidebar: React.FC = () => {
               sx={(theme) => ({ left: depth * 20, backgroundColor: theme.colors.blue[8] })}
             />
           )}
-          sort={false}
         />
       </ScrollArea>
     </>

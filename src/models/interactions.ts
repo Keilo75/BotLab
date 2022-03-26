@@ -19,7 +19,10 @@ export interface Interaction {
   type: InteractionType;
   description?: string;
   permissions?: InteractionPermission;
+  options?: InteractionOption[];
 }
+
+// #region Permissions
 
 export interface InteractionPermission {
   disabledByDefault: boolean;
@@ -32,6 +35,46 @@ export type InteractionPermissionException = {
   type: InteractionPermissionExceptionType;
   identifier: string;
 };
+
+// #endregion
+
+// #region Options
+
+export type CommandOptionType =
+  | "string"
+  | "integer"
+  | "number"
+  | "boolean"
+  | "user"
+  | "channel"
+  | "role"
+  | "mentionable";
+export const CommandOptionTypes: Record<CommandOptionType, string> = {
+  string: "String",
+  integer: "Integer",
+  number: "Number",
+  boolean: "Boolean",
+  user: "User",
+  channel: "Channel",
+  role: "Role",
+  mentionable: "Mentionable",
+};
+
+export interface InteractionOptionChoice {
+  name: string;
+  value: string;
+}
+
+export interface InteractionOption {
+  id: string;
+  name: string;
+  description: string;
+  type: CommandOptionType;
+  required: boolean;
+  choices: InteractionOptionChoice[];
+}
+
+// #endregion
 
 export const isTextBased = (type: InteractionType): type is "command" | "folder" => {
   return type === "folder" || type === "command";

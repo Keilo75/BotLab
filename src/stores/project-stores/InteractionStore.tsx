@@ -13,7 +13,7 @@ export interface IInteractionStore {
   selectedInteractionID: string | undefined;
   actions: {
     setInteractions: (interactions: Interaction[]) => void;
-    updateParents: (parents: Record<string, string>) => void;
+    updateParents: (parents: Record<string, string>, order: string[]) => void;
     addInteraction: (type: InteractionType) => void;
     deleteInteraction: (id: string) => void;
     renameInteraction: (interactionID: string, newName: string) => void;
@@ -27,11 +27,14 @@ export const InteractionStore = create<IInteractionStore>((set, get) => ({
   selectedInteractionID: undefined,
   actions: {
     setInteractions: (interactions) => set({ interactions }),
-    updateParents: (parents) => {
+    updateParents: (parents, order) => {
       const interactions = get().interactions;
       if (!interactions) return;
 
-      const newInteractions = interactions.map((i) => ({ ...i, parent: parents[i.id] }));
+      const newInteractions: Interaction[] = order.map((id) => ({
+        ...interactions.find((i) => i.id === id)!,
+        parent: parents[id],
+      }));
       set({ interactions: newInteractions });
     },
     addInteraction: (type) => {
@@ -45,13 +48,14 @@ export const InteractionStore = create<IInteractionStore>((set, get) => ({
         name,
         parent: "0",
         type,
-        permissions: {
-          disabledByDefault: false,
-          exceptions: [],
-        },
+        permissions: { disabledByDefault: false, exceptions: [] },
       };
 
-      if (textBased) newInteraction.description = "";
+      if (textBased) {
+        newInteraction.description = "";
+
+        if (type === "command") newInteraction.options = [];
+      }
 
       set({
         interactions: [...interactions, newInteraction],

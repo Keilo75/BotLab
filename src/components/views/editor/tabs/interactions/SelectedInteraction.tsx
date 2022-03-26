@@ -2,12 +2,7 @@ import { Button, Group, Modal, Paper, Text, TextInput, Title } from "@mantine/co
 import { useDisclosure } from "@mantine/hooks";
 import React from "react";
 import PermissionsModalComponent from "src/components/modals/interactions/PermissionsModal";
-import {
-  Interaction,
-  InteractionPermission,
-  InteractionTypes,
-  isTextBased,
-} from "src/models/interactions";
+import { Interaction, InteractionPermission, InteractionTypes } from "src/models/interactions";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 import { ClipboardList, License } from "tabler-icons-react";
 
@@ -37,7 +32,7 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
             <Title order={2}>{interaction.name}</Title>
             <Text>{InteractionTypes[interaction.type]}</Text>
           </div>
-          {isTextBased(interaction.type) && (
+          {interaction.type !== "event" && (
             <Group>
               <Button onClick={permissionsModalHandler.open} leftIcon={<License size={16} />}>
                 Edit Permissions
@@ -46,7 +41,7 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
                 leftIcon={<ClipboardList size={16} />}
                 disabled={interaction.type !== "command"}
               >
-                Edit Parameters
+                Edit Options
               </Button>
             </Group>
           )}
