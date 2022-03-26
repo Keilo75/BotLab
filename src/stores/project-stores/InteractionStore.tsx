@@ -102,7 +102,11 @@ export const InteractionStore = create<IInteractionStore>((set, get) => ({
       // TODO: Update all IDs
 
       set({
-        interactions: [...interactions.slice(0, index), clone, ...interactions.slice(index)],
+        interactions: [
+          ...interactions.slice(0, index + 1),
+          clone,
+          ...interactions.slice(index + 1),
+        ],
         selectedInteractionID: clone.id,
       });
     },
