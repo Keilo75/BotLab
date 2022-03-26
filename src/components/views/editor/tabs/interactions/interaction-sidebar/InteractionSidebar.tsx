@@ -25,7 +25,7 @@ const SetContextMenu = (state: IContextMenuStore) => state.setContextMenu;
 const InteractionSidebar: React.FC = () => {
   const interactions = InteractionStore(Interactions);
   const selectedInteractionID = InteractionStore(SelectedInteractionID);
-  const { addInteraction, updateParents, selectInteraction, deleteInteraction } =
+  const { addInteraction, updateParents, selectInteraction, deleteInteraction, cloneInteraction } =
     InteractionStore(InteractionActions);
   const setContextMenu = ContextMenuStore(SetContextMenu);
   const modals = useModals();
@@ -102,14 +102,16 @@ const InteractionSidebar: React.FC = () => {
               });
             else handleDelete();
           },
-          divider: true,
+        },
+        {
+          name: "Clone",
+          action: () => cloneInteraction(targetID),
         }
       );
-    }
-
-    for (const type of Object.keys(InteractionTypes) as InteractionType[]) {
-      items.push({ name: `New ${InteractionTypes[type]}`, action: () => addInteraction(type) });
-    }
+    } else
+      for (const type of Object.keys(InteractionTypes) as InteractionType[]) {
+        items.push({ name: `New ${InteractionTypes[type]}`, action: () => addInteraction(type) });
+      }
 
     setContextMenu({ x: e.clientX, y: e.clientY, items, width: 200 });
   };

@@ -15,8 +15,9 @@ export interface IInteractionStore {
     setInteractions: (interactions: Interaction[]) => void;
     updateParents: (parents: Record<string, string>, order: string[]) => void;
     addInteraction: (type: InteractionType) => void;
-    deleteInteraction: (id: string) => void;
+    deleteInteraction: (interactionID: string) => void;
     renameInteraction: (interactionID: string, newName: string) => void;
+    cloneInteraction: (interactionID: string) => void;
     selectInteraction: (interactionID: string) => void;
     updateSelectedInteraction: <T extends keyof Interaction>(key: T, value: Interaction[T]) => void;
   };
@@ -85,6 +86,25 @@ export const InteractionStore = create<IInteractionStore>((set, get) => ({
     },
     selectInteraction: (id) => {
       set({ selectedInteractionID: id });
+    },
+    cloneInteraction: (id) => {
+      const interactions = get().interactions;
+      if (!interactions) return;
+
+      const index = interactions.findIndex((i) => i.id === id);
+      const interaction = interactions[index];
+
+      // @ts-expect-error
+      // structuredClone is compatible with chrome 98+, which electron 17+ uses
+      const clone: Interaction = structuredClone(interaction);
+      clone.id = uuid();
+
+      // TODO: Update all IDs
+
+      set({
+        interactions: [...interactions.slice(0, index), clone, ...interactions.slice(index)],
+        selectedInteractionID: clone.id,
+      });
     },
     updateSelectedInteraction: (key, value) => {
       const interactions = get().interactions;
