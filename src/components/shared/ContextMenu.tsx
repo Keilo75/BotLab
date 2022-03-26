@@ -26,7 +26,6 @@ const ContextMenu: React.FC = () => {
       setContextMenu(undefined);
     }
   };
-
   const menu = contextMenu && (
     <div
       ref={ref}

@@ -184,6 +184,7 @@ const InteractionSidebar: React.FC = () => {
             />
           )}
           canDrop={(tree, { dropTargetId, dragSource }) => {
+            // TODO: Optimize this
             const depth = getDepth(tree, dropTargetId);
 
             // Do not drag context menus into folders
