@@ -8,6 +8,7 @@ import {
   InteractionOption,
   InteractionPermission,
   InteractionTypes,
+  isTextBased,
 } from "src/models/interactions";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 import { ClipboardList, License } from "tabler-icons-react";
@@ -23,9 +24,15 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
   const [optionsModalOpened, optionsModalHandler] = useDisclosure(false);
   const { updateSelectedInteraction } = InteractionStore(InteractionActions);
 
-  const handleNameAndDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const key = e.target.name as keyof Interaction;
-    updateSelectedInteraction(key, e.target.value);
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.currentTarget.value;
+    const newText = isTextBased(interaction.type) ? text.replace(/\s+/g, "-").toLowerCase() : text;
+
+    updateSelectedInteraction("name", newText);
+  };
+
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    updateSelectedInteraction("description", e.target.value);
   };
 
   const handlePermissionsChange = (permissions: InteractionPermission) => {
@@ -68,14 +75,14 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
           label="Name"
           value={interaction.name}
           required
-          onChange={handleNameAndDescriptionChange}
+          onChange={handleNameChange}
         />
         {interaction.description !== undefined && (
           <TextInput
             name="description"
             label="Description"
             value={interaction.description}
-            onChange={handleNameAndDescriptionChange}
+            onChange={handleDescriptionChange}
             required
           />
         )}
