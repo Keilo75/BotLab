@@ -1,18 +1,8 @@
-import {
-  ActionIcon,
-  Badge,
-  Box,
-  Button,
-  Card,
-  Divider,
-  Group,
-  ScrollArea,
-  Text,
-} from "@mantine/core";
+import { Box, Button, Card, Divider, Group, ScrollArea, Text } from "@mantine/core";
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import { InteractionOption } from "src/models/interactions";
-import { AlertCircle, CaretUp, Plus } from "tabler-icons-react";
+import { Plus } from "tabler-icons-react";
 import { v4 as uuid } from "uuid";
 
 interface Props {
@@ -21,11 +11,7 @@ interface Props {
   handleOptionsChange: (options: InteractionOption[]) => void;
 }
 
-const InteractionOptionsModalComponent: React.FC<Props> = ({
-  close,
-  options: originalOptions,
-  handleOptionsChange,
-}) => {
+const InteractionOptionsModalComponent: React.FC<Props> = ({ options: originalOptions }) => {
   const [options, setOptions] = useState(originalOptions);
   const [selectedOption, setSelectedOption] = useState<string>();
 
