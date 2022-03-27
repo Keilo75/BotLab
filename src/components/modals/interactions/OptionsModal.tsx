@@ -1,8 +1,8 @@
-import { Box, Button, Card, Divider, Group, ScrollArea, Text } from "@mantine/core";
+import { ActionIcon, Box, Button, Card, Divider, Group, ScrollArea, Text } from "@mantine/core";
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import { InteractionOption } from "src/models/interactions";
-import { Plus } from "tabler-icons-react";
+import { CaretUp, Plus } from "tabler-icons-react";
 import { v4 as uuid } from "uuid";
 
 interface Props {
@@ -76,6 +76,9 @@ const OptionsModalComponent: React.FC<Props> = ({
                     })}
                   >
                     {option.name}
+                    <ActionIcon>
+                      <CaretUp />
+                    </ActionIcon>
                   </Box>
                 ))}
               </ul>

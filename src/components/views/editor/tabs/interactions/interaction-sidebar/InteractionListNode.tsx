@@ -46,10 +46,9 @@ const InteractionListNode: React.FC<Props> = ({
         <span className="border" />
       </Repeater>
       {node.data?.type && <InteractionTypeIcon type={node.data.type} />}
-      <Text>
-        {node.data?.type === "command" && "/"}
-        {node.text}
-      </Text>
+
+      {node.data?.type === "command" && "/"}
+      {node.text}
     </Box>
   );
 };
