@@ -48,7 +48,8 @@ const projectBridge = {
   },
 
   async saveProject(project: Project, projectPath: string): Promise<void> {
-    writeJSONSync(projectPath, project, { spaces: "\t" });
+    const prettyPrint = storeBridge.getOptions()["developer.prettyPrintSaveFile"];
+    writeJSONSync(projectPath, project, { spaces: prettyPrint ? "\t" : undefined });
   },
 };
 

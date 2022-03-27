@@ -45,6 +45,15 @@ const OptionsModalComponent: React.FC<Props> = ({ close }) => {
         </Tabs.Tab>
         <Tabs.Tab label="Developer">
           <Title mb="xs" order={4}>
+            Developer
+          </Title>
+          <Switch
+            label="Pretty print save file"
+            {...form.getInputProps("developer.prettyPrintSaveFile", {
+              type: "checkbox",
+            })}
+          />
+          <Title mt="md" mb="xs" order={4}>
             Dangerous
           </Title>
           <Switch

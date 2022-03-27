@@ -4,12 +4,14 @@ export interface Options {
   "general.theme": "dark" | "light";
   "editor.confirmInteractionDeletion": boolean;
   "developer.emptyFolderOnProjectCreation": boolean;
+  "developer.prettyPrintSaveFile": boolean;
 }
 
 export const defaultOptions: Options = {
   "general.theme": "dark",
   "editor.confirmInteractionDeletion": true,
   "developer.emptyFolderOnProjectCreation": false,
+  "developer.prettyPrintSaveFile": false,
 };
 
 export interface IOptionsStore {
