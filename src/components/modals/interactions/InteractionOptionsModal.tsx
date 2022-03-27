@@ -1,8 +1,18 @@
-import { ActionIcon, Box, Button, Card, Divider, Group, ScrollArea, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  Badge,
+  Box,
+  Button,
+  Card,
+  Divider,
+  Group,
+  ScrollArea,
+  Text,
+} from "@mantine/core";
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import { InteractionOption } from "src/models/interactions";
-import { CaretUp, Plus } from "tabler-icons-react";
+import { AlertCircle, CaretUp, Plus } from "tabler-icons-react";
 import { v4 as uuid } from "uuid";
 
 interface Props {
@@ -11,7 +21,7 @@ interface Props {
   handleOptionsChange: (options: InteractionOption[]) => void;
 }
 
-const OptionsModalComponent: React.FC<Props> = ({
+const InteractionOptionsModalComponent: React.FC<Props> = ({
   close,
   options: originalOptions,
   handleOptionsChange,
@@ -46,6 +56,15 @@ const OptionsModalComponent: React.FC<Props> = ({
     setSelectedOption(id);
   };
 
+  const updateSelectedOption = <K extends keyof InteractionOption>(
+    key: K,
+    value: InteractionOption[K]
+  ) => {
+    setOptions((prev) =>
+      prev.map((option) => (option.id === selectedOption ? { ...option, [key]: value } : option))
+    );
+  };
+
   return (
     <form>
       <Group className="options-content">
@@ -76,9 +95,6 @@ const OptionsModalComponent: React.FC<Props> = ({
                     })}
                   >
                     {option.name}
-                    <ActionIcon>
-                      <CaretUp />
-                    </ActionIcon>
                   </Box>
                 ))}
               </ul>
@@ -98,4 +114,4 @@ const OptionsModalComponent: React.FC<Props> = ({
   );
 };
 
-export default OptionsModalComponent;
+export default InteractionOptionsModalComponent;

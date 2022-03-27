@@ -3,7 +3,7 @@ import clsx from "clsx";
 import React from "react";
 import Repeater from "src/components/ui/utils/Repeater";
 import { InteractionNode } from "src/models/interaction-list";
-import { Box, Text } from "@mantine/core";
+import { Box } from "@mantine/core";
 import InteractionTypeIcon from "./InteractionTypeIcon";
 
 interface Props {

@@ -1,7 +1,7 @@
 import { Box, Button, Group, Modal, Paper, Text, TextInput, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import React from "react";
-import OptionsModalComponent from "src/components/modals/interactions/OptionsModal";
+import InteractionOptionsModalComponent from "src/components/modals/interactions/InteractionOptionsModal";
 import PermissionsModalComponent from "src/components/modals/interactions/PermissionsModal";
 import {
   Interaction,
@@ -104,13 +104,13 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
       {interaction.options !== undefined && (
         <Modal
           title="Edit options"
-          opened={optionsModalOpened}
+          opened={true}
           onClose={optionsModalHandler.close}
           centered
           size="xl"
           className="interaction-options-modal"
         >
-          <OptionsModalComponent
+          <InteractionOptionsModalComponent
             close={optionsModalHandler.close}
             options={interaction.options}
             handleOptionsChange={handleOptionsChange}

@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { formList, useForm } from "@mantine/form";
 import {
   ActionIcon,
-  Alert,
   Button,
   Card,
   Checkbox,
@@ -13,10 +12,9 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { AlertCircle, Trash } from "tabler-icons-react";
+import { Trash } from "tabler-icons-react";
 import { InteractionPermission } from "src/models/interactions";
 import { v4 as uuid } from "uuid";
-import { validateSnowflake } from "src/lib/validater";
 
 interface Props {
   close: () => void;
@@ -29,8 +27,6 @@ const PermissionsModalComponent: React.FC<Props> = ({
   permissions,
   handlePermissionsChange,
 }) => {
-  const [invalidIDs, setInvalidIDs] = useState<string[]>([]);
-
   const form = useForm({
     initialValues: {
       disabledByDefault: permissions.disabledByDefault,
@@ -64,7 +60,6 @@ const PermissionsModalComponent: React.FC<Props> = ({
         <TextInput
           placeholder="ID"
           {...form.getListInputProps("exceptions", index, "identifier")}
-          error={invalidIDs.includes(_.id)}
         />
         <ActionIcon color="red" variant="hover" onClick={removeException} mt={3}>
           <Trash size={16} />
@@ -74,13 +69,6 @@ const PermissionsModalComponent: React.FC<Props> = ({
   });
 
   const handleSubmit = (newPermissions: InteractionPermission) => {
-    const invalidIDs = newPermissions.exceptions
-      .filter((exception) => validateSnowflake(exception.identifier) !== undefined)
-      .map((exception) => exception.id);
-    setInvalidIDs(invalidIDs);
-
-    if (invalidIDs.length > 0) return;
-
     handlePermissionsChange(newPermissions);
     close();
   };
@@ -96,11 +84,7 @@ const PermissionsModalComponent: React.FC<Props> = ({
       <Title order={5} mt="md">
         Exceptions
       </Title>
-      {invalidIDs.length > 0 && (
-        <Alert icon={<AlertCircle />} color="red" mb="xs">
-          Some IDs are not valid snowflakes.
-        </Alert>
-      )}
+
       <Card>
         <ScrollArea sx={{ height: 200 }} type="auto" offsetScrollbars>
           <Group direction="column" grow noWrap spacing="xs">
