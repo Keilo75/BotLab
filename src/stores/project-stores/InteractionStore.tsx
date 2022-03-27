@@ -16,7 +16,6 @@ export interface IInteractionStore {
     updateParents: (parents: Record<string, string>, order: string[]) => void;
     addInteraction: (type: InteractionType) => void;
     deleteInteraction: (interactionID: string) => void;
-    renameInteraction: (interactionID: string, newName: string) => void;
     cloneInteraction: (interactionID: string) => void;
     selectInteraction: (interactionID: string) => void;
     updateSelectedInteraction: <T extends keyof Interaction>(key: T, value: Interaction[T]) => void;
@@ -76,13 +75,6 @@ export const InteractionStore = create<IInteractionStore>((set, get) => ({
       } else {
         set({ interactions: newInteractions });
       }
-    },
-    renameInteraction: (id, newName) => {
-      const interactions = get().interactions;
-      if (!interactions) return;
-
-      const newInteractions = interactions.map((i) => (i.id === id ? { ...i, name: newName } : i));
-      set({ interactions: newInteractions });
     },
     selectInteraction: (id) => {
       set({ selectedInteractionID: id });

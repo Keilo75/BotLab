@@ -70,24 +70,9 @@ const InteractionSidebar: React.FC = () => {
     const items: ContextMenu["items"] = [];
 
     if (targetID) {
-      const targetInteraction = interactions.find((i) => i.id === targetID)!;
-
       const handleDelete = () => deleteInteraction(targetID);
 
       items.push(
-        {
-          name: "Rename",
-          action: () =>
-            modals.openContextModal("rename-interaction", {
-              innerProps: {
-                name: targetInteraction.name,
-                type: targetInteraction.type,
-                id: targetID,
-              },
-              centered: true,
-              title: "Rename interaction",
-            }),
-        },
         {
           name: "Delete",
           action: () => {

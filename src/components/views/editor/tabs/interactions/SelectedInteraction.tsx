@@ -1,4 +1,4 @@
-import { Button, Group, Modal, Paper, Text, TextInput, Title } from "@mantine/core";
+import { Box, Button, Group, Modal, Paper, Text, TextInput, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import React from "react";
 import OptionsModalComponent from "src/components/modals/interactions/OptionsModal";
@@ -23,8 +23,9 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
   const [optionsModalOpened, optionsModalHandler] = useDisclosure(false);
   const { updateSelectedInteraction } = InteractionStore(InteractionActions);
 
-  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateSelectedInteraction("description", e.target.value);
+  const handleNameAndDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const key = e.target.name as keyof Interaction;
+    updateSelectedInteraction(key, e.target.value);
   };
 
   const handlePermissionsChange = (permissions: InteractionPermission) => {
@@ -40,7 +41,9 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
       <Paper withBorder p="md">
         <Group position="apart">
           <div>
-            <Title order={2}>{interaction.name}</Title>
+            <Box sx={{ height: 36 }}>
+              <Title order={2}>{interaction.name}</Title>
+            </Box>
             <Text>{InteractionTypes[interaction.type]}</Text>
           </div>
           {interaction.type !== "event" && (
@@ -59,15 +62,24 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
           )}
         </Group>
       </Paper>
-      {interaction.description !== undefined && (
+      <Group grow>
         <TextInput
-          name="description"
-          label="Description"
-          value={interaction.description}
-          onChange={handleDescriptionChange}
+          name="name"
+          label="Name"
+          value={interaction.name}
           required
+          onChange={handleNameAndDescriptionChange}
         />
-      )}
+        {interaction.description !== undefined && (
+          <TextInput
+            name="description"
+            label="Description"
+            value={interaction.description}
+            onChange={handleNameAndDescriptionChange}
+            required
+          />
+        )}
+      </Group>
       {interaction.permissions !== undefined && (
         <Modal
           title="Edit permissions"
