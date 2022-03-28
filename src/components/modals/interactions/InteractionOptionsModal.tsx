@@ -1,6 +1,7 @@
 import { Box, Button, Card, Divider, Group, ScrollArea, Text } from "@mantine/core";
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
+import SelectableList from "src/components/ui/selectable-list/SelectableList";
 import { InteractionOption } from "src/models/interactions";
 import { Plus } from "tabler-icons-react";
 import { v4 as uuid } from "uuid";
@@ -64,27 +65,12 @@ const InteractionOptionsModalComponent: React.FC<Props> = ({ options: originalOp
           </Button>
           <Divider my="xs" />
           <Card className="options-list" p={0}>
-            <ScrollArea sx={{ height: "100%" }} type="auto">
-              <ul>
-                {options.map((option) => (
-                  <Box
-                    key={option.id}
-                    data-id={option.id}
-                    onClick={handleSelectOption}
-                    className={clsx(
-                      "options-list-item",
-                      selectedOption === option.id && "selected-option"
-                    )}
-                    sx={(theme) => ({
-                      borderLeftColor:
-                        selectedOption === option.id ? theme.colors.blue[8] : "transparent",
-                    })}
-                  >
-                    {option.name}
-                  </Box>
-                ))}
-              </ul>
-            </ScrollArea>
+            <SelectableList
+              items={options}
+              setItems={setOptions}
+              selected={selectedOption}
+              setSelected={setSelectedOption}
+            />
           </Card>
           <Text color="dimmed">{options.length} / 25 Options</Text>
         </Group>

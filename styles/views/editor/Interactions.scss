@@ -1,32 +1,3 @@
-.placeholder-container {
-  position: relative;
-
-  .placeholder {
-    height: 2px;
-    position: absolute;
-    right: 0;
-    transform: translateY(-50%);
-  }
-}
-
-.interaction-drag-preview {
-  width: max-content;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 10px;
-  background-color: black;
-  border-radius: 4px;
-  color: #fff;
-  pointer-events: none;
-  gap: 3px;
-
-  svg {
-    width: 20px;
-    height: 20px;
-  }
-}
-
 .interactions {
   height: 100%;
   width: 100%;
@@ -94,6 +65,35 @@
 
         .drop-target {
           background-color: var(--hover-overlay-1);
+        }
+      }
+
+      .interaction-drag-preview {
+        width: max-content;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 10px;
+        background-color: black;
+        border-radius: 4px;
+        color: #fff;
+        pointer-events: none;
+        gap: 3px;
+
+        svg {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      .placeholder-container {
+        position: relative;
+
+        .placeholder {
+          height: 2px;
+          position: absolute;
+          right: 0;
+          transform: translateY(-50%);
         }
       }
     }

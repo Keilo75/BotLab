@@ -1,0 +1,43 @@
+.selectable-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+
+  .selectable-list-node {
+    border-left-width: 5px;
+    border-left-style: solid;
+    padding-left: 10px;
+    height: 22px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+
+    &:hover {
+      background-color: var(--hover-overlay-05);
+    }
+
+    &.selected-node {
+      background-color: var(--hover-overlay-1);
+    }
+  }
+
+  .selectable-dragging-node {
+    opacity: 0.5;
+  }
+}
+
+.selectable-list-placeholder {
+  position: relative;
+
+  .placeholder {
+    height: 2px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    transform: translateY(-50%);
+  }
+}
