@@ -24,23 +24,20 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
   const [optionsModalOpened, optionsModalHandler] = useDisclosure(false);
   const { updateSelectedInteraction } = InteractionStore(InteractionActions);
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const text = e.currentTarget.value;
-    const newText = isTextBased(interaction.type) ? text.replace(/\s+/g, "-").toLowerCase() : text;
+  const handleInteractionChange = {
+    name: (e: React.ChangeEvent<HTMLInputElement>) => {
+      const text = e.currentTarget.value;
+      const newText = isTextBased(interaction.type)
+        ? text.replace(/\s+/g, "-").toLowerCase()
+        : text;
 
-    updateSelectedInteraction("name", newText);
-  };
-
-  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateSelectedInteraction("description", e.target.value);
-  };
-
-  const handlePermissionsChange = (permissions: InteractionPermission) => {
-    updateSelectedInteraction("permissions", permissions);
-  };
-
-  const handleOptionsChange = (options: InteractionOption[]) => {
-    updateSelectedInteraction("options", options);
+      updateSelectedInteraction("name", newText);
+    },
+    description: (e: React.ChangeEvent<HTMLInputElement>) =>
+      updateSelectedInteraction("description", e.target.value),
+    permissions: (permissions: InteractionPermission) =>
+      updateSelectedInteraction("permissions", permissions),
+    options: (options: InteractionOption[]) => updateSelectedInteraction("options", options),
   };
 
   return (
@@ -75,14 +72,14 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
           label="Name"
           value={interaction.name}
           required
-          onChange={handleNameChange}
+          onChange={handleInteractionChange.name}
         />
         {interaction.description !== undefined && (
           <TextInput
             name="description"
             label="Description"
             value={interaction.description}
-            onChange={handleDescriptionChange}
+            onChange={handleInteractionChange.description}
             required
           />
         )}
@@ -97,14 +94,14 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
           <PermissionsModalComponent
             close={permissionsModalHandler.close}
             permissions={interaction.permissions}
-            handlePermissionsChange={handlePermissionsChange}
+            handlePermissionsChange={handleInteractionChange.permissions}
           />
         </Modal>
       )}
       {interaction.options !== undefined && (
         <Modal
           title="Edit options"
-          opened={true || optionsModalOpened}
+          opened={false || optionsModalOpened}
           onClose={optionsModalHandler.close}
           centered
           size="xl"
@@ -113,7 +110,7 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
           <InteractionOptionsModalComponent
             close={optionsModalHandler.close}
             options={interaction.options}
-            handleOptionsChange={handleOptionsChange}
+            handleOptionsChange={handleInteractionChange.options}
           />
         </Modal>
       )}

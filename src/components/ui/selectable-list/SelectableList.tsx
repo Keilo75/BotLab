@@ -1,6 +1,6 @@
 import { Box, ScrollArea } from "@mantine/core";
 import { NodeModel, Tree } from "@minoru/react-dnd-treeview";
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import SelectableListNode from "./SelectableListNode";
 
 interface SelectableListProps<T> {

@@ -1,6 +1,6 @@
-import { Box, Button, Card, Divider, Group, ScrollArea, Text } from "@mantine/core";
-import clsx from "clsx";
-import React, { useEffect, useState } from "react";
+import { Button, Card, Divider, Group, Text, TextInput } from "@mantine/core";
+import React, { useEffect, useMemo, useState } from "react";
+import InputGroup from "src/components/ui/input-group/InputGroup";
 import SelectableList from "src/components/ui/selectable-list/SelectableList";
 import { InteractionOption } from "src/models/interactions";
 import { Plus } from "tabler-icons-react";
@@ -36,21 +36,10 @@ const InteractionOptionsModalComponent: React.FC<Props> = ({ options: originalOp
     ]);
   };
 
-  const handleSelectOption = (e: React.MouseEvent) => {
-    const id = e.currentTarget.getAttribute("data-id");
-    if (!id) return;
-
-    setSelectedOption(id);
-  };
-
-  const updateSelectedOption = <K extends keyof InteractionOption>(
-    key: K,
-    value: InteractionOption[K]
-  ) => {
-    setOptions((prev) =>
-      prev.map((option) => (option.id === selectedOption ? { ...option, [key]: value } : option))
-    );
-  };
+  const selected = useMemo(
+    () => options.find((item) => item.id === selectedOption),
+    [options, selectedOption]
+  );
 
   return (
     <form>
@@ -75,7 +64,7 @@ const InteractionOptionsModalComponent: React.FC<Props> = ({ options: originalOp
           <Text color="dimmed">{options.length} / 25 Options</Text>
         </Group>
         <Group className="selected-option" direction="column" align="stretch">
-          {selectedOption === undefined ? <Text>No options.</Text> : null}
+          {selected === undefined ? <Text>No options.</Text> : <></>}
         </Group>
       </Group>
 
