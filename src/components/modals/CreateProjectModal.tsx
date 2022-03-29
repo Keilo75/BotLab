@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "@mantine/form";
 import { ActionIcon, Alert, Button, Group, TextInput, Tooltip } from "@mantine/core";
-import { useNotifications } from "@mantine/notifications";
+import { showNotification } from "@mantine/notifications";
 import { getOption } from "src/stores/OptionsStore";
 import { ProjectAction } from "src/stores/ProjectReducer";
 import { validateProjectName } from "src/lib/validater";
@@ -21,7 +21,6 @@ type Errors = Record<keyof InitialValues, string | undefined>;
 
 const CreateProjectModalComponent: React.FC<Props> = ({ dispatchProjects, close }) => {
   const [loading, setLoading] = useState(false);
-  const notifications = useNotifications();
 
   const emptyFolderOnProjectCreation = getOption("developer.emptyFolderOnProjectCreation");
 
@@ -95,7 +94,7 @@ const CreateProjectModalComponent: React.FC<Props> = ({ dispatchProjects, close 
           await handleSubmit(values);
         } catch (err) {
           const error = (err as Error).message;
-          notifications.showNotification({
+          showNotification({
             title: "Could not create project.",
             message: error,
             color: "red",

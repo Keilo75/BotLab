@@ -7,7 +7,7 @@ import { ProjectAction } from "src/stores/ProjectReducer";
 import CreateProjectModalComponent from "../../modals/CreateProjectModal";
 import { Button, Divider, Group, Title, Anchor, Text, Modal } from "@mantine/core";
 import { Plus } from "tabler-icons-react";
-import { useNotifications } from "@mantine/notifications";
+import { showNotification } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 
 const InfoActions = (state: IInfoStore) => state.actions;
@@ -24,7 +24,6 @@ const Home: React.FC<Props> = ({ projects, dispatchProjects, loadProjects }) => 
   const [createProjectModalOpened, createProjectModalHandler] = useDisclosure(false);
 
   const navigate = useNavigate();
-  const notifications = useNotifications();
 
   useEffect(() => {
     loadProjects();
@@ -56,7 +55,7 @@ const Home: React.FC<Props> = ({ projects, dispatchProjects, loadProjects }) => 
       await window.project.getProjectFromBotFile(projectPath);
       navigate(`editor/${projectPath}`);
     } catch {
-      notifications.showNotification({
+      showNotification({
         title: "Could not find file.",
         message: "The given path does not exist.",
         color: "red",
