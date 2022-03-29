@@ -1,4 +1,4 @@
-import { Button, Group, Radio, RadioGroup, Switch, Tabs, Title } from "@mantine/core";
+import { Button, Group, Radio, RadioGroup, Stack, Switch, Tabs, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDidUpdate } from "@mantine/hooks";
 import React, { useMemo } from "react";
@@ -26,7 +26,7 @@ const OptionsModalComponent: React.FC<Props> = ({ close }) => {
   };
 
   return (
-    <Group direction="column" grow>
+    <Stack>
       <Tabs orientation="vertical" className="options-tabs" tabPadding="xl">
         <Tabs.Tab label="General">
           <RadioGroup label="Theme" {...form.getInputProps("general.theme")} orientation="vertical">
@@ -73,7 +73,7 @@ const OptionsModalComponent: React.FC<Props> = ({ close }) => {
       <Group position="right" mt="md">
         <Button onClick={close}>Close</Button>
       </Group>
-    </Group>
+    </Stack>
   );
 };
 

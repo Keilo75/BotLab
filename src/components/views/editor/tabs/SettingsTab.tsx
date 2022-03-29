@@ -1,4 +1,4 @@
-import { Alert, Group, PasswordInput, Text, TextInput } from "@mantine/core";
+import { Alert, PasswordInput, Stack, Text, TextInput } from "@mantine/core";
 import { useDidUpdate } from "@mantine/hooks";
 import React, { useCallback, useMemo } from "react";
 import ExternalLink from "src/components/ui/ExternalLink";
@@ -29,7 +29,7 @@ const SettingsTab: React.FC = () => {
   const projectNameError = useMemo(() => validateProjectName(settings.name), [settings.name]);
 
   return (
-    <Group className="main-content in-editor" direction="column" grow mt="md">
+    <Stack className="main-content in-editor" mt="md">
       <Text>
         Use this page to register your bots settings. If you have not done so yet, create a new Bot
         Account in the{" "}
@@ -54,7 +54,7 @@ const SettingsTab: React.FC = () => {
           </>
         )}
       </InputGroup>
-    </Group>
+    </Stack>
   );
 };
 

@@ -8,6 +8,7 @@ import {
   Group,
   ScrollArea,
   Select,
+  Stack,
   Text,
   TextInput,
   Title,
@@ -87,9 +88,9 @@ const PermissionsModalComponent: React.FC<Props> = ({
 
       <Card>
         <ScrollArea sx={{ height: 200 }} type="auto" offsetScrollbars>
-          <Group direction="column" grow noWrap spacing="xs">
+          <Stack spacing="xs">
             {exceptions.length > 0 ? exceptions : <Text>No exceptions.</Text>}
-          </Group>
+          </Stack>
         </ScrollArea>
       </Card>
       <Group position="center" mt="md" spacing="xs">

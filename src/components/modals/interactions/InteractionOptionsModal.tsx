@@ -1,6 +1,5 @@
-import { Button, Card, Divider, Group, Text, TextInput } from "@mantine/core";
+import { Button, Card, Divider, Group, Stack, Text } from "@mantine/core";
 import React, { useEffect, useMemo, useState } from "react";
-import InputGroup from "src/components/ui/input-group/InputGroup";
 import SelectableList from "src/components/ui/selectable-list/SelectableList";
 import { InteractionOption } from "src/models/interactions";
 import { Plus } from "tabler-icons-react";
@@ -44,7 +43,7 @@ const InteractionOptionsModalComponent: React.FC<Props> = ({ options: originalOp
   return (
     <form>
       <Group className="options-content">
-        <Group direction="column" className="options-sidebar" align="stretch" spacing={0} noWrap>
+        <Stack className="options-sidebar" spacing={0}>
           <Button
             onClick={handleAddOption}
             leftIcon={<Plus size={16} />}
@@ -62,10 +61,10 @@ const InteractionOptionsModalComponent: React.FC<Props> = ({ options: originalOp
             />
           </Card>
           <Text color="dimmed">{options.length} / 25 Options</Text>
-        </Group>
-        <Group className="selected-option" direction="column" align="stretch">
+        </Stack>
+        <Stack className="selected-option">
           {selected === undefined ? <Text>No options.</Text> : <></>}
-        </Group>
+        </Stack>
       </Group>
 
       <Group position="right" mt="md">
