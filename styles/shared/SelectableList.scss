@@ -14,6 +14,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: middle;
+    border-color: transparent;
 
     &:hover {
       background-color: var(--hover-overlay-05);
@@ -21,6 +22,7 @@
 
     &.selected-node {
       background-color: var(--hover-overlay-1);
+      border-color: var(--mantine-color-blue-8);
     }
   }
 
@@ -39,5 +41,6 @@
     right: 0;
     left: 0;
     transform: translateY(-50%);
+    background-color: var(--mantine-color-blue-8);
   }
 }

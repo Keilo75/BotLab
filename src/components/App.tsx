@@ -85,7 +85,11 @@ const App: React.FC = () => {
   };
 
   return (
-    <MantineProvider theme={{ colorScheme: options?.["general.theme"] }} withGlobalStyles>
+    <MantineProvider
+      theme={{ colorScheme: options?.["general.theme"] }}
+      withGlobalStyles
+      withCSSVariables
+    >
       <ModalsProvider>
         <NotificationsProvider>
           <HashRouter>

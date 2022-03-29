@@ -194,10 +194,7 @@ const InteractionSidebar: React.FC = () => {
             </div>
           )}
           placeholderRender={(node, { depth }) => (
-            <Box
-              className="placeholder"
-              sx={(theme) => ({ left: depth * 20, backgroundColor: theme.colors.blue[8] })}
-            />
+            <Box className="placeholder" sx={() => ({ left: depth * 20 })} />
           )}
         />
       </ScrollArea>

@@ -1,7 +1,6 @@
 import { NodeModel, useDragOver } from "@minoru/react-dnd-treeview";
 import clsx from "clsx";
 import React from "react";
-import { Box } from "@mantine/core";
 
 interface SelectableListNodeProps {
   node: NodeModel;
@@ -18,15 +17,14 @@ const SelectableListNode: React.FC<SelectableListNodeProps> = ({ node, selected,
   const dragOverProps = useDragOver(node.id, true, () => {});
 
   return (
-    <Box
-      sx={(theme) => ({ borderLeftColor: selected ? theme.colors.blue[8] : "transparent" })}
+    <div
       className={clsx("selectable-list-node", selected && "selected-node")}
       onClick={handleToggle}
       data-id={node.id}
       {...dragOverProps}
     >
       {node.text}
-    </Box>
+    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-import { Box, ScrollArea } from "@mantine/core";
+import { ScrollArea } from "@mantine/core";
 import { NodeModel, Tree } from "@minoru/react-dnd-treeview";
 import React, { useMemo } from "react";
 import SelectableListNode from "./SelectableListNode";
@@ -48,12 +48,7 @@ const SelectableList = <T extends { id: string; name: string }>({
         canDrop={(tree, { dragSource, dropTargetId }) => {
           if (dragSource?.parent === dropTargetId) return true;
         }}
-        placeholderRender={() => (
-          <Box
-            className="placeholder"
-            sx={(theme) => ({ backgroundColor: theme.colors.blue[8] })}
-          />
-        )}
+        placeholderRender={() => <div className="placeholder" />}
       />
     </ScrollArea>
   );

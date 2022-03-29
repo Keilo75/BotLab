@@ -3,7 +3,6 @@ import clsx from "clsx";
 import React from "react";
 import Repeater from "src/components/ui/utils/Repeater";
 import { InteractionNode } from "src/models/interaction-list";
-import { Box } from "@mantine/core";
 import InteractionTypeIcon from "./InteractionTypeIcon";
 
 interface Props {
@@ -35,8 +34,7 @@ const InteractionListNode: React.FC<Props> = ({
   const dragOverProps = useDragOver(node.id, isOpen, onToggle);
 
   return (
-    <Box
-      sx={(theme) => ({ borderLeftColor: isSelected ? theme.colors.blue[8] : "transparent" })}
+    <div
       className={clsx("interaction-node", isSelected && "selected-node")}
       {...dragOverProps}
       onClick={handleToggle}
@@ -49,7 +47,7 @@ const InteractionListNode: React.FC<Props> = ({
 
       {node.data?.type === "command" && "/"}
       {node.text}
-    </Box>
+    </div>
   );
 };
 
