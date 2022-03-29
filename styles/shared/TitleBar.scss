@@ -62,6 +62,8 @@
   .menu-list {
     top: 0;
   }
+
+  z-index: var(--context-menu-z-index);
 }
 
 .menu-list {

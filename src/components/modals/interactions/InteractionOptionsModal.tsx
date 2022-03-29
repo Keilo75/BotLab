@@ -1,9 +1,12 @@
 import { Button, Card, Divider, Group, Stack, Text } from "@mantine/core";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SelectableList from "src/components/ui/selectable-list/SelectableList";
 import { InteractionOption } from "src/models/interactions";
+import { IContextMenuStore, ContextMenuStore, ContextMenu } from "src/stores/ContextMenuStore";
 import { Plus } from "tabler-icons-react";
 import { v4 as uuid } from "uuid";
+
+const SetContextMenu = (state: IContextMenuStore) => state.setContextMenu;
 
 interface Props {
   close: () => void;
@@ -15,17 +18,21 @@ const InteractionOptionsModalComponent: React.FC<Props> = ({ options: originalOp
   const [options, setOptions] = useState(originalOptions);
   const [selectedOption, setSelectedOption] = useState<string>();
 
+  const setContextMenu = ContextMenuStore(SetContextMenu);
+
   useEffect(() => {
-    if (options.length > 0) {
+    if (options.length > 0 && selectedOption === undefined) {
       setSelectedOption(options[options.length - 1].id);
     }
   }, [options]);
 
   const handleAddOption = () => {
+    const id = uuid();
+
     setOptions((prev) => [
       ...prev,
       {
-        id: uuid(),
+        id,
         name: "New Option",
         description: "",
         type: "string",
@@ -33,12 +40,49 @@ const InteractionOptionsModalComponent: React.FC<Props> = ({ options: originalOp
         choices: [],
       },
     ]);
+
+    setSelectedOption(id);
   };
 
-  const selected = useMemo(
-    () => options.find((item) => item.id === selectedOption),
-    [options, selectedOption]
-  );
+  const handleDeleteOption = (id: string) => {
+    setOptions((prev) => prev.filter((option) => option.id !== id));
+    if (selectedOption === id) setSelectedOption(undefined);
+  };
+
+  const handleListContextMenu = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+
+    const target = e.target as HTMLElement;
+    const targetID = target.getAttribute("data-id");
+    const items: ContextMenu["items"] = [];
+
+    if (targetID) {
+      const handleDelete = () => handleDeleteOption(targetID);
+      const handleClone = () => {
+        const index = options.findIndex((option) => option.id === targetID);
+        const clone = structuredClone(options[index]);
+        clone.id = uuid();
+
+        setOptions((prev) => [...prev.slice(0, index + 1), clone, ...prev.slice(index + 1)]);
+        setSelectedOption(clone.id);
+      };
+
+      items.push(
+        {
+          name: "Delete",
+          action: handleDelete,
+        },
+        {
+          name: "Clone",
+          action: handleClone,
+        }
+      );
+    } else {
+      items.push({ name: "New Option", action: handleAddOption });
+    }
+
+    setContextMenu({ x: e.clientX, y: e.clientY, items, width: 200 });
+  };
 
   return (
     <form>
@@ -52,7 +96,7 @@ const InteractionOptionsModalComponent: React.FC<Props> = ({ options: originalOp
             Add Option
           </Button>
           <Divider my="xs" />
-          <Card className="options-list" p={0}>
+          <Card className="options-list" p={0} onContextMenu={handleListContextMenu}>
             <SelectableList
               items={options}
               setItems={setOptions}
@@ -63,7 +107,7 @@ const InteractionOptionsModalComponent: React.FC<Props> = ({ options: originalOp
           <Text color="dimmed">{options.length} / 25 Options</Text>
         </Stack>
         <Stack className="selected-option">
-          {selected === undefined ? <Text>No options.</Text> : <></>}
+          {selectedOption === undefined ? <Text>No options.</Text> : <></>}
         </Stack>
       </Group>
 

@@ -86,12 +86,8 @@ export const InteractionStore = create<IInteractionStore>((set, get) => ({
       const index = interactions.findIndex((i) => i.id === id);
       const interaction = interactions[index];
 
-      // @ts-expect-error
-      // structuredClone is compatible with chrome 98+, which electron 17+ uses
       const clone: Interaction = structuredClone(interaction);
       clone.id = uuid();
-
-      // TODO: Update all IDs
 
       set({
         interactions: [
