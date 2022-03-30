@@ -6,9 +6,15 @@ interface SelectableListNodeProps {
   node: NodeModel;
   selected: boolean;
   setSelected: React.Dispatch<React.SetStateAction<string | undefined>>;
+  width: React.CSSProperties["width"];
 }
 
-const SelectableListNode: React.FC<SelectableListNodeProps> = ({ node, selected, setSelected }) => {
+const SelectableListNode: React.FC<SelectableListNodeProps> = ({
+  node,
+  selected,
+  setSelected,
+  width,
+}) => {
   const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
     setSelected(node.id.toString());
@@ -21,6 +27,7 @@ const SelectableListNode: React.FC<SelectableListNodeProps> = ({ node, selected,
       className={clsx("selectable-list-node", selected && "selected-node")}
       onClick={handleToggle}
       data-id={node.id}
+      style={{ width }}
       {...dragOverProps}
     >
       {node.text}

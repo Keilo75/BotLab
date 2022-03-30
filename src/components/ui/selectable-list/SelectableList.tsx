@@ -8,6 +8,7 @@ interface SelectableListProps<T> {
   setItems: React.Dispatch<React.SetStateAction<T[]>>;
   selected: string | undefined;
   setSelected: React.Dispatch<React.SetStateAction<string | undefined>>;
+  width: React.CSSProperties["width"];
 }
 
 const SelectableList = <T extends { id: string; name: string }>({
@@ -15,6 +16,7 @@ const SelectableList = <T extends { id: string; name: string }>({
   setItems,
   selected,
   setSelected,
+  width,
 }: SelectableListProps<T>) => {
   const treeData = useMemo<NodeModel[]>(
     () => items.map((item) => ({ id: item.id, text: item.name, parent: 0 })),
@@ -43,6 +45,7 @@ const SelectableList = <T extends { id: string; name: string }>({
             node={node}
             selected={node.id === selected}
             setSelected={setSelected}
+            width={width}
           />
         )}
         canDrop={(tree, { dragSource, dropTargetId }) => {

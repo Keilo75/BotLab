@@ -152,6 +152,7 @@ const CommandOptionsModalComponent: React.FC<Props> = ({
               setItems={setOptions}
               selected={selectedOptionID}
               setSelected={setSelectedOptionID}
+              width={180}
             />
           </Card>
           <Text color="dimmed">{options.length} / 25 Options</Text>
