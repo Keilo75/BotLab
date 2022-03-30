@@ -102,6 +102,7 @@ const CommandOptionsModalComponent: React.FC<Props> = ({ options: originalOption
 
   const selectedOption = options.find((option) => option.id === selectedOptionID);
   const doesTypeAllowChoices = hasTypeChoices(selectedOption?.type);
+  const hasChoices = selectedOption?.choices !== undefined;
 
   const handleOptionChange = <T extends keyof CommandOption>(key: T, value: CommandOption[T]) => {
     setOptions((prev) =>
@@ -151,17 +152,24 @@ const CommandOptionsModalComponent: React.FC<Props> = ({ options: originalOption
             <Text>No options.</Text>
           ) : (
             <>
-              <Select
-                label="Type"
-                data={optionTypes.map((type) => ({ label: CommandOptionTypes[type], value: type }))}
-                value={selectedOption.type}
-                onChange={handleTypeChange}
-              />
-              <Switch
-                label="Required Option"
-                checked={selectedOption.required}
-                onChange={handleRequiredChange}
-              />
+              <Group align="flex-end">
+                <Select
+                  label="Type"
+                  data={optionTypes.map((type) => ({
+                    label: CommandOptionTypes[type],
+                    value: type,
+                  }))}
+                  value={selectedOption.type}
+                  onChange={handleTypeChange}
+                  className="option-type"
+                />
+                <Switch
+                  label="Required Option"
+                  checked={selectedOption.required}
+                  onChange={handleRequiredChange}
+                  className="option-required"
+                />
+              </Group>
               <Group grow>
                 <TextInput
                   label="Name"
@@ -185,12 +193,17 @@ const CommandOptionsModalComponent: React.FC<Props> = ({ options: originalOption
                 </Text>
                 {doesTypeAllowChoices ? (
                   <>
-                    <Switch
-                      label="Enable Choices"
-                      checked={selectedOption.choices !== undefined}
-                      onChange={handleChoicesChange}
-                    />
-                    {selectedOption.choices !== undefined && <Card className="choice-list"></Card>}
+                    <Group position="apart">
+                      <Switch
+                        label="Enable Choices"
+                        checked={hasChoices}
+                        onChange={handleChoicesChange}
+                      />
+                      <Button leftIcon={<Plus size={16} />} disabled={!hasChoices}>
+                        Add Choice
+                      </Button>
+                    </Group>
+                    {hasChoices && <Card className="choice-list"></Card>}
                   </>
                 ) : (
                   <Text>This option type does not allow choices.</Text>
