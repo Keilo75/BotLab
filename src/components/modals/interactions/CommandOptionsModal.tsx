@@ -31,7 +31,11 @@ interface Props {
   handleOptionsChange: (options: CommandOption[]) => void;
 }
 
-const CommandOptionsModalComponent: React.FC<Props> = ({ options: originalOptions }) => {
+const CommandOptionsModalComponent: React.FC<Props> = ({
+  options: originalOptions,
+  handleOptionsChange,
+  close,
+}) => {
   const [options, setOptions] = useState(originalOptions);
   const [selectedOptionID, setSelectedOptionID] = useState<string>();
 
@@ -98,6 +102,11 @@ const CommandOptionsModalComponent: React.FC<Props> = ({ options: originalOption
     }
 
     setContextMenu({ x: e.clientX, y: e.clientY, items, width: 200 });
+  };
+
+  const handleSubmit = () => {
+    handleOptionsChange(options);
+    close();
   };
 
   const selectedOption = options.find((option) => option.id === selectedOptionID);
@@ -215,7 +224,7 @@ const CommandOptionsModalComponent: React.FC<Props> = ({ options: originalOption
       </Group>
 
       <Group position="right" mt="md">
-        <Button>Edit</Button>
+        <Button onClick={handleSubmit}>Edit</Button>
       </Group>
     </>
   );
