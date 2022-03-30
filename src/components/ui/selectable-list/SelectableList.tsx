@@ -27,7 +27,7 @@ const SelectableList = <T extends { id: string; name: string }>({
   };
 
   return (
-    <ScrollArea sx={{ height: "100%" }} type="auto">
+    <ScrollArea sx={{ height: "100%" }}>
       <Tree
         tree={treeData}
         rootId={0}

@@ -19,7 +19,7 @@ export interface Interaction {
   type: InteractionType;
   description?: string;
   permissions?: InteractionPermission;
-  options?: InteractionOption[];
+  options?: CommandOption[];
 }
 
 // #region Permissions
@@ -60,24 +60,32 @@ export const CommandOptionTypes: Record<CommandOptionType, string> = {
   mentionable: "Mentionable",
 };
 
-export interface InteractionOptionChoice {
+export interface CommandOptionChoice {
   name: string;
   value: string;
 }
 
-export interface InteractionOption {
+export interface CommandOption {
   id: string;
   name: string;
   description: string;
   type: CommandOptionType;
   required: boolean;
-  choices: InteractionOptionChoice[];
+  choices?: CommandOptionChoice[];
 }
 
 // #endregion
 
 export const isTextBased = (type: InteractionType): type is "command" | "folder" => {
   return type === "folder" || type === "command";
+};
+
+export const hasTypeChoices = (
+  type?: CommandOptionType
+): type is "string" | "number" | "integer" => {
+  if (type === undefined) return false;
+
+  return ["string", "integer", "number"].includes(type);
 };
 
 export const getAllChildInteractions = (

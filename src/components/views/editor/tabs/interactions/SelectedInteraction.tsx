@@ -1,11 +1,11 @@
 import { Box, Button, Group, Modal, Paper, Stack, Text, TextInput, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import React from "react";
-import InteractionOptionsModalComponent from "src/components/modals/interactions/InteractionOptionsModal";
-import PermissionsModalComponent from "src/components/modals/interactions/PermissionsModal";
+import CommandOptionsModalComponent from "src/components/modals/interactions/CommandOptionsModal";
+import InteractionPermissionsModalComponent from "src/components/modals/interactions/InteractionPermissionsModal";
 import {
   Interaction,
-  InteractionOption,
+  CommandOption,
   InteractionPermission,
   InteractionTypes,
   isTextBased,
@@ -21,7 +21,7 @@ interface Props {
 
 const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
   const [permissionsModalOpened, permissionsModalHandler] = useDisclosure(false);
-  const [optionsModalOpened, optionsModalHandler] = useDisclosure(false);
+  const [optionsModalOpened, optionsModalHandler] = useDisclosure(true);
   const { updateSelectedInteraction } = InteractionStore(InteractionActions);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +39,7 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
     updateSelectedInteraction("permissions", permissions);
   };
 
-  const handleOptionsChange = (options: InteractionOption[]) => {
+  const handleOptionsChange = (options: CommandOption[]) => {
     updateSelectedInteraction("options", options);
   };
 
@@ -94,7 +94,7 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
           onClose={permissionsModalHandler.close}
           centered
         >
-          <PermissionsModalComponent
+          <InteractionPermissionsModalComponent
             close={permissionsModalHandler.close}
             permissions={interaction.permissions}
             handlePermissionsChange={handlePermissionsChange}
@@ -104,13 +104,13 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
       {interaction.options !== undefined && (
         <Modal
           title="Edit options"
-          opened={true || optionsModalOpened}
+          opened={optionsModalOpened}
           onClose={optionsModalHandler.close}
           centered
           size="xl"
           className="interaction-options-modal"
         >
-          <InteractionOptionsModalComponent
+          <CommandOptionsModalComponent
             close={optionsModalHandler.close}
             options={interaction.options}
             handleOptionsChange={handleOptionsChange}

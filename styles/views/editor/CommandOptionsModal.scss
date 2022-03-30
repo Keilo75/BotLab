@@ -1,0 +1,29 @@
+.interaction-options-modal {
+  .options-content {
+    height: 500px;
+
+    .options-sidebar {
+      height: 100%;
+      width: 180px;
+
+      .options-list {
+        flex-grow: 1;
+      }
+    }
+
+    .selected-option {
+      height: 100%;
+      flex-grow: 1;
+
+      .option-choices {
+        flex-grow: 1;
+        margin-bottom: 24.8px;
+
+        .choice-list {
+          flex-grow: 1;
+          position: relative;
+        }
+      }
+    }
+  }
+}

@@ -104,7 +104,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
           <InteractionsTab />
         </Tabs.Tab>
         <Tabs.Tab label="Settings" icon={<Settings size={14} />}>
-          <ScrollArea sx={{ height: "100%" }} type="auto">
+          <ScrollArea sx={{ height: "100%" }}>
             <SettingsTab />
           </ScrollArea>
         </Tabs.Tab>

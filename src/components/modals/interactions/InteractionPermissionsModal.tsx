@@ -23,7 +23,7 @@ interface Props {
   handlePermissionsChange: (permissions: InteractionPermission) => void;
 }
 
-const PermissionsModalComponent: React.FC<Props> = ({
+const InteractionPermissionsModalComponent: React.FC<Props> = ({
   close,
   permissions,
   handlePermissionsChange,
@@ -87,7 +87,7 @@ const PermissionsModalComponent: React.FC<Props> = ({
       </Title>
 
       <Card>
-        <ScrollArea sx={{ height: 200 }} type="auto" offsetScrollbars>
+        <ScrollArea sx={{ height: 200 }} offsetScrollbars>
           <Stack spacing="xs">
             {exceptions.length > 0 ? exceptions : <Text>No exceptions.</Text>}
           </Stack>
@@ -103,4 +103,4 @@ const PermissionsModalComponent: React.FC<Props> = ({
   );
 };
 
-export default PermissionsModalComponent;
+export default InteractionPermissionsModalComponent;

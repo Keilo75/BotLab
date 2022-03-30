@@ -35,7 +35,7 @@ const InteractionsTab: React.FC = () => {
         <InteractionSidebar />
       </Paper>
       {selectedInteraction && (
-        <ScrollArea className="selected-interaction main-content" type="auto">
+        <ScrollArea className="selected-interaction main-content">
           <SelectedInteraction interaction={selectedInteraction} />
         </ScrollArea>
       )}

@@ -17,7 +17,7 @@ const InfoBar: React.FC = () => {
   }, []);
 
   return (
-    <Card className="info-bar" p={0}>
+    <Card className="info-bar" p={0} withBorder>
       {infoMessage.type === "success" && <Check className="icon" color={theme.colors.green[8]} />}
       {infoMessage.type === "error" && <X className="icon" color={theme.colors.red[8]} />}
       {infoMessage.type === "loading" && <div className="icon icon-loading" />}

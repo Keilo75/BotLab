@@ -87,6 +87,11 @@ const App: React.FC = () => {
   return (
     <MantineProvider
       theme={{ colorScheme: options?.["general.theme"] }}
+      defaultProps={{
+        Card: { shadow: "md" },
+        ScrollArea: { type: "auto" },
+        Overlay: { opacity: 0.6, color: "#000" },
+      }}
       withGlobalStyles
       withCSSVariables
     >

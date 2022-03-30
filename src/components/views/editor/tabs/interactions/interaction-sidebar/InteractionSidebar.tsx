@@ -143,7 +143,6 @@ const InteractionSidebar: React.FC = () => {
       <Divider mb="md" />
       <ScrollArea
         className="interaction-tree-container"
-        type="auto"
         onContextMenu={handleInteractionTreeContextMenu}
       >
         <Tree
