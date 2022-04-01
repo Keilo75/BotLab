@@ -28,8 +28,11 @@
         margin-bottom: 24.8px;
 
         .choice-list {
-          flex-grow: 1;
-          position: relative;
+          height: 237px;
+
+          .choice-input {
+            flex-grow: 1;
+          }
         }
       }
     }

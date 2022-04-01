@@ -16,10 +16,12 @@ import {
   CommandOptionTypes,
   CommandOption,
   hasTypeChoices,
+  CommandOptionChoice,
 } from "src/models/interactions";
 import { IContextMenuStore, ContextMenuStore, ContextMenu } from "src/stores/ContextMenuStore";
 import { Plus } from "tabler-icons-react";
 import { v4 as uuid } from "uuid";
+import CommandOptionChoices from "./CommandOptionChoices";
 
 const SetContextMenu = (state: IContextMenuStore) => state.setContextMenu;
 
@@ -111,7 +113,6 @@ const CommandOptionsModalComponent: React.FC<Props> = ({
 
   const selectedOption = options.find((option) => option.id === selectedOptionID);
   const doesTypeAllowChoices = hasTypeChoices(selectedOption?.type);
-  const hasChoices = selectedOption?.choices !== undefined;
 
   const handleOptionChange = <T extends keyof CommandOption>(key: T, value: CommandOption[T]) => {
     setOptions((prev) =>
@@ -131,8 +132,15 @@ const CommandOptionsModalComponent: React.FC<Props> = ({
     handleOptionChange("required", e.target.checked);
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     handleOptionChange(e.target.name as keyof CommandOption, e.target.value);
-  const handleChoicesChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+  const handleChoicesToggle = (e: React.ChangeEvent<HTMLInputElement>) =>
     handleOptionChange("choices", e.target.checked ? [] : undefined);
+  const handleChoicesChange = (choices: CommandOptionChoice[]) =>
+    handleOptionChange("choices", choices);
+
+  const handleAddChoice = () => {
+    if (!selectedOption?.choices) return;
+    handleChoicesChange([...selectedOption.choices, { name: "", value: "", id: uuid() }]);
+  };
 
   return (
     <>
@@ -206,14 +214,23 @@ const CommandOptionsModalComponent: React.FC<Props> = ({
                     <Group position="apart">
                       <Switch
                         label="Enable Choices"
-                        checked={hasChoices}
-                        onChange={handleChoicesChange}
+                        checked={selectedOption.choices !== undefined}
+                        onChange={handleChoicesToggle}
                       />
-                      <Button leftIcon={<Plus size={16} />} disabled={!hasChoices}>
+                      <Button
+                        leftIcon={<Plus size={16} />}
+                        disabled={selectedOption.choices === undefined}
+                        onClick={handleAddChoice}
+                      >
                         Add Choice
                       </Button>
                     </Group>
-                    {hasChoices && <Card className="choice-list"></Card>}
+                    {selectedOption.choices !== undefined && (
+                      <CommandOptionChoices
+                        choices={selectedOption.choices}
+                        handleChoicesChange={handleChoicesChange}
+                      />
+                    )}
                   </>
                 ) : (
                   <Text>This option type does not allow choices.</Text>

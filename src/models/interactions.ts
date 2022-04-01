@@ -61,6 +61,7 @@ export const CommandOptionTypes: Record<CommandOptionType, string> = {
 };
 
 export interface CommandOptionChoice {
+  id: string;
   name: string;
   value: string;
 }
