@@ -205,13 +205,13 @@ const CommandOptionsModalComponent: React.FC<Props> = ({
                 />
               </Group>
 
-              <Stack className="option-choices" spacing={doesTypeAllowChoices ? "xs" : 0}>
+              <Stack className="option-choices" spacing={0}>
                 <Text size="sm" weight={500}>
                   Choices
                 </Text>
                 {doesTypeAllowChoices ? (
                   <>
-                    <Group position="apart">
+                    <Group position="apart" mb="xs">
                       <Switch
                         label="Enable Choices"
                         checked={selectedOption.choices !== undefined}
@@ -219,17 +219,22 @@ const CommandOptionsModalComponent: React.FC<Props> = ({
                       />
                       <Button
                         leftIcon={<Plus size={16} />}
-                        disabled={selectedOption.choices === undefined}
+                        disabled={
+                          selectedOption.choices === undefined || selectedOption.choices.length > 24
+                        }
                         onClick={handleAddChoice}
                       >
                         Add Choice
                       </Button>
                     </Group>
                     {selectedOption.choices !== undefined && (
-                      <CommandOptionChoices
-                        choices={selectedOption.choices}
-                        handleChoicesChange={handleChoicesChange}
-                      />
+                      <>
+                        <CommandOptionChoices
+                          choices={selectedOption.choices}
+                          handleChoicesChange={handleChoicesChange}
+                        />
+                        <Text color="dimmed">{selectedOption.choices.length} / 25 Choices</Text>
+                      </>
                     )}
                   </>
                 ) : (
