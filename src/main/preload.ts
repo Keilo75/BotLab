@@ -70,6 +70,17 @@ const botBridge = {
       return false;
     }
   },
+
+  async copyFiles(projectPath: string): Promise<void> {
+    const { packageJSON } = await import("./template/config");
+
+    const jsonPath = path.join(path.dirname(projectPath), "package.json");
+    writeJSONSync(jsonPath, packageJSON, { spaces: "\t" });
+  },
+
+  async installDependencies(projectPath: string): Promise<void> {
+    await exec("npm install", { cwd: path.dirname(projectPath) });
+  },
 };
 
 interface AppStore {
@@ -102,10 +113,9 @@ const templateBridge = {
   },
 
   async copyTemplate(dest: string, name: string): Promise<string> {
-    const config = await import("./template/config");
+    const { botFile } = await import("./template/config");
 
     const botPath = path.join(dest, `${name}.${fileExtensionWithoutDot}`);
-    const botFile = config.botFile;
     botFile.settings.name = name;
     writeFileSync(botPath, JSON.stringify(botFile));
 

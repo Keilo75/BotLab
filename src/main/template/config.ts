@@ -10,9 +10,9 @@ export const packageJSON = {
     test: 'echo "Error: no test specified" && exit 1',
   },
   author: "",
-  license: "ISC",
+  license: "MIT",
   dependencies: {
-    "discord.js": "^13.6.0",
+    "discord.js": "13.6.0",
   },
 };
 

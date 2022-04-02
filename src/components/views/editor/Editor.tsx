@@ -29,7 +29,6 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
   const navigate = useNavigate();
   const { setInfoMessage, setTitlebar } = InfoStore(InfoActions);
   const [hasLoaded, setHasLoaded] = useState(false);
-  const [isBotFolderSetUp, setIsBotFolderSetUp] = useState(false);
 
   const setSettings = SettingsStore(SettingsSelector);
   const { setInteractions } = InteractionStore(InteractionActions);
@@ -47,9 +46,6 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
       setSettings(project.settings);
       setInteractions(project.interactions);
       setTitlebar({ title: project.settings.name, dirty: false });
-
-      const isBotFolderSetUp = await window.project.isBotFolderSetUp(projectPath);
-      setIsBotFolderSetUp(isBotFolderSetUp);
 
       setHasLoaded(true);
     });
@@ -100,7 +96,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
     setTitlebar({ title: settings.name, dirty: false });
   };
 
-  if (!hasLoaded) return null;
+  if (!hasLoaded || !projectPath) return null;
 
   return (
     <>
@@ -115,7 +111,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
         </Tabs.Tab>
         <Tabs.Tab label="Dashboard" icon={<Terminal2 size={14} />}>
           <ScrollArea sx={{ height: "100%" }}>
-            <DashboardTab isBotFolderSetUp={isBotFolderSetUp} />
+            <DashboardTab projectPath={projectPath} />
           </ScrollArea>
         </Tabs.Tab>
       </Tabs>

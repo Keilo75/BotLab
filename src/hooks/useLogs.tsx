@@ -11,7 +11,7 @@ export interface Log {
 
 type LogPayload = Omit<Log, "timestamp">;
 
-interface LogsHandler {
+export interface LogsHandler {
   add: (payload: LogPayload) => void;
   update: (payload: Partial<LogPayload>, index?: number) => void;
 }
@@ -23,13 +23,13 @@ const useLogs = (): [Log[], LogsHandler] => {
     setLogs((prev) => [...prev, { ...payload, timestamp: Date.now() }]);
   };
 
-  const updateLog = (payload: Partial<LogPayload>, index?: number) => {
-    const target = index ?? logs.length;
-    setLogs((prev) =>
-      prev.map((log, index) =>
-        index === target ? { ...log, ...payload, updatedAt: Date.now() } : log
-      )
-    );
+  const updateLog = (payload: Partial<LogPayload>, target?: number) => {
+    setLogs((prev) => {
+      const targetIndex = target ?? prev.length - 1;
+      return prev.map((log, index) =>
+        index === targetIndex ? { ...log, ...payload, updatedAt: Date.now() } : log
+      );
+    });
   };
 
   return [logs, { add: addLog, update: updateLog }];
