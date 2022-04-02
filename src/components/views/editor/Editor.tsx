@@ -10,6 +10,7 @@ import { IInteractionStore, InteractionStore } from "src/stores/project-stores/I
 import { ISettingsStore, SettingsStore } from "src/stores/project-stores/SettingsStore";
 import { ProjectAction } from "src/stores/ProjectReducer";
 import { Messages, Terminal2, Settings } from "tabler-icons-react";
+import DashboardTab from "./tabs/DashboardTab";
 import InteractionsTab from "./tabs/InteractionsTab";
 import SettingsTab from "./tabs/SettingsTab";
 
@@ -28,6 +29,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
   const navigate = useNavigate();
   const { setInfoMessage, setTitlebar } = InfoStore(InfoActions);
   const [hasLoaded, setHasLoaded] = useState(false);
+  const [isBotFolderSetUp, setIsBotFolderSetUp] = useState(false);
 
   const setSettings = SettingsStore(SettingsSelector);
   const { setInteractions } = InteractionStore(InteractionActions);
@@ -36,7 +38,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
   useEffect(() => {
     if (!projectPath) return;
 
-    window.project.getProjectFromBotFile(projectPath).then((project) => {
+    window.project.getProjectFromBotFile(projectPath).then(async (project) => {
       dispatchProjects({
         type: "add",
         project: { name: project.settings.name, path: projectPath },
@@ -45,6 +47,9 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
       setSettings(project.settings);
       setInteractions(project.interactions);
       setTitlebar({ title: project.settings.name, dirty: false });
+
+      const isBotFolderSetUp = await window.project.isBotFolderSetUp(projectPath);
+      setIsBotFolderSetUp(isBotFolderSetUp);
 
       setHasLoaded(true);
     });
@@ -99,7 +104,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
 
   return (
     <>
-      <Tabs position="center" className="editor-tabs" tabPadding={0}>
+      <Tabs position="center" className="editor-tabs" tabPadding={0} active={2}>
         <Tabs.Tab label="Interactions" icon={<Messages size={14} />}>
           <InteractionsTab />
         </Tabs.Tab>
@@ -108,9 +113,12 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
             <SettingsTab />
           </ScrollArea>
         </Tabs.Tab>
-        <Tabs.Tab label="Dashboard" icon={<Terminal2 size={14} />}></Tabs.Tab>
+        <Tabs.Tab label="Dashboard" icon={<Terminal2 size={14} />}>
+          <ScrollArea sx={{ height: "100%" }}>
+            <DashboardTab isBotFolderSetUp={isBotFolderSetUp} />
+          </ScrollArea>
+        </Tabs.Tab>
       </Tabs>
-
       <InfoBar />
     </>
   );

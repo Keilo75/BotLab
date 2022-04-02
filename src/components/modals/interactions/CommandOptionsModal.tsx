@@ -247,7 +247,7 @@ const CommandOptionsModalComponent: React.FC<Props> = ({
       </Group>
 
       <Group position="right" mt="md">
-        <Button onClick={handleSubmit}>Edit</Button>
+        <Button onClick={handleSubmit}>Save</Button>
       </Group>
     </>
   );

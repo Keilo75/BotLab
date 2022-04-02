@@ -91,6 +91,7 @@ const App: React.FC = () => {
         Card: { shadow: "md" },
         ScrollArea: { type: "auto" },
         Overlay: { opacity: 0.6, color: "#000" },
+        Tooltip: { transition: "pop" },
       }}
       withGlobalStyles
       withCSSVariables

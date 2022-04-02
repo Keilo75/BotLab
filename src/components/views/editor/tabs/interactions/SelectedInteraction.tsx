@@ -21,7 +21,7 @@ interface Props {
 
 const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
   const [permissionsModalOpened, permissionsModalHandler] = useDisclosure(false);
-  const [optionsModalOpened, optionsModalHandler] = useDisclosure(true);
+  const [optionsModalOpened, optionsModalHandler] = useDisclosure(false);
   const { updateSelectedInteraction } = InteractionStore(InteractionActions);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {

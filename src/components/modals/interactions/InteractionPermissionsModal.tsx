@@ -97,7 +97,7 @@ const InteractionPermissionsModalComponent: React.FC<Props> = ({
         <Button onClick={addException}>Add Exception</Button>
       </Group>
       <Group position="right" mt="md">
-        <Button type="submit">Edit</Button>
+        <Button type="submit">Save</Button>
       </Group>
     </form>
   );

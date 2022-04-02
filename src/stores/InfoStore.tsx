@@ -1,6 +1,6 @@
 import create from "zustand";
 
-export type InfoBarType = "success" | "loading" | "error";
+export type InfoBarStatus = "success" | "loading" | "error";
 
 export interface TitleMessage {
   title?: string;
@@ -10,12 +10,12 @@ export interface TitleMessage {
 export interface IInfoStore {
   infoMessage: {
     text: string | undefined;
-    type: InfoBarType | undefined;
+    status: InfoBarStatus | undefined;
   };
   title: string;
   dirty: boolean;
   actions: {
-    setInfoMessage: (text: string, type: InfoBarType) => void;
+    setInfoMessage: (text: string, status: InfoBarStatus) => void;
     clearInfoMessage: () => void;
     setTitlebar: (message: TitleMessage, hideAppName?: boolean) => void;
   };
@@ -24,13 +24,13 @@ export interface IInfoStore {
 export const InfoStore = create<IInfoStore>((set, get) => ({
   infoMessage: {
     text: undefined,
-    type: undefined,
+    status: undefined,
   },
   title: "",
   dirty: false,
   actions: {
-    setInfoMessage: (text, type) => set({ infoMessage: { text, type } }),
-    clearInfoMessage: () => set({ infoMessage: { text: undefined, type: undefined } }),
+    setInfoMessage: (text, status) => set({ infoMessage: { text, status } }),
+    clearInfoMessage: () => set({ infoMessage: { text: undefined, status: undefined } }),
     setTitlebar: (message, showAppName) => {
       const newTitlebar = {
         title:

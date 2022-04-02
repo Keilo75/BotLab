@@ -91,6 +91,7 @@ const InteractionSidebar: React.FC = () => {
         {
           name: "Clone",
           action: () => cloneInteraction(targetID),
+          divider: true,
         }
       );
     } else

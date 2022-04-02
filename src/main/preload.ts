@@ -3,6 +3,7 @@ import { readdirSync, writeFileSync, writeJSONSync, readJSONSync, emptyDir } fro
 
 import path from "path";
 import Store from "electron-store";
+import { exec } from "child-process-promise";
 
 import { IPCChannel } from "src/models/ipc-channel";
 import { MenuAction } from "src/models/menu-action";
@@ -47,9 +48,27 @@ const projectBridge = {
     return config;
   },
 
+  async isBotFolderSetUp(projectPath: string): Promise<boolean> {
+    const files = readdirSync(path.dirname(projectPath));
+    const necessaryFiles = ["package.json", "node_modules"];
+
+    return necessaryFiles.every((necessaryFile) => files.includes(necessaryFile));
+  },
+
   async saveProject(project: Project, projectPath: string): Promise<void> {
     const prettyPrint = storeBridge.getOptions()["developer.prettyPrintSaveFile"];
     writeJSONSync(projectPath, project, { spaces: prettyPrint ? "\t" : undefined });
+  },
+};
+
+const botBridge = {
+  async isNpmInstalled(): Promise<boolean> {
+    try {
+      await exec("npm --version");
+      return true;
+    } catch {
+      return false;
+    }
   },
 };
 
@@ -97,6 +116,7 @@ const templateBridge = {
 contextBridge.exposeInMainWorld("ipc", ipcBridge);
 contextBridge.exposeInMainWorld("fs", fsBridge);
 contextBridge.exposeInMainWorld("project", projectBridge);
+contextBridge.exposeInMainWorld("bot", botBridge);
 contextBridge.exposeInMainWorld("store", storeBridge);
 contextBridge.exposeInMainWorld("template", templateBridge);
 
@@ -105,6 +125,7 @@ declare global {
     ipc: typeof ipcBridge;
     fs: typeof fsBridge;
     project: typeof projectBridge;
+    bot: typeof botBridge;
     store: typeof storeBridge;
     template: typeof templateBridge;
   }
