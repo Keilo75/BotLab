@@ -1,4 +1,4 @@
-import { Button, Card, Group, Stack, Text } from "@mantine/core";
+import { Anchor, Button, Card, Group, Stack, Text } from "@mantine/core";
 import React from "react";
 import StatusIcon from "src/components/ui/status-icon/StatusIcon";
 import Timestamp from "src/components/ui/timestamp/Timestamp";
@@ -33,13 +33,24 @@ const DashboardTab: React.FC<DashboardTabProps> = ({ logs, startBot, botStatus }
           {logs.length > 0 ? (
             logs.map((log, index) => (
               <Group key={index} position="apart">
-                <Group spacing={5}>
+                <Group spacing={5} align="flex-start">
                   <div className="log-icon">
                     <StatusIcon status={log.status} />
                   </div>
 
                   <Timestamp timestamp={log.timestamp} />
-                  <Text>{log.message}</Text>
+                  <Stack spacing={0}>
+                    <Text>{log.message}</Text>
+                    {log.stacktrace &&
+                      log.stacktrace.map((scope, index) => (
+                        <Text key={index} color="dimmed">
+                          at{" "}
+                          <Anchor>
+                            {scope.type} {scope.name}
+                          </Anchor>
+                        </Text>
+                      ))}
+                  </Stack>
                 </Group>
                 {log.updatedAt && <Text color="dimmed">{log.updatedAt - log.timestamp}ms</Text>}
               </Group>

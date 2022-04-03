@@ -1,12 +1,14 @@
 import { ScrollArea, Tabs } from "@mantine/core";
+import { useInputState } from "@mantine/hooks";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import InfoBar from "src/components/shared/InfoBar";
 import useLogs from "src/hooks/useLogs";
 import { sleep } from "src/lib/sleep";
-import { validateProjectName } from "src/lib/validater";
+import { validateProject, validateProjectName } from "src/lib/validater";
 import { BotStatus } from "src/models/bot";
 import { MenuAction } from "src/models/menu-action";
+import { Project } from "src/models/project";
 import { IInfoStore, InfoStore } from "src/stores/InfoStore";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
 import { ISettingsStore, SettingsStore } from "src/stores/project-stores/SettingsStore";
@@ -31,6 +33,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
   if (!projectPath) return null;
 
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useInputState(2);
   const { setInfoMessage, setTitlebar } = InfoStore(InfoActions);
   const [hasLoaded, setHasLoaded] = useState(false);
   const [logs, logsHandler] = useLogs();
@@ -79,11 +82,12 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
     setMenuAction(undefined);
   }, [menuAction]);
 
-  const saveProject = async () => {
+  const saveProject = async (): Promise<Project | void> => {
     const settings = SettingsStore.getState().settings;
     const interactions = InteractionStore.getState().interactions;
+    if (!settings || !interactions) return;
 
-    if (!settings || !interactions || !projectPath) return;
+    const project: Project = { settings, interactions };
 
     setInfoMessage("Saving...", "loading");
     await sleep(100);
@@ -93,13 +97,15 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
       return setInfoMessage("Could not save. Project Name: " + projectNameError, "error");
 
     try {
-      await window.project.saveProject({ settings, interactions }, projectPath);
+      await window.project.saveProject(project, projectPath);
     } catch (err) {
       return setInfoMessage("Could not save: " + err, "error");
     }
 
     setInfoMessage("Saved succesfully", "success");
     setTitlebar({ title: settings.name, dirty: false });
+
+    return project;
   };
 
   const setupBotFolder = async () => {
@@ -120,8 +126,8 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
   };
 
   const startBot = async () => {
-    await saveProject();
-    if (InfoStore.getState().dirty) return;
+    const project = await saveProject();
+    if (!project) return;
 
     setBotStatus("starting");
 
@@ -135,6 +141,20 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
         return;
       }
 
+    logsHandler.add({ message: "Validate project" });
+    const errors = validateProject(project);
+    console.log(errors);
+
+    if (errors.length > 0) {
+      logsHandler.update({ status: "error" });
+
+      for (const error of errors) {
+        logsHandler.add({ status: "error", message: error.message, stacktrace: error.stacktrace });
+      }
+
+      return;
+    }
+
     setBotStatus("offline");
   };
 
@@ -142,7 +162,13 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
 
   return (
     <>
-      <Tabs position="center" className="editor-tabs" tabPadding={0} active={2}>
+      <Tabs
+        position="center"
+        className="editor-tabs"
+        tabPadding={0}
+        active={activeTab}
+        onTabChange={setActiveTab}
+      >
         <Tabs.Tab label="Interactions" icon={<Messages size={14} />}>
           <InteractionsTab />
         </Tabs.Tab>

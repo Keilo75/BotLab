@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ValidationErrorScope } from "src/lib/validater";
 
 type LogStatus = "loading" | "success" | "error";
 
@@ -7,6 +8,7 @@ export interface Log {
   message: string;
   timestamp: number;
   updatedAt?: number;
+  stacktrace?: ValidationErrorScope[];
 }
 
 type LogPayload = Omit<Log, "timestamp">;
