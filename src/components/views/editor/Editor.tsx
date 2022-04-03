@@ -2,8 +2,10 @@ import { ScrollArea, Tabs } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import InfoBar from "src/components/shared/InfoBar";
+import useLogs from "src/hooks/useLogs";
 import { sleep } from "src/lib/sleep";
 import { validateProjectName } from "src/lib/validater";
+import { BotStatus } from "src/models/bot";
 import { MenuAction } from "src/models/menu-action";
 import { IInfoStore, InfoStore } from "src/stores/InfoStore";
 import { IInteractionStore, InteractionStore } from "src/stores/project-stores/InteractionStore";
@@ -26,9 +28,13 @@ interface Props {
 
 const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }) => {
   const { projectPath } = useParams();
+  if (!projectPath) return null;
+
   const navigate = useNavigate();
   const { setInfoMessage, setTitlebar } = InfoStore(InfoActions);
   const [hasLoaded, setHasLoaded] = useState(false);
+  const [logs, logsHandler] = useLogs();
+  const [botStatus, setBotStatus] = useState<BotStatus>("offline");
 
   const setSettings = SettingsStore(SettingsSelector);
   const { setInteractions } = InteractionStore(InteractionActions);
@@ -96,7 +102,43 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
     setTitlebar({ title: settings.name, dirty: false });
   };
 
-  if (!hasLoaded || !projectPath) return null;
+  const setupBotFolder = async () => {
+    logsHandler.add({ status: "error", message: "Environment not setup" });
+
+    const actions = [
+      { message: "Check npm installation", action: window.bot.isNpmInstalled },
+      { message: "Copy files", action: window.bot.copyFiles },
+      { message: "Install dependencies", action: window.bot.installDependencies },
+    ];
+
+    for (const action of actions) {
+      logsHandler.add({ message: action.message });
+      const isSuccesfull = await action.action(projectPath);
+      if (!isSuccesfull) throw new Error();
+      logsHandler.update({ status: "success" });
+    }
+  };
+
+  const startBot = async () => {
+    await saveProject();
+    if (InfoStore.getState().dirty) return;
+
+    setBotStatus("starting");
+
+    const isBotFolderSetup = await window.bot.isBotFolderSetUp(projectPath);
+    if (!isBotFolderSetup)
+      try {
+        await setupBotFolder();
+      } catch {
+        logsHandler.update({ status: "error" });
+        setBotStatus("offline");
+        return;
+      }
+
+    setBotStatus("offline");
+  };
+
+  if (!hasLoaded) return null;
 
   return (
     <>
@@ -111,7 +153,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
         </Tabs.Tab>
         <Tabs.Tab label="Dashboard" icon={<Terminal2 size={14} />}>
           <ScrollArea sx={{ height: "100%" }}>
-            <DashboardTab projectPath={projectPath} />
+            <DashboardTab logs={logs} startBot={startBot} botStatus={botStatus} />
           </ScrollArea>
         </Tabs.Tab>
       </Tabs>

@@ -1,5 +1,12 @@
 import { contextBridge, ipcRenderer, OpenDialogOptions, OpenDialogReturnValue } from "electron";
-import { readdirSync, writeFileSync, writeJSONSync, readJSONSync, emptyDir } from "fs-extra";
+import {
+  readdirSync,
+  writeFileSync,
+  writeJSONSync,
+  readJSONSync,
+  emptyDir,
+  writeJSON,
+} from "fs-extra";
 
 import path from "path";
 import Store from "electron-store";
@@ -48,13 +55,6 @@ const projectBridge = {
     return config;
   },
 
-  async isBotFolderSetUp(projectPath: string): Promise<boolean> {
-    const files = readdirSync(path.dirname(projectPath));
-    const necessaryFiles = ["package.json", "node_modules"];
-
-    return necessaryFiles.every((necessaryFile) => files.includes(necessaryFile));
-  },
-
   async saveProject(project: Project, projectPath: string): Promise<void> {
     const prettyPrint = storeBridge.getOptions()["developer.prettyPrintSaveFile"];
     writeJSONSync(projectPath, project, { spaces: prettyPrint ? "\t" : undefined });
@@ -62,6 +62,13 @@ const projectBridge = {
 };
 
 const botBridge = {
+  async isBotFolderSetUp(projectPath: string): Promise<boolean> {
+    const files = readdirSync(path.dirname(projectPath));
+    const necessaryFiles = ["package.json", "node_modules"];
+
+    return necessaryFiles.every((necessaryFile) => files.includes(necessaryFile));
+  },
+
   async isNpmInstalled(): Promise<boolean> {
     try {
       await exec("npm --version");
@@ -71,15 +78,25 @@ const botBridge = {
     }
   },
 
-  async copyFiles(projectPath: string): Promise<void> {
+  async copyFiles(projectPath: string): Promise<boolean> {
     const { packageJSON } = await import("./template/config");
 
     const jsonPath = path.join(path.dirname(projectPath), "package.json");
-    writeJSONSync(jsonPath, packageJSON, { spaces: "\t" });
+    try {
+      await writeJSON(jsonPath, packageJSON, { spaces: "\t" });
+      return true;
+    } catch {
+      return false;
+    }
   },
 
-  async installDependencies(projectPath: string): Promise<void> {
-    await exec("npm install", { cwd: path.dirname(projectPath) });
+  async installDependencies(projectPath: string): Promise<boolean> {
+    try {
+      await exec("npm install", { cwd: path.dirname(projectPath) });
+      return true;
+    } catch {
+      return false;
+    }
   },
 };
 
