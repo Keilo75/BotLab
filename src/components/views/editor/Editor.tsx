@@ -151,8 +151,6 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
       for (const error of errors) {
         logsHandler.add({ status: "error", message: error.message, stacktrace: error.stacktrace });
       }
-
-      return;
     }
 
     setBotStatus("offline");

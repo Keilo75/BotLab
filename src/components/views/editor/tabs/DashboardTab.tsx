@@ -44,10 +44,7 @@ const DashboardTab: React.FC<DashboardTabProps> = ({ logs, startBot, botStatus }
                     {log.stacktrace &&
                       log.stacktrace.map((scope, index) => (
                         <Text key={index} color="dimmed">
-                          at{" "}
-                          <Anchor>
-                            {scope.type} {scope.name}
-                          </Anchor>
+                          at <Anchor>{scope.type}</Anchor>
                         </Text>
                       ))}
                   </Stack>

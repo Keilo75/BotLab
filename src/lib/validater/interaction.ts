@@ -19,3 +19,11 @@ export const validateInteractionDescription = (description: string): string | un
   if (description.length === 0) return "Cannot be empty";
   if (description.length > 100) return "Maximum length is 100 characters";
 };
+
+export const validateInteractionOptionName = (description: string): string | undefined => {
+  // Reference:
+  // https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure
+
+  if (description.length === 0) return "Cannot be empty";
+  if (description.length > 32) return "Maximum length is 100 characters";
+};
