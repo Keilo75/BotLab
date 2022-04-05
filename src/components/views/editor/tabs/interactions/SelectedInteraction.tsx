@@ -48,6 +48,10 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
     permissionsModalHandler.open();
   });
 
+  useStacktrace("options", () => {
+    optionsModalHandler.open();
+  });
+
   return (
     <Stack>
       <Paper withBorder p="md">

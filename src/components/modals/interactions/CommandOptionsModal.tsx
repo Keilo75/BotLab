@@ -11,6 +11,7 @@ import {
 } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import SelectableList from "src/components/ui/selectable-list/SelectableList";
+import useStacktrace from "src/hooks/useStacktrace";
 import {
   CommandOptionType,
   CommandOptionTypes,
@@ -70,6 +71,8 @@ const CommandOptionsModalComponent: React.FC<Props> = ({
     setOptions((prev) => prev.filter((option) => option.id !== id));
     if (selectedOptionID === id) setSelectedOptionID(undefined);
   };
+
+  useStacktrace("option", (id) => setSelectedOptionID(id));
 
   const handleListContextMenu = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();

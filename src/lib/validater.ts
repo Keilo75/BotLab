@@ -1,11 +1,15 @@
 import validateProjectName from "./validater/projectName";
-import { validateInteractionDescription, validateInteractionName } from "./validater/interaction";
+import { validateLength, validateName } from "./validater/interaction";
 import validateSnowflake from "./validater/snowflake";
 import { Project } from "src/models/project";
 
-export { validateProjectName, validateInteractionName, validateSnowflake };
+export { validateProjectName, validateName as validateInteractionName, validateSnowflake };
 
-export type ValidationErrorScopeType = "interaction" | "permission exception";
+export type ValidationErrorScopeType =
+  | "interaction"
+  | "permission exception"
+  | "options"
+  | "option";
 export type ValidationErrorScope = {
   id: string;
   type: ValidationErrorScopeType;
@@ -33,16 +37,16 @@ export const validateProject = (project: Project): ValidationError[] => {
 
     // Validate name
     createValidationError(
-      validateInteractionName(interaction.name, interaction.type),
-      "Invalid name",
+      validateName(interaction.name, interaction.type),
+      "Invalid interaction name",
       stacktrace
     );
 
     // Validate description
     if (interaction.description !== undefined)
       createValidationError(
-        validateInteractionDescription(interaction.description),
-        "Invalid description",
+        validateLength(interaction.description, 100),
+        "Invalid interaction description",
         stacktrace
       );
 
@@ -58,6 +62,24 @@ export const validateProject = (project: Project): ValidationError[] => {
         );
         stacktrace.pop();
       }
+    }
+
+    // Reference:
+    // https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-structure
+    if (interaction.options) {
+      stacktrace.push({ type: "options", id: "" });
+      for (const option of interaction.options) {
+        stacktrace.push({ type: "option", id: option.id });
+
+        createValidationError(
+          validateName(option.name, "message-context-menu"),
+          "Invalid option name",
+          stacktrace
+        );
+
+        stacktrace.pop();
+      }
+      stacktrace.pop();
     }
   }
 
