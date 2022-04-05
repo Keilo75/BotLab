@@ -83,9 +83,10 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
     setMenuAction(undefined);
   }, [menuAction]);
 
-  useStacktrace("interaction", (id) => {
+  useStacktrace("interaction", ({ id, popError }) => {
     setActiveTab(0);
     selectInteraction(id);
+    popError();
   });
 
   const saveProject = async (): Promise<Project | void> => {

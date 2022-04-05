@@ -44,11 +44,12 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
     updateSelectedInteraction("options", options);
   };
 
-  useStacktrace("permission exception", () => {
+  useStacktrace("permission exception", ({ popError }) => {
     permissionsModalHandler.open();
+    popError();
   });
 
-  useStacktrace("options", () => {
+  useStacktrace("option", () => {
     optionsModalHandler.open();
   });
 

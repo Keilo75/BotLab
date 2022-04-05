@@ -1,4 +1,4 @@
-import { ValidationErrorScope } from "src/lib/validater";
+import { ValidationErrorScope, ValidationErrorScopeType } from "src/lib/validater";
 import create from "zustand";
 
 export type InfoBarStatus = "success" | "loading" | "error";
@@ -21,7 +21,7 @@ export interface IInfoStore {
     clearInfoMessage: () => void;
     setTitlebar: (message: TitleMessage, hideAppName?: boolean) => void;
     setStacktrace: (stacktrace: ValidationErrorScope[]) => void;
-    popStacktrace: () => void;
+    removeErrorScope: (type: ValidationErrorScopeType) => void;
   };
 }
 
@@ -48,6 +48,7 @@ export const InfoStore = create<IInfoStore>((set, get) => ({
       set(newTitlebar);
     },
     setStacktrace: (stacktrace) => set({ stacktrace }),
-    popStacktrace: () => set({ stacktrace: get().stacktrace.slice(1) }),
+    removeErrorScope: (type) =>
+      set({ stacktrace: get().stacktrace.filter((scope) => scope.type !== type) }),
   },
 }));

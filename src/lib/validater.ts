@@ -5,11 +5,7 @@ import { Project } from "src/models/project";
 
 export { validateProjectName, validateName as validateInteractionName, validateSnowflake };
 
-export type ValidationErrorScopeType =
-  | "interaction"
-  | "permission exception"
-  | "options"
-  | "option";
+export type ValidationErrorScopeType = "interaction" | "permission exception" | "option";
 export type ValidationErrorScope = {
   id: string;
   type: ValidationErrorScopeType;
@@ -67,7 +63,6 @@ export const validateProject = (project: Project): ValidationError[] => {
     // Reference:
     // https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-structure
     if (interaction.options) {
-      stacktrace.push({ type: "options", id: "" });
       for (const option of interaction.options) {
         stacktrace.push({ type: "option", id: option.id });
 
@@ -77,9 +72,14 @@ export const validateProject = (project: Project): ValidationError[] => {
           stacktrace
         );
 
+        createValidationError(
+          validateLength(option.description, 100),
+          "Invalid option description",
+          stacktrace
+        );
+
         stacktrace.pop();
       }
-      stacktrace.pop();
     }
   }
 

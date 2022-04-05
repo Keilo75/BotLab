@@ -72,7 +72,10 @@ const CommandOptionsModalComponent: React.FC<Props> = ({
     if (selectedOptionID === id) setSelectedOptionID(undefined);
   };
 
-  useStacktrace("option", (id) => setSelectedOptionID(id));
+  useStacktrace("option", ({ id, popError }) => {
+    setSelectedOptionID(id);
+    popError();
+  });
 
   const handleListContextMenu = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
