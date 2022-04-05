@@ -3,6 +3,7 @@ import React from "react";
 import StatusIcon from "src/components/ui/status-icon/StatusIcon";
 import Timestamp from "src/components/ui/timestamp/Timestamp";
 import { Log } from "src/hooks/useLogs";
+import { ValidationErrorScope } from "src/lib/validater";
 import { BotStatus } from "src/models/bot";
 import { PlayerPlay } from "tabler-icons-react";
 
@@ -10,9 +11,28 @@ interface DashboardTabProps {
   logs: Log[];
   startBot: () => Promise<void>;
   botStatus: BotStatus;
+  handleStacktraceNavigation: (stacktrace: ValidationErrorScope[]) => void;
 }
 
-const DashboardTab: React.FC<DashboardTabProps> = ({ logs, startBot, botStatus }) => {
+const DashboardTab: React.FC<DashboardTabProps> = ({
+  logs,
+  startBot,
+  botStatus,
+  handleStacktraceNavigation,
+}) => {
+  const handleStacktraceClick = (e: React.MouseEvent) => {
+    if (!logs) return;
+
+    const logIndex = parseInt(e.currentTarget.getAttribute("data-log-index")!);
+    const stacktraceIndex = parseInt(e.currentTarget.getAttribute("data-stacktrace-index")!);
+
+    const stacktrace = logs[logIndex].stacktrace;
+    if (!stacktrace) return;
+
+    const slicedStacktrace = stacktrace.slice(0, stacktraceIndex);
+    handleStacktraceNavigation(slicedStacktrace);
+  };
+
   return (
     <Stack className="main-content in-editor dashboard" mt="md" spacing={0}>
       <Group position="apart" align="center">
@@ -31,8 +51,8 @@ const DashboardTab: React.FC<DashboardTabProps> = ({ logs, startBot, botStatus }
       <Card className="logs">
         <Stack spacing={0}>
           {logs.length > 0 ? (
-            logs.map((log, index) => (
-              <Group key={index} position="apart">
+            logs.map((log, logIndex) => (
+              <Group key={logIndex} position="apart">
                 <Group spacing={5} align="flex-start">
                   <div className="log-icon">
                     <StatusIcon status={log.status} />
@@ -42,9 +62,16 @@ const DashboardTab: React.FC<DashboardTabProps> = ({ logs, startBot, botStatus }
                   <Stack spacing={0}>
                     <Text>{log.message}</Text>
                     {log.stacktrace &&
-                      log.stacktrace.map((scope, index) => (
-                        <Text key={index} color="dimmed">
-                          at <Anchor>{scope.type}</Anchor>
+                      log.stacktrace.map((scope, stacktraceIndex) => (
+                        <Text key={stacktraceIndex} color="dimmed">
+                          at{" "}
+                          <Anchor
+                            onClick={handleStacktraceClick}
+                            data-log-index={logIndex}
+                            data-stacktrace-index={stacktraceIndex + 1}
+                          >
+                            {scope.type}
+                          </Anchor>
                         </Text>
                       ))}
                   </Stack>
