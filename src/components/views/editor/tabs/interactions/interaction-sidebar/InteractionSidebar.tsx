@@ -91,12 +91,11 @@ const InteractionSidebar: React.FC = () => {
         {
           name: "Clone",
           action: () => cloneInteraction(targetID),
-          divider: true,
         }
       );
     } else
-      for (const type of Object.keys(InteractionTypes) as InteractionType[]) {
-        items.push({ name: `New ${InteractionTypes[type]}`, action: () => addInteraction(type) });
+      for (const [type, value] of Object.entries(InteractionTypes)) {
+        items.push({ name: `New ${value}`, action: () => addInteraction(type as InteractionType) });
       }
 
     setContextMenu({ x: e.clientX, y: e.clientY, items, width: 200 });

@@ -55,7 +55,7 @@ const CreateProjectModalComponent: React.FC<Props> = ({ dispatchProjects, close 
     setLoading(true);
 
     const errors = await validate(values);
-    const hasErrors = Object.keys(errors).some((key) => errors[key as keyof Errors] !== undefined);
+    const hasErrors = Object.values(errors).some((value) => value !== undefined);
     if (hasErrors) {
       form.setErrors(errors);
       setLoading(false);
