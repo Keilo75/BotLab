@@ -3,23 +3,21 @@ import React from "react";
 import StatusIcon from "src/components/ui/status-icon/StatusIcon";
 import Timestamp from "src/components/ui/timestamp/Timestamp";
 import { Log } from "src/hooks/useLogs";
-import { ValidationErrorScope } from "src/lib/validater";
 import { BotStatus } from "src/models/bot";
+import { IInfoStore, InfoStore } from "src/stores/InfoStore";
 import { PlayerPlay } from "tabler-icons-react";
+
+const InfoActions = (state: IInfoStore) => state.actions;
 
 interface DashboardTabProps {
   logs: Log[];
   startBot: () => Promise<void>;
   botStatus: BotStatus;
-  handleStacktraceNavigation: (stacktrace: ValidationErrorScope[]) => void;
 }
 
-const DashboardTab: React.FC<DashboardTabProps> = ({
-  logs,
-  startBot,
-  botStatus,
-  handleStacktraceNavigation,
-}) => {
+const DashboardTab: React.FC<DashboardTabProps> = ({ logs, startBot, botStatus }) => {
+  const { setStacktrace } = InfoStore(InfoActions);
+
   const handleStacktraceClick = (e: React.MouseEvent) => {
     if (!logs) return;
 
@@ -30,7 +28,7 @@ const DashboardTab: React.FC<DashboardTabProps> = ({
     if (!stacktrace) return;
 
     const slicedStacktrace = stacktrace.slice(0, stacktraceIndex);
-    handleStacktraceNavigation(slicedStacktrace);
+    setStacktrace(slicedStacktrace);
   };
 
   return (

@@ -3,6 +3,7 @@ import { useDisclosure } from "@mantine/hooks";
 import React from "react";
 import CommandOptionsModalComponent from "src/components/modals/interactions/CommandOptionsModal";
 import InteractionPermissionsModalComponent from "src/components/modals/interactions/InteractionPermissionsModal";
+import useStacktrace from "src/hooks/useStacktrace";
 import {
   Interaction,
   CommandOption,
@@ -42,6 +43,10 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
   const handleOptionsChange = (options: CommandOption[]) => {
     updateSelectedInteraction("options", options);
   };
+
+  useStacktrace("permission exception", () => {
+    permissionsModalHandler.open();
+  });
 
   return (
     <Stack>

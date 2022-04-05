@@ -1,3 +1,4 @@
+import { ValidationErrorScope } from "src/lib/validater";
 import create from "zustand";
 
 export type InfoBarStatus = "success" | "loading" | "error";
@@ -14,10 +15,13 @@ export interface IInfoStore {
   };
   title: string;
   dirty: boolean;
+  stacktrace: ValidationErrorScope[];
   actions: {
     setInfoMessage: (text: string, status: InfoBarStatus) => void;
     clearInfoMessage: () => void;
     setTitlebar: (message: TitleMessage, hideAppName?: boolean) => void;
+    setStacktrace: (stacktrace: ValidationErrorScope[]) => void;
+    popStacktrace: () => void;
   };
 }
 
@@ -28,6 +32,7 @@ export const InfoStore = create<IInfoStore>((set, get) => ({
   },
   title: "",
   dirty: false,
+  stacktrace: [],
   actions: {
     setInfoMessage: (text, status) => set({ infoMessage: { text, status } }),
     clearInfoMessage: () => set({ infoMessage: { text: undefined, status: undefined } }),
@@ -42,5 +47,7 @@ export const InfoStore = create<IInfoStore>((set, get) => ({
 
       set(newTitlebar);
     },
+    setStacktrace: (stacktrace) => set({ stacktrace }),
+    popStacktrace: () => set({ stacktrace: get().stacktrace.slice(1) }),
   },
 }));

@@ -4,13 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import InfoBar from "src/components/shared/InfoBar";
 import useLogs from "src/hooks/useLogs";
+import useStacktrace from "src/hooks/useStacktrace";
 import { sleep } from "src/lib/sleep";
-import {
-  validateProject,
-  validateProjectName,
-  ValidationErrorScope,
-  ValidationErrorScopeType,
-} from "src/lib/validater";
+import { validateProject, validateProjectName } from "src/lib/validater";
 import { BotStatus } from "src/models/bot";
 import { MenuAction } from "src/models/menu-action";
 import { Project } from "src/models/project";
@@ -87,6 +83,11 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
     setMenuAction(undefined);
   }, [menuAction]);
 
+  useStacktrace("interaction", (id) => {
+    setActiveTab(0);
+    selectInteraction(id);
+  });
+
   const saveProject = async (): Promise<Project | void> => {
     const settings = SettingsStore.getState().settings;
     const interactions = InteractionStore.getState().interactions;
@@ -160,21 +161,6 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
     setBotStatus("offline");
   };
 
-  const handleStacktraceNavigation = (stacktrace: ValidationErrorScope[]) => {
-    for (const scope of stacktrace) {
-      switch (scope.type) {
-        case "interaction": {
-          setActiveTab(0);
-          selectInteraction(scope.id);
-          break;
-        }
-
-        default:
-          break;
-      }
-    }
-  };
-
   if (!hasLoaded) return null;
 
   return (
@@ -196,12 +182,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
         </Tabs.Tab>
         <Tabs.Tab label="Dashboard" icon={<Terminal2 size={14} />}>
           <ScrollArea sx={{ height: "100%" }}>
-            <DashboardTab
-              logs={logs}
-              startBot={startBot}
-              botStatus={botStatus}
-              handleStacktraceNavigation={handleStacktraceNavigation}
-            />
+            <DashboardTab logs={logs} startBot={startBot} botStatus={botStatus} />
           </ScrollArea>
         </Tabs.Tab>
       </Tabs>
