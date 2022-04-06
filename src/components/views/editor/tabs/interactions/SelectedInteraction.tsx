@@ -1,6 +1,6 @@
 import { Box, Button, Group, Modal, Paper, Stack, Text, TextInput, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import React from "react";
+import React, { useRef } from "react";
 import CommandOptionsModalComponent from "src/components/modals/interactions/CommandOptionsModal";
 import InteractionPermissionsModalComponent from "src/components/modals/interactions/InteractionPermissionsModal";
 import useStacktrace from "src/hooks/useStacktrace";
@@ -24,6 +24,8 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
   const [permissionsModalOpened, permissionsModalHandler] = useDisclosure(false);
   const [optionsModalOpened, optionsModalHandler] = useDisclosure(false);
   const { updateSelectedInteraction } = InteractionStore(InteractionActions);
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const descriptionInputRef = useRef<HTMLInputElement>(null);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.currentTarget.value;
@@ -44,9 +46,16 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
     updateSelectedInteraction("options", options);
   };
 
-  useStacktrace("permission exception", ({ popError }) => {
+  useStacktrace("interaction", ({ finishStacktrace, key }) => {
+    if (key === "name") nameInputRef.current?.focus();
+    if (key === "description") descriptionInputRef.current?.focus();
+
+    finishStacktrace();
+  });
+
+  useStacktrace("permission exception", ({ finishStacktrace }) => {
     permissionsModalHandler.open();
-    popError();
+    finishStacktrace();
   });
 
   useStacktrace("option", () => {
@@ -86,6 +95,7 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
           value={interaction.name}
           required
           onChange={handleNameChange}
+          ref={nameInputRef}
         />
         {interaction.description !== undefined && (
           <TextInput
@@ -94,6 +104,7 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
             value={interaction.description}
             onChange={handleDescriptionChange}
             required
+            ref={descriptionInputRef}
           />
         )}
       </Group>

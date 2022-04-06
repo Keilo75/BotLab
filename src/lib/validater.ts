@@ -9,6 +9,7 @@ export type ValidationErrorScopeType = "interaction" | "permission exception" | 
 export type ValidationErrorScope = {
   id: string;
   type: ValidationErrorScopeType;
+  key?: string;
 };
 
 interface ValidationError {
@@ -22,10 +23,16 @@ export const validateProject = (project: Project): ValidationError[] => {
   const createValidationError = (
     message: string | undefined,
     prefix: string,
-    stacktrace: ValidationErrorScope[]
+    stacktrace: ValidationErrorScope[],
+    key?: string
   ) => {
     if (message === undefined) return;
-    errors.push({ message: `${prefix}: ${message}`, stacktrace: [...stacktrace] });
+    errors.push({
+      message: `${prefix}: ${message}`,
+      stacktrace: stacktrace.map((scope, index) =>
+        index === stacktrace.length - 1 ? { ...scope, key } : scope
+      ),
+    });
   };
 
   for (const interaction of project.interactions) {
@@ -35,7 +42,8 @@ export const validateProject = (project: Project): ValidationError[] => {
     createValidationError(
       validateName(interaction.name, interaction.type),
       "Invalid interaction name",
-      stacktrace
+      stacktrace,
+      "name"
     );
 
     // Validate description
@@ -43,7 +51,8 @@ export const validateProject = (project: Project): ValidationError[] => {
       createValidationError(
         validateLength(interaction.description, 100),
         "Invalid interaction description",
-        stacktrace
+        stacktrace,
+        "description"
       );
 
     // Validate permissions

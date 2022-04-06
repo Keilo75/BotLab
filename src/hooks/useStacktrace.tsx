@@ -5,7 +5,11 @@ import { IInfoStore, InfoStore } from "src/stores/InfoStore";
 const Stacktrace = (state: IInfoStore) => state.stacktrace;
 const InfoActions = (state: IInfoStore) => state.actions;
 
-type StacktraceAction = (payload: { id: string; popError: () => void }) => void;
+type StacktraceAction = (payload: {
+  id: string;
+  finishStacktrace: () => void;
+  key?: string;
+}) => void;
 
 const useStacktrace = (type: ValidationErrorScopeType, action: StacktraceAction) => {
   const stacktrace = InfoStore(Stacktrace);
@@ -15,9 +19,9 @@ const useStacktrace = (type: ValidationErrorScopeType, action: StacktraceAction)
     const [first] = stacktrace;
 
     if (first && first.type === type) {
-      const popError = () => removeErrorScope(type);
+      const finishStacktrace = () => removeErrorScope(type);
 
-      action({ id: first.id, popError });
+      action({ id: first.id, finishStacktrace, key: first.key });
     }
   }, [stacktrace]);
 };
