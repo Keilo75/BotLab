@@ -66,13 +66,13 @@ const DashboardTab: React.FC<DashboardTabProps> = ({ logs, logsHandler, startBot
                   <Stack spacing={0}>
                     <Text>{log.message}</Text>
                     {log.stacktrace &&
-                      log.stacktrace.map((scope, stacktraceIndex) => (
+                      [...log.stacktrace].reverse().map((scope, stacktraceIndex, array) => (
                         <Text key={stacktraceIndex} color="dimmed">
                           at{" "}
                           <Anchor
                             onClick={handleStacktraceClick}
                             data-log-index={logIndex}
-                            data-stacktrace-index={stacktraceIndex + 1}
+                            data-stacktrace-index={array.length - stacktraceIndex}
                           >
                             {scope.type}
                           </Anchor>
