@@ -53,9 +53,8 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
     finishStacktrace();
   });
 
-  useStacktrace("permission exception", ({ finishStacktrace }) => {
+  useStacktrace("permission exception", () => {
     permissionsModalHandler.open();
-    finishStacktrace();
   });
 
   useStacktrace("option", () => {

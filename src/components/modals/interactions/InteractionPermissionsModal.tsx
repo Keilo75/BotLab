@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createRef, useMemo } from "react";
 import { formList, useForm } from "@mantine/form";
 import {
   ActionIcon,
@@ -16,6 +16,7 @@ import {
 import { Trash } from "tabler-icons-react";
 import { InteractionPermission } from "src/models/interactions";
 import { v4 as uuid } from "uuid";
+import useStacktrace from "src/hooks/useStacktrace";
 
 interface Props {
   close: () => void;
@@ -33,6 +34,19 @@ const InteractionPermissionsModalComponent: React.FC<Props> = ({
       disabledByDefault: permissions.disabledByDefault,
       exceptions: formList(permissions.exceptions),
     },
+  });
+
+  const inputRefs = useMemo(
+    () => form.values.exceptions.map(() => createRef<HTMLInputElement>()),
+    [form.values]
+  );
+
+  useStacktrace("permission exception", ({ finishStacktrace, id }) => {
+    const index = form.values.exceptions.findIndex((exception) => exception.id === id);
+    setTimeout(() => {
+      inputRefs[index].current?.focus();
+      finishStacktrace();
+    });
   });
 
   const addException = () => {
@@ -60,6 +74,7 @@ const InteractionPermissionsModalComponent: React.FC<Props> = ({
         />
         <TextInput
           placeholder="ID"
+          ref={inputRefs[index]}
           {...form.getListInputProps("exceptions", index, "identifier")}
         />
         <ActionIcon color="red" variant="hover" onClick={removeException} mt={3}>
