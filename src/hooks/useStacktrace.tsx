@@ -5,13 +5,21 @@ import { IInfoStore, InfoStore } from "src/stores/InfoStore";
 const Stacktrace = (state: IInfoStore) => state.stacktrace;
 const InfoActions = (state: IInfoStore) => state.actions;
 
-type StacktraceAction = (payload: {
+interface StacktraceActionPayload {
   id: string;
   finishStacktrace: () => void;
   key?: string;
-}) => void;
+}
 
-const useStacktrace = (type: ValidationErrorScopeType, action: StacktraceAction) => {
+interface StacktraceOptions {
+  inModal?: boolean;
+}
+
+const useStacktrace = (
+  type: ValidationErrorScopeType,
+  action: (payload: StacktraceActionPayload) => void,
+  options?: StacktraceOptions
+) => {
   const stacktrace = InfoStore(Stacktrace);
   const { removeErrorScope } = InfoStore(InfoActions);
 
@@ -20,8 +28,10 @@ const useStacktrace = (type: ValidationErrorScopeType, action: StacktraceAction)
 
     if (first && first.type === type) {
       const finishStacktrace = () => removeErrorScope(type);
+      const payload: StacktraceActionPayload = { id: first.id, finishStacktrace, key: first.key };
 
-      action({ id: first.id, finishStacktrace, key: first.key });
+      if (options?.inModal) setTimeout(() => action(payload));
+      else action(payload);
     }
   }, [stacktrace]);
 };

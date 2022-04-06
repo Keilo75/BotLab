@@ -2,7 +2,7 @@ import { Anchor, Button, Card, Group, Stack, Text } from "@mantine/core";
 import React from "react";
 import StatusIcon from "src/components/ui/status-icon/StatusIcon";
 import Timestamp from "src/components/ui/timestamp/Timestamp";
-import { Log } from "src/hooks/useLogs";
+import { Log, LogsHandler } from "src/hooks/useLogs";
 import { BotStatus } from "src/models/bot";
 import { IInfoStore, InfoStore } from "src/stores/InfoStore";
 import { PlayerPlay } from "tabler-icons-react";
@@ -11,11 +11,12 @@ const InfoActions = (state: IInfoStore) => state.actions;
 
 interface DashboardTabProps {
   logs: Log[];
+  logsHandler: LogsHandler;
   startBot: () => Promise<void>;
   botStatus: BotStatus;
 }
 
-const DashboardTab: React.FC<DashboardTabProps> = ({ logs, startBot, botStatus }) => {
+const DashboardTab: React.FC<DashboardTabProps> = ({ logs, logsHandler, startBot, botStatus }) => {
   const { setStacktrace } = InfoStore(InfoActions);
 
   const handleStacktraceClick = (e: React.MouseEvent) => {
@@ -31,6 +32,8 @@ const DashboardTab: React.FC<DashboardTabProps> = ({ logs, startBot, botStatus }
     setStacktrace(slicedStacktrace);
   };
 
+  const clearLogs = () => logsHandler.clear();
+
   return (
     <Stack className="main-content in-editor dashboard" mt="md" spacing={0}>
       <Group position="apart" align="center">
@@ -41,6 +44,9 @@ const DashboardTab: React.FC<DashboardTabProps> = ({ logs, startBot, botStatus }
           loading={botStatus === "starting"}
         >
           Start Bot
+        </Button>
+        <Button variant="default" onClick={clearLogs}>
+          Clear Logs
         </Button>
       </Group>
       <Text weight={500} color="gray" mt="md">

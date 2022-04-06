@@ -41,13 +41,15 @@ const InteractionPermissionsModalComponent: React.FC<Props> = ({
     [form.values]
   );
 
-  useStacktrace("permission exception", ({ finishStacktrace, id }) => {
-    const index = form.values.exceptions.findIndex((exception) => exception.id === id);
-    setTimeout(() => {
+  useStacktrace(
+    "permission exception",
+    ({ finishStacktrace, id }) => {
+      const index = form.values.exceptions.findIndex((exception) => exception.id === id);
       inputRefs[index].current?.focus();
       finishStacktrace();
-    });
-  });
+    },
+    { inModal: true }
+  );
 
   const addException = () => {
     form.addListItem("exceptions", { type: "user", identifier: "", id: uuid() });

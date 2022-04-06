@@ -16,19 +16,20 @@ type LogPayload = Omit<Log, "timestamp">;
 export interface LogsHandler {
   add: (payload: Partial<LogPayload>) => void;
   update: (payload: Partial<LogPayload>, index?: number) => void;
+  clear: () => void;
 }
 
 const useLogs = (): [Log[], LogsHandler] => {
   const [logs, setLogs] = useState<Log[]>([]);
 
-  const addLog = (payload: Partial<LogPayload>) => {
+  const add = (payload: Partial<LogPayload>) => {
     setLogs((prev) => [
       ...prev,
       { status: "loading", message: "", ...payload, timestamp: Date.now() },
     ]);
   };
 
-  const updateLog = (payload: Partial<LogPayload>, target?: number) => {
+  const update = (payload: Partial<LogPayload>, target?: number) => {
     setLogs((prev) => {
       const targetIndex = target ?? prev.length - 1;
       return prev.map((log, index) =>
@@ -37,7 +38,9 @@ const useLogs = (): [Log[], LogsHandler] => {
     });
   };
 
-  return [logs, { add: addLog, update: updateLog }];
+  const clear = () => setLogs([]);
+
+  return [logs, { add, update, clear }];
 };
 
 export default useLogs;

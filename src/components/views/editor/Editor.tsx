@@ -182,7 +182,12 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
         </Tabs.Tab>
         <Tabs.Tab label="Dashboard" icon={<Terminal2 size={14} />}>
           <ScrollArea sx={{ height: "100%" }}>
-            <DashboardTab logs={logs} startBot={startBot} botStatus={botStatus} />
+            <DashboardTab
+              logs={logs}
+              logsHandler={logsHandler}
+              startBot={startBot}
+              botStatus={botStatus}
+            />
           </ScrollArea>
         </Tabs.Tab>
       </Tabs>
