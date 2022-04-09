@@ -10,6 +10,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import React, { useEffect, useState } from "react";
+import Label from "src/components/ui/label/Label";
 import SelectableList from "src/components/ui/selectable-list/SelectableList";
 import useStacktrace from "src/hooks/useStacktrace";
 import {
@@ -212,9 +213,7 @@ const CommandOptionsModalComponent: React.FC<Props> = ({
               </Group>
 
               <Stack className="option-choices" spacing={0}>
-                <Text size="sm" weight={500}>
-                  Choices
-                </Text>
+                <Label>Choices</Label>
                 {doesTypeAllowChoices ? (
                   <>
                     <Group position="apart" mb="xs">

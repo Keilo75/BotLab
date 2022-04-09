@@ -3,6 +3,7 @@ import { useForm } from "@mantine/form";
 import { useDidUpdate } from "@mantine/hooks";
 import React, { useMemo } from "react";
 import { defaultOptions, IOptionsStore, OptionsStore } from "src/stores/OptionsStore";
+import Label from "../ui/label/Label";
 
 interface Props {
   close: () => void;
@@ -35,36 +36,32 @@ const OptionsModalComponent: React.FC<Props> = ({ close }) => {
           </RadioGroup>
         </Tabs.Tab>
         <Tabs.Tab label="Editor">
-          <Title mb="xs" order={4}>
-            Ask for confirmation when
-          </Title>
+          <Label mb={4}>Ask for confirmation when</Label>
           <Switch
             label="Deleting an interaction"
             {...form.getInputProps("editor.confirmInteractionDeletion", { type: "checkbox" })}
           />
         </Tabs.Tab>
         <Tabs.Tab label="Developer">
-          <Title mb="xs" order={4}>
-            Developer
-          </Title>
+          <Label mb={4}>Developer</Label>
           <Switch
             label="Pretty print save file"
             {...form.getInputProps("developer.prettyPrintSaveFile", {
               type: "checkbox",
             })}
           />
-          <Title mt="md" mb="xs" order={4}>
+          <Label mt="md" mb={4}>
             Dangerous
-          </Title>
+          </Label>
           <Switch
             label="Empty folder on project creation"
             {...form.getInputProps("developer.emptyFolderOnProjectCreation", {
               type: "checkbox",
             })}
           />
-          <Title mt="md" mb="xs" order={4}>
+          <Label mt="md" mb={4}>
             Reset Options
-          </Title>
+          </Label>
           <Button color="red" onClick={resetOptions}>
             Reset Options
           </Button>
