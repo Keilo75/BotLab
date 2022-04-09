@@ -115,28 +115,7 @@ export const getAllInteractionsWithSameParent = (
   return sameParentInteractions;
 };
 
-export const getInteractionName = (
-  interactions: Interaction[],
-  type: InteractionType,
-  textBased: boolean
-): string => {
+export const getInteractionName = (type: InteractionType, textBased: boolean): string => {
   const humanName = textBased ? `new-${type}` : `New ${InteractionTypes[type]}`;
-
-  const filteredInteractions = interactions
-    .filter((cmd) => cmd.name.startsWith(humanName))
-    .map((cmd) => {
-      const numbers = cmd.name.match(/\d+/);
-      if (numbers) return numbers[0];
-
-      return "0";
-    });
-
-  if (filteredInteractions.length === 0) return humanName;
-
-  let lowestNumber = 1;
-  while (filteredInteractions.includes(lowestNumber.toString())) {
-    lowestNumber++;
-  }
-
-  return `${humanName}${textBased ? "-" : " "}${lowestNumber}`;
+  return humanName;
 };

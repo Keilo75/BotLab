@@ -42,7 +42,7 @@ export const InteractionStore = create<IInteractionStore>((set, get) => ({
       if (!interactions) return;
 
       const textBased = isTextBased(type);
-      const name = getInteractionName(interactions, type, textBased);
+      const name = getInteractionName(type, textBased);
       const newInteraction: Interaction = {
         id: uuid(),
         name,

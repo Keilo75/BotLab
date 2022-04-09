@@ -47,8 +47,8 @@ const SelectedInteraction: React.FC<Props> = ({ interaction }) => {
   };
 
   useStacktrace("interaction", ({ finishStacktrace, key }) => {
-    if (key === "name") nameInputRef.current?.focus();
-    if (key === "description") descriptionInputRef.current?.focus();
+    if (key === "interaction name") nameInputRef.current?.focus();
+    if (key === "interaction description") descriptionInputRef.current?.focus();
 
     finishStacktrace();
   });
