@@ -12,7 +12,7 @@ export type ValidationErrorScope = {
   key?: string;
 };
 
-interface ValidationError {
+export interface ValidationError {
   message: string;
   stacktrace: ValidationErrorScope[];
 }

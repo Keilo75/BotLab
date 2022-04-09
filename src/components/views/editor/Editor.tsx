@@ -151,11 +151,7 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
     const errors = validateProject(project);
 
     if (errors.length > 0) {
-      logsHandler.update({ status: "error" });
-
-      for (const error of errors) {
-        logsHandler.add({ status: "error", message: error.message, stacktrace: error.stacktrace });
-      }
+      logsHandler.update({ status: "error", errors });
     }
 
     setBotStatus("offline");

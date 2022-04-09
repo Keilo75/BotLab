@@ -22,13 +22,15 @@ const DashboardTab: React.FC<DashboardTabProps> = ({ logs, logsHandler, startBot
   const handleStacktraceClick = (e: React.MouseEvent) => {
     if (!logs) return;
 
-    const logIndex = parseInt(e.currentTarget.getAttribute("data-log-index")!);
-    const stacktraceIndex = parseInt(e.currentTarget.getAttribute("data-stacktrace-index")!);
+    const [logIndex, errorIndex, scopeIndex] = ["log", "error", "scope"].map((index) =>
+      parseInt(e.currentTarget.getAttribute(`data-${index}-index`) as string)
+    );
 
-    const stacktrace = logs[logIndex].stacktrace;
-    if (!stacktrace) return;
+    const errors = logs[logIndex].errors;
+    if (!errors) return;
 
-    const slicedStacktrace = stacktrace.slice(0, stacktraceIndex);
+    const stacktrace = errors[errorIndex].stacktrace;
+    const slicedStacktrace = stacktrace.slice(0, scopeIndex);
     setStacktrace(slicedStacktrace);
   };
 
@@ -55,28 +57,33 @@ const DashboardTab: React.FC<DashboardTabProps> = ({ logs, logsHandler, startBot
       <Card className="logs">
         <Stack spacing={0}>
           {logs.length > 0 ? (
-            logs.map((log, logIndex) => (
-              <Group key={logIndex} position="apart">
+            logs.map((log, index) => (
+              <Group key={index} position="apart" align="flex-start">
                 <Group spacing={5} align="flex-start">
                   <div className="log-icon">
                     <StatusIcon status={log.status} />
                   </div>
-
                   <Timestamp timestamp={log.timestamp} />
                   <Stack spacing={0}>
                     <Text>{log.message}</Text>
-                    {log.stacktrace &&
-                      [...log.stacktrace].reverse().map((scope, stacktraceIndex, array) => (
-                        <Text key={stacktraceIndex} color="dimmed">
-                          at{" "}
-                          <Anchor
-                            onClick={handleStacktraceClick}
-                            data-log-index={logIndex}
-                            data-stacktrace-index={array.length - stacktraceIndex}
-                          >
-                            {scope.type}
-                          </Anchor>
-                        </Text>
+                    {log.errors &&
+                      log.errors.map((error, errorIndex) => (
+                        <React.Fragment key={errorIndex}>
+                          <Text>{error.message}</Text>
+                          {[...error.stacktrace].reverse().map((scope, scopeIndex) => (
+                            <Text color="dimmed" key={scopeIndex} pl="md">
+                              at{" "}
+                              <Anchor
+                                onClick={handleStacktraceClick}
+                                data-log-index={index}
+                                data-error-index={errorIndex}
+                                data-scope-index={error.stacktrace.length - scopeIndex}
+                              >
+                                {scope.type}
+                              </Anchor>
+                            </Text>
+                          ))}
+                        </React.Fragment>
                       ))}
                   </Stack>
                 </Group>
