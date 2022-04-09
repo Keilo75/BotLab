@@ -3,7 +3,7 @@ import { validateLength, validateName } from "./validater/interaction";
 import validateSnowflake from "./validater/snowflake";
 import { Project } from "src/models/project";
 
-export { validateProjectName, validateName as validateInteractionName, validateSnowflake };
+export { validateProjectName, validateName, validateSnowflake, validateLength };
 
 export type ValidationErrorScopeType = "interaction" | "permission exception" | "option";
 export type ValidationErrorScope = {

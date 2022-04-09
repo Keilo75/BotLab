@@ -5,7 +5,7 @@ describe("getTimeSince", () => {
     expect(getTimeSince(Date.now())).toBe("just now");
   });
 
-  it("doesn't break when passed a bigger data ", () => {
+  it("doesn't break when passed a timestamp in the future ", () => {
     expect(getTimeSince(Date.now() + 100)).toBe("just now");
   });
 
