@@ -69,13 +69,13 @@ describe("get all interactions with same parents", () => {
 describe("get interaction name", () => {
   it("returns correct name for text based interactions", () => {
     const textBasedTypes: InteractionType[] = ["command", "folder"];
-    textBasedTypes.forEach((type) => expect(getInteractionName(type, true)).toBe(`new-${type}`));
+    textBasedTypes.forEach((type) => expect(getInteractionName(type, true)).toEqual(`new-${type}`));
   });
 
   it("returns correct name for ui based interactions", () => {
     const uiBasedTypes: InteractionType[] = ["event", "message-context-menu", "user-context-menu"];
     uiBasedTypes.forEach((type) =>
-      expect(getInteractionName(type, false)).toBe(`New ${InteractionTypes[type]}`)
+      expect(getInteractionName(type, false)).toEqual(`New ${InteractionTypes[type]}`)
     );
   });
 });

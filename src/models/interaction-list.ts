@@ -26,7 +26,7 @@ export const getParentsFromNodeModel = (nodeModels: InteractionNode[]): Record<s
   return directory;
 };
 
-export const getParents = (tree: Interaction[], id: string): Array<string> => {
+export const getParents = (tree: Interaction[], id: string): string[] => {
   const target = tree.find((node) => node.id === id);
   if (!target || target.parent === "0") return [];
 

@@ -1,3 +1,4 @@
+import { getParents } from "src/models/interaction-list";
 import { Interaction } from "src/models/interactions";
 import { Project, ProjectSettings } from "src/models/project";
 
@@ -131,6 +132,16 @@ export const mockInteractions: Interaction[] = [
     ],
   },
 ];
+
+export const zeroLevelInteraction = mockInteractions.find((i) => i.parent === "0") as Interaction;
+
+export const firstLevelInteraction = mockInteractions.find(
+  (i) => getParents(mockInteractions, i.id).length === 1
+) as Interaction;
+
+export const secondLevelInteraction = mockInteractions.find(
+  (i) => getParents(mockInteractions, i.id).length === 2
+) as Interaction;
 
 export const mockSettings: ProjectSettings = {
   name: "TestBot",
