@@ -12,7 +12,7 @@ export const mockInteractions: Interaction[] = [
       disabledByDefault: false,
       exceptions: [],
     },
-    description: "",
+    description: "new command description",
     options: [],
   },
   {
