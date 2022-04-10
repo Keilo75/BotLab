@@ -6,6 +6,7 @@ import {
   readJSONSync,
   emptyDir,
   writeJSON,
+  readFileSync,
 } from "fs-extra";
 
 import path from "path";
@@ -97,6 +98,13 @@ const botBridge = {
     } catch {
       return false;
     }
+  },
+
+  async compileBot(projectPath: string, project: Project): Promise<void> {
+    // @ts-expect-error
+    // This file gets imported as a text file
+    const { default: template } = await import("./template/bot");
+    console.log(template);
   },
 };
 

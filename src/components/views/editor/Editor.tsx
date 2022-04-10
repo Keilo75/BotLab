@@ -149,11 +149,23 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
 
     logsHandler.add({ message: "Validate project" });
     const errors = validateProject(project);
-
     if (errors.length > 0) {
       logsHandler.update({ status: "error", errors });
+      setBotStatus("offline");
+      return;
+    }
+    logsHandler.update({ status: "success" });
+
+    logsHandler.add({ message: "Compile bot" });
+    try {
+      await window.bot.compileBot(projectPath, project);
+    } catch {
+      logsHandler.update({ status: "error" });
+      setBotStatus("offline");
+      return;
     }
 
+    console.log("Compiled");
     setBotStatus("offline");
   };
 

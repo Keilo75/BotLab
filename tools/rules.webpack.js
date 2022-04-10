@@ -33,4 +33,5 @@ module.exports = [
     test: /\.(woff(2)?|ttf|otf|eot)$/,
     type: 'asset/resource'
   },
+  { test: /bot.ts$/, type: 'asset/source' }
 ]
