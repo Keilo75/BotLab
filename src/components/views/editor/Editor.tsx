@@ -159,13 +159,13 @@ const Editor: React.FC<Props> = ({ menuAction, setMenuAction, dispatchProjects }
     logsHandler.add({ message: "Compile bot" });
     try {
       await window.bot.compileBot(projectPath, project);
+      logsHandler.update({ status: "success" });
     } catch {
       logsHandler.update({ status: "error" });
       setBotStatus("offline");
       return;
     }
 
-    console.log("Compiled");
     setBotStatus("offline");
   };
 
