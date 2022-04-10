@@ -6,7 +6,6 @@ import {
   readJSONSync,
   emptyDir,
   writeJSON,
-  readFileSync,
 } from "fs-extra";
 
 import path from "path";
@@ -101,10 +100,15 @@ const botBridge = {
   },
 
   async compileBot(projectPath: string, project: Project): Promise<void> {
+    const projectDir = path.dirname(projectPath);
+    const indexPath = path.join(projectDir, "index.js");
+
     // @ts-expect-error
     // This file gets imported as a text file
-    const { default: template } = await import("./template/bot");
-    console.log(template);
+    const { default: template }: { default: string } = await import("./template/bot");
+
+    const withToken = template.replace("INSERT_TOKEN_HERE", project.settings.token);
+    writeFileSync(indexPath, withToken);
   },
 };
 
