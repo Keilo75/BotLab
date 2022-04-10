@@ -1,6 +1,7 @@
 import { getParents } from "src/models/interaction-list";
 import { Interaction } from "src/models/interactions";
 import { Project, ProjectSettings } from "src/models/project";
+import { v4 as uuid } from "uuid";
 
 export const mockInteractions: Interaction[] = [
   {
@@ -142,6 +143,10 @@ export const firstLevelInteraction = mockInteractions.find(
 export const secondLevelInteraction = mockInteractions.find(
   (i) => getParents(mockInteractions, i.id).length === 2
 ) as Interaction;
+
+export const createMockInteraction = (data?: Partial<Interaction>): Interaction => {
+  return { id: uuid(), parent: "0", name: "new-command", type: "command", ...data };
+};
 
 export const mockSettings: ProjectSettings = {
   name: "TestBot",

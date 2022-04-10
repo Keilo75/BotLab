@@ -6,7 +6,12 @@ import {
   validateSnowflake,
 } from "src/lib/validater";
 import { Interaction } from "src/models/interactions";
-import { mockInteractions, mockProject, mockSettings } from "../__mocks__/mockProject";
+import {
+  createMockInteraction,
+  mockInteractions,
+  mockProject,
+  mockSettings,
+} from "../__mocks__/mockProject";
 
 describe("validate project name", () => {
   it("rejects invalid names", () => {
@@ -57,11 +62,26 @@ describe("validate interaction name", () => {
 
 describe("validate project", () => {
   it("returns the correct stacktrace", () => {
-    const interactions: Interaction[] = [{ ...mockInteractions[0], name: "" }];
+    const interactions: Interaction[] = [];
+    interactions.push(createMockInteraction({ name: "" }));
+    interactions.push(
+      createMockInteraction({
+        permissions: {
+          disabledByDefault: true,
+          exceptions: [{ id: "", type: "role", identifier: "" }],
+        },
+      })
+    );
 
-    const [error] = validateProject({ interactions, settings: mockSettings });
-    expect(error.message).toBeDefined();
-    expect(error.stacktrace).toHaveLength(1);
+    const [nameError, permissionsError] = validateProject({ interactions, settings: mockSettings });
+    expect(nameError).toBeDefined();
+    expect(nameError.stacktrace).toHaveLength(1);
+    expect(nameError.stacktrace[0].key).toEqual("interaction name");
+
+    expect(permissionsError).toBeDefined();
+    expect(permissionsError.stacktrace).toHaveLength(2);
+    expect(permissionsError.stacktrace[0].type).toEqual("interaction");
+    expect(permissionsError.stacktrace[1].type).toEqual("permission exception");
   });
 
   it("works with a valid project ", () => {
