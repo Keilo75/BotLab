@@ -79,7 +79,13 @@ const InteractionPermissionsModalComponent: React.FC<Props> = ({
           ref={inputRefs[index]}
           {...form.getListInputProps("exceptions", index, "identifier")}
         />
-        <ActionIcon color="red" variant="hover" onClick={removeException} mt={3}>
+        <ActionIcon
+          color="red"
+          variant="hover"
+          onClick={removeException}
+          mt={3}
+          title="Remove Exception"
+        >
           <Trash size={16} />
         </ActionIcon>
       </Group>

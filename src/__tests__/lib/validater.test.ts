@@ -6,12 +6,7 @@ import {
   validateSnowflake,
 } from "src/lib/validater";
 import { Interaction } from "src/models/interactions";
-import {
-  createMockInteraction,
-  mockInteractions,
-  mockProject,
-  mockSettings,
-} from "../__mocks__/mockProject";
+import { createMockInteraction, mockProject, mockSettings } from "../__mocks__/mockProject";
 
 describe("validate project name", () => {
   it("rejects invalid names", () => {

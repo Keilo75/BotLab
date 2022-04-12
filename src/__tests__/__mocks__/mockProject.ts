@@ -1,5 +1,5 @@
 import { getParents } from "src/models/interaction-list";
-import { Interaction } from "src/models/interactions";
+import { Interaction, InteractionPermission } from "src/models/interactions";
 import { Project, ProjectSettings } from "src/models/project";
 import { v4 as uuid } from "uuid";
 
@@ -143,6 +143,10 @@ export const firstLevelInteraction = mockInteractions.find(
 export const secondLevelInteraction = mockInteractions.find(
   (i) => getParents(mockInteractions, i.id).length === 2
 ) as Interaction;
+
+export const mockPermissions = mockInteractions.find(
+  (i) => i.permissions?.exceptions && i.permissions.exceptions.length > 0
+)?.permissions as InteractionPermission;
 
 export const createMockInteraction = (data?: Partial<Interaction>): Interaction => {
   return { id: uuid(), parent: "0", name: "new-command", type: "command", ...data };
